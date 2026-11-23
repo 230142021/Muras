@@ -1,0 +1,14 @@
+newmtl cream
+Ka 0.94 0.9 0.8
+Kd 0.94 0.9 0.8
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl wood
+Ka 0.58 0.38 0.22
+Kd 0.58 0.38 0.22
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+

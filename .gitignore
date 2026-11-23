@@ -1,0 +1,38 @@
+# Unity — генерируемые папки (не нужны в репозитории, Unity создаёт их сам)
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Собранная игра под macOS
+/mac.app/
+/mac_BackUpThisFolder_ButDontShipItWithYourGame/
+*.app
+
+# Unity Version Control (Plastic)
+/.plastic/
+ignore.conf
+
+# IDE / системные
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+.DS_Store
+sysinfo.txt
+crashlytics-build.properties

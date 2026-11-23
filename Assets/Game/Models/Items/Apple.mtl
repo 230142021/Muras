@@ -1,0 +1,21 @@
+newmtl Apple_AppleRed
+Kd 0.78 0.1 0.12
+Ks 0.25 0.25 0.25
+Ns 40
+d 1
+illum 2
+
+newmtl Apple_Stem
+Kd 0.35 0.22 0.1
+Ks 0.25 0.25 0.25
+Ns 40
+d 1
+illum 2
+
+newmtl Apple_Leaf
+Kd 0.3 0.62 0.22
+Ks 0.25 0.25 0.25
+Ns 40
+d 1
+illum 2
+

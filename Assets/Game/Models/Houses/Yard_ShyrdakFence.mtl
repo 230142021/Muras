@@ -1,0 +1,32 @@
+newmtl Yard_ShyrdakFence_Post
+Kd 0.480 0.350 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Yard_ShyrdakFence_Felt
+Kd 0.700 0.130 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Yard_ShyrdakFence_Pattern
+Kd 0.950 0.850 0.550
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Yard_ShyrdakFence_Pattern2
+Kd 0.160 0.300 0.550
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

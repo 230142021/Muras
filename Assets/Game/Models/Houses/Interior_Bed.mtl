@@ -1,0 +1,40 @@
+newmtl Interior_Bed_Frame
+Kd 0.400 0.270 0.170
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Bed_Blanket
+Kd 0.720 0.180 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Bed_Pat
+Kd 0.950 0.800 0.350
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Bed_Pat2
+Kd 0.200 0.400 0.650
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Bed_Pillow
+Kd 0.950 0.940 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

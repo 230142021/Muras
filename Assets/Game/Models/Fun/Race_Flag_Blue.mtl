@@ -1,0 +1,24 @@
+newmtl Race_Flag_Blue_Pole
+Kd 0.550 0.400 0.240
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Race_Flag_Blue_Gold
+Kd 0.850 0.660 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Race_Flag_Blue_Flag
+Kd 0.140 0.300 0.660
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

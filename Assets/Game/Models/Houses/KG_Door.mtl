@@ -1,0 +1,24 @@
+newmtl KG_Door_Door
+Kd 0.460 0.300 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Door_DoorTrim
+Kd 0.380 0.240 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Door_Metal
+Kd 0.700 0.620 0.350
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

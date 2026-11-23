@@ -1,0 +1,24 @@
+newmtl BoorsokPlate_Plate
+Kd 0.930 0.930 0.950
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl BoorsokPlate_PlateRim
+Kd 0.200 0.350 0.650
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl BoorsokPlate_Boorsok
+Kd 0.850 0.580 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

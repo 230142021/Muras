@@ -1,0 +1,144 @@
+newmtl Bazaar_Stall_Wood
+Kd 0.550 0.380 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_WoodDark
+Kd 0.360 0.240 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_WoodLight
+Kd 0.720 0.520 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Red
+Kd 0.720 0.160 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_White
+Kd 0.950 0.930 0.880
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Shyrdak
+Kd 0.700 0.140 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_ShyrdakB
+Kd 0.160 0.240 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Felt
+Kd 0.850 0.780 0.620
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Kalpak
+Kd 0.960 0.950 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_KalpakBlack
+Kd 0.060 0.060 0.070
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Copper
+Kd 0.780 0.450 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Basket
+Kd 0.620 0.460 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Apple
+Kd 0.780 0.120 0.100
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Bread
+Kd 0.800 0.580 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Bowl
+Kd 0.200 0.360 0.620
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Boorsok
+Kd 0.860 0.620 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Gold
+Kd 0.850 0.660 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Bazaar_Stall_Sack
+Kd 0.780 0.700 0.520
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

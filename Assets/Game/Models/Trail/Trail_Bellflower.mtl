@@ -1,0 +1,24 @@
+newmtl Trail_Bellflower_stem
+Kd 0.350 0.550 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_Bellflower_leaf
+Kd 0.400 0.620 0.280
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_Bellflower_flower
+Kd 0.280 0.400 0.850
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

@@ -1,0 +1,56 @@
+newmtl Eagle_Perched_Feather
+Kd 0.360 0.240 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_FeatherDark
+Kd 0.200 0.130 0.080
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_Nape
+Kd 0.720 0.560 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_Beak
+Kd 0.860 0.700 0.240
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_EyeE
+Kd 0.050 0.040 0.030
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_Talon
+Kd 0.800 0.700 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Eagle_Perched_Hood
+Kd 0.450 0.200 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

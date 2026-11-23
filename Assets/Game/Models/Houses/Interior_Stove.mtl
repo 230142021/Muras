@@ -1,0 +1,32 @@
+newmtl Interior_Stove_Stove
+Kd 0.930 0.930 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Stove_Plate
+Kd 0.200 0.200 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Stove_Iron
+Kd 0.250 0.250 0.270
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Stove_Kettle
+Kd 0.750 0.700 0.620
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

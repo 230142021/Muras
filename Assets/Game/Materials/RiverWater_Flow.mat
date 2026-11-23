@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RiverWater_Flow
+  m_Shader: {fileID: 4800000, guid: 4103e897f562a47f7b959b7dce49656d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FoamTex:
+        m_Texture: {fileID: 2800000, guid: 1578912471d6e4a2883a73b170be5fb5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex:
+        m_Texture: {fileID: 2800000, guid: d7beda071538b4a38a038c1f7353930d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _FlowSpeed: 0.55
+    - _FoamAmount: 0.14
+    - _FoamEdge: 0.08
+    - _Gloss: 220
+    - _NormalStrength: 0.7
+    - _Specular: 1.6
+    - _Tiling: 0.45
+    - _WaveHeight: 0.025
+    m_Colors:
+    - _DeepColor: {r: 0.06999998, g: 0.26999995, b: 0.35999998, a: 0.88}
+    - _FoamColor: {r: 0.96, g: 0.97999996, b: 1, a: 1}
+    - _HorizonColor: {r: 0.85, g: 0.9, b: 0.95, a: 1}
+    - _ShallowColor: {r: 0.33, g: 0.55, b: 0.52, a: 0.6}
+    - _SkyColor: {r: 0.62, g: 0.78, b: 0.95, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

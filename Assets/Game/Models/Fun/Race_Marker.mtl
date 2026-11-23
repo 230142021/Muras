@@ -1,0 +1,8 @@
+newmtl Race_Marker_Gold
+Kd 1.000 0.780 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

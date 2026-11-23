@@ -1,0 +1,56 @@
+newmtl Shyrdak_Workplace_FeltRed
+Kd 0.700 0.150 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_FeltBlue
+Kd 0.160 0.240 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_FeltCream
+Kd 0.920 0.860 0.720
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_Basket
+Kd 0.620 0.460 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_WoolW
+Kd 0.950 0.940 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_WoolR
+Kd 0.750 0.150 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Shyrdak_Workplace_WoolB
+Kd 0.180 0.280 0.560
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

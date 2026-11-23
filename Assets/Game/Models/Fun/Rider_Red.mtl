@@ -1,0 +1,128 @@
+newmtl Rider_Red_Skin
+Kd 0.830 0.640 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Hair
+Kd 0.100 0.070 0.050
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Eyes
+Kd 0.050 0.040 0.040
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Mouth
+Kd 0.620 0.300 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Cheek
+Kd 0.900 0.580 0.520
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Shirt
+Kd 0.940 0.930 0.890
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Gold
+Kd 0.850 0.660 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Pants
+Kd 0.180 0.170 0.200
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Boots
+Kd 0.100 0.080 0.060
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Kalpak
+Kd 0.960 0.950 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_KalpakBlack
+Kd 0.060 0.060 0.070
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Vest
+Kd 0.660 0.120 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Belt
+Kd 0.300 0.200 0.100
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Reins
+Kd 0.250 0.150 0.080
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_Fur
+Kd 0.330 0.240 0.160
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Rider_Red_HatTop
+Kd 0.600 0.140 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

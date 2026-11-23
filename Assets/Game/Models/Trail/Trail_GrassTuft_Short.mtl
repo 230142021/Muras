@@ -1,0 +1,24 @@
+newmtl Trail_GrassTuft_Short_g1
+Kd 0.360 0.580 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_GrassTuft_Short_g2
+Kd 0.450 0.660 0.270
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_GrassTuft_Short_g3
+Kd 0.620 0.660 0.320
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

@@ -1,0 +1,35 @@
+newmtl brown
+Ka 0.36 0.25 0.15
+Kd 0.36 0.25 0.15
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl cream
+Ka 0.94 0.9 0.8
+Kd 0.94 0.9 0.8
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl pants
+Ka 0.25 0.22 0.2
+Kd 0.25 0.22 0.2
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl skin
+Ka 0.9 0.72 0.58
+Kd 0.9 0.72 0.58
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl white
+Ka 0.96 0.96 0.95
+Kd 0.96 0.96 0.95
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+

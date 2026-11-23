@@ -1,0 +1,28 @@
+newmtl cream
+Ka 0.94 0.9 0.8
+Kd 0.94 0.9 0.8
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl maroon
+Ka 0.45 0.12 0.13
+Kd 0.45 0.12 0.13
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl skin
+Ka 0.9 0.72 0.58
+Kd 0.9 0.72 0.58
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl white
+Ka 0.96 0.96 0.95
+Kd 0.96 0.96 0.95
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+

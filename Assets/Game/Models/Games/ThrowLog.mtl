@@ -1,0 +1,8 @@
+newmtl ThrowLog_Log
+Kd 0.450 0.300 0.170
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

@@ -1,0 +1,40 @@
+newmtl Animal_Dog_Fur
+Kd 0.800 0.680 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Animal_Dog_Ear
+Kd 0.550 0.420 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Animal_Dog_Nose
+Kd 0.080 0.060 0.060
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Animal_Dog_Eye
+Kd 0.050 0.050 0.050
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Animal_Dog_Paw
+Kd 0.700 0.600 0.450
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

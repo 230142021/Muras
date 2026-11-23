@@ -1,0 +1,152 @@
+newmtl KG_House_White_Plinth
+Kd 0.720 0.680 0.580
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_PlinthDark
+Kd 0.300 0.280 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Floor
+Kd 0.550 0.400 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Ceiling
+Kd 0.950 0.950 0.930
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Wall
+Kd 0.940 0.930 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Frame
+Kd 0.940 0.940 0.910
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Window
+Kd 0.160 0.200 0.240
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Sill
+Kd 0.800 0.800 0.780
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Curtain
+Kd 0.970 0.960 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Concrete
+Kd 0.620 0.600 0.560
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Metal
+Kd 0.420 0.430 0.450
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Gable
+Kd 0.360 0.240 0.150
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_GableDark
+Kd 0.270 0.180 0.112
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Roof
+Kd 0.600 0.610 0.600
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_RoofUnder
+Kd 0.400 0.300 0.200
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_RoofRib
+Kd 0.648 0.659 0.648
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_RoofRidge
+Kd 0.480 0.488 0.480
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Fascia
+Kd 0.420 0.300 0.200
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_White_Chimney
+Kd 0.920 0.920 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

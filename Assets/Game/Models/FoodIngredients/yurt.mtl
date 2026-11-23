@@ -1,0 +1,21 @@
+newmtl carpet_red
+Ka 0.55 0.14 0.12
+Kd 0.55 0.14 0.12
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl felt
+Ka 0.93 0.91 0.84
+Kd 0.93 0.91 0.84
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl red
+Ka 0.72 0.12 0.12
+Kd 0.72 0.12 0.12
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+

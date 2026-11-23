@@ -1,0 +1,80 @@
+newmtl House_White_Green_Plinth
+Kd 0.500 0.490 0.470
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Wall
+Kd 0.930 0.910 0.860
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Roof
+Kd 0.300 0.500 0.400
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_RoofEdge
+Kd 0.210 0.350 0.280
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Frame
+Kd 0.200 0.420 0.720
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Window
+Kd 0.140 0.180 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Door
+Kd 0.470 0.310 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Wood
+Kd 0.550 0.400 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Brick
+Kd 0.620 0.420 0.340
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl House_White_Green_Metal
+Kd 0.300 0.300 0.320
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

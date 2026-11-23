@@ -1,0 +1,77 @@
+newmtl beige
+Ka 0.85 0.78 0.62
+Kd 0.85 0.78 0.62
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl boot
+Ka 0.38 0.26 0.16
+Kd 0.38 0.26 0.16
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl brown_pants
+Ka 0.36 0.28 0.2
+Kd 0.36 0.28 0.2
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl camera
+Ka 0.08 0.08 0.09
+Kd 0.08 0.08 0.09
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl cap
+Ka 0.88 0.84 0.74
+Kd 0.88 0.84 0.74
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl hair
+Ka 0.12 0.08 0.06
+Kd 0.12 0.08 0.06
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl hoodie
+Ka 0.9 0.86 0.78
+Kd 0.9 0.86 0.78
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl maroon
+Ka 0.5 0.14 0.15
+Kd 0.5 0.14 0.15
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl metal
+Ka 0.55 0.56 0.6
+Kd 0.55 0.56 0.6
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl mustard
+Ka 0.8 0.62 0.26
+Kd 0.8 0.62 0.26
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+
+newmtl skin
+Ka 0.92 0.74 0.6
+Kd 0.92 0.74 0.6
+Ks 0.05 0.05 0.05
+Ns 10
+illum 2
+

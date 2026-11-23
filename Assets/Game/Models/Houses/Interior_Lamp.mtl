@@ -1,0 +1,16 @@
+newmtl Interior_Lamp_Cord
+Kd 0.150 0.150 0.150
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Interior_Lamp_Window
+Kd 1.000 0.950 0.800
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

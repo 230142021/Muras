@@ -1,0 +1,14 @@
+newmtl Meat_Meat
+Kd 0.7 0.18 0.16
+Ks 0.1 0.1 0.1
+Ns 20
+d 1
+illum 2
+
+newmtl Meat_Fat
+Kd 0.95 0.88 0.8
+Ks 0.1 0.1 0.1
+Ns 20
+d 1
+illum 2
+

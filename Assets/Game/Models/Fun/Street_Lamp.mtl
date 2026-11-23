@@ -1,0 +1,24 @@
+newmtl Street_Lamp_Stone
+Kd 0.550 0.530 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Street_Lamp_Pole
+Kd 0.450 0.300 0.170
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Street_Lamp_Iron
+Kd 0.140 0.130 0.130
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

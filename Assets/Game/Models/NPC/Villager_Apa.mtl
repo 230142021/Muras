@@ -1,0 +1,136 @@
+newmtl Villager_Apa_Skin
+Kd 0.800 0.620 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Hair
+Kd 0.100 0.070 0.050
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Eyes
+Kd 0.050 0.040 0.040
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Mouth
+Kd 0.620 0.300 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Cheek
+Kd 0.900 0.580 0.520
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Shirt
+Kd 0.940 0.930 0.890
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Gold
+Kd 0.850 0.660 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Pants
+Kd 0.180 0.170 0.200
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Boots
+Kd 0.100 0.080 0.060
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Kalpak
+Kd 0.960 0.950 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_KalpakBlack
+Kd 0.060 0.060 0.070
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Dress
+Kd 0.160 0.200 0.360
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Vest
+Kd 0.380 0.220 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Elechek
+Kd 0.970 0.960 0.930
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_ElechekShade
+Kd 0.860 0.840 0.800
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Grey
+Kd 0.800 0.800 0.780
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Villager_Apa_Wrinkle
+Kd 0.700 0.520 0.420
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

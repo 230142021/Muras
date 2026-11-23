@@ -1,0 +1,32 @@
+newmtl Trail_Edelweiss_stem
+Kd 0.550 0.620 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_Edelweiss_leaf
+Kd 0.620 0.700 0.600
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_Edelweiss_petal
+Kd 0.950 0.950 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Trail_Edelweiss_center
+Kd 0.880 0.800 0.350
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
