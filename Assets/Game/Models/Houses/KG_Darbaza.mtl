@@ -1,0 +1,64 @@
+newmtl KG_Darbaza_Pillar
+Kd 0.660 0.380 0.280
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_PillarCap
+Kd 0.850 0.830 0.780
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_Gate
+Kd 0.180 0.400 0.620
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_GateFrame
+Kd 0.140 0.300 0.480
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_Gold
+Kd 0.900 0.720 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_Roof
+Kd 0.600 0.200 0.160
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_Fence
+Kd 0.300 0.480 0.360
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_Darbaza_FenceRib
+Kd 0.340 0.540 0.400
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

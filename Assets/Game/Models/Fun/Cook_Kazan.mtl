@@ -1,0 +1,48 @@
+newmtl Cook_Kazan_Iron
+Kd 0.150 0.140 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Cook_Kazan_Chain
+Kd 0.250 0.250 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Cook_Kazan_Pot
+Kd 0.100 0.100 0.110
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Cook_Kazan_Broth
+Kd 0.780 0.620 0.350
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Cook_Kazan_Wood
+Kd 0.320 0.200 0.100
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Cook_Kazan_Flame
+Kd 1.000 0.500 0.100
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

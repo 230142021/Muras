@@ -29,7 +29,7 @@ public static class Modal
     }
 
     /// <summary>Можно ли сейчас начинать новое действие (нажать E у NPC, открыть окно).</summary>
-    public static bool Free => !IsOpen && !PauseMenu.IsPaused && !VillageShop.IsOpen && !RaceManager.Active;
+    public static bool Free => !IsOpen && !PauseMenu.IsPaused && !VillageShop.IsOpen && !RaceManager.Active && !KokBoruGame.Active;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics() => Current = null;

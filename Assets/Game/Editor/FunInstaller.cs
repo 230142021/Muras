@@ -789,6 +789,250 @@ public static class FunInstaller
         Debug.Log("[Update v3] " + string.Join(" · ", log3));
     }
 
+    // ======================================================================== Update v4
+    [MenuItem("Tools/Diploma/Install Update v4 (kok-boru, ordo, beshbarmak, yurt decor)")]
+    public static void InstallV4()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        foreach (Transform t in All(scene).Where(t => t.name == "Update_v4").ToList()) if (t != null) Object.DestroyImmediate(t.gameObject);
+        Physics.SyncTransforms();
+        BuildRiver(scene);
+        var log4 = new List<string>();
+
+        GameObject player = All(scene).Select(t => t.GetComponent<PlayerMovement>()).Where(p => p != null).Select(p => p.gameObject).FirstOrDefault();
+        Vector3 spawn = player != null ? player.transform.position : Vector3.zero;
+        Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
+        var root = new GameObject("Update_v4").transform; root.SetParent(env, false);
+        var others = All(scene).Where(t => t.name.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null || t.name == "Aksakal" || t.name == "Ezhe").Select(t => t.position).ToList();
+        Vector2 F(Vector3 v) => new Vector2(v.x, v.z);
+        bool FarFromNpc(Vector3 q, float d) => others.All(o => Vector2.Distance(F(q), F(o)) > d) && !NearRiver(q, 3f);
+
+        // ---- 4. Көк бөрү — в центре трассы ат чабыш
+        var race = All(scene).Select(t => t.GetComponent<RaceManager>()).FirstOrDefault(r => r != null);
+        if (race != null && race.gates != null && race.gates.Length > 0)
+        {
+            Vector3 c = race.transform.position;
+            Vector3 axis = Flat(race.gates[0].position - c).normalized;
+            if (axis.sqrMagnitude < 0.5f) axis = Vector3.forward;
+            GroundY(c, out float cy); c.y = cy;
+            var kb = new GameObject("KokBoru").transform;
+            kb.SetParent(root, true); kb.position = c; kb.rotation = Quaternion.LookRotation(axis);
+            var ulak = Instance(M + "KokBoru_Ulak.obj", kb, c + Vector3.up * 0.02f, kb.rotation * Quaternion.Euler(0f, 90f, 0f));
+            if (ulak != null) ulak.name = "Ulak";
+            var st = kb.gameObject.AddComponent<KokBoruStarter>();
+            st.ulak = ulak != null ? ulak.transform : null; st.axis = Vector3.forward;
+            for (int s = -1; s <= 1; s += 2)
+            {
+                Vector3 kp = c + axis * (14f * s); GroundY(kp, out float ky); kp.y = ky;
+                var kz = Instance(M + (s > 0 ? "KokBoru_Kazan.obj" : "KokBoru_KazanBlue.obj"), kb, kp, Face(kp, c));
+                if (kz != null) { kz.name = s > 0 ? "Kazan_Player" : "Kazan_Rivals"; var bc = kz.AddComponent<BoxCollider>(); bc.size = new Vector3(2.2f, 1f, 2.2f); bc.center = new Vector3(0f, 0.5f, 0f); }
+            }
+            log4.Add($"көк бөрү: центр ({c.x:0}, {c.z:0})");
+        }
+        else log4.Add("көк бөрү: нет трассы ат чабыш (сначала Install Fun Pack)");
+
+        // ---- 5. Ордо — круг у игровой площадки
+        Transform games = All(scene).FirstOrDefault(t => t.name == "Zone_Games");
+        Vector3 gc = games != null ? games.position : spawn;
+        if (FindSpotWhere(gc, 4f, 20f, 1.6f, q => FarFromNpc(q, 3.5f), out Vector3 op))
+        {
+            var ordo = Instance(M + "Ordo_Circle.obj", root, op + Vector3.up * 0.02f, Quaternion.Euler(0f, 20f, 0f));
+            if (ordo != null) { ordo.name = "Ordo_Circle"; ordo.AddComponent<OrdoStation>(); }
+            log4.Add($"ордо: ({op.x:0}, {op.z:0})");
+        }
+        else log4.Add("ордо: не нашлось места");
+
+        // ---- 6. Бешбармак — казан у кухни, продукты у базара
+        Transform kitchen = All(scene).FirstOrDefault(t => t.name == "Kitchen") ?? All(scene).FirstOrDefault(t => t.name == "Zone_Food");
+        Vector3 kc = kitchen != null ? kitchen.position : spawn;
+        if (FindSpotWhere(kc, 3f, 14f, 1.0f, q => FarFromNpc(q, 2.5f), out Vector3 cp))
+        {
+            var kaz = Instance(M + "Cook_Kazan.obj", root, cp, Face(cp, spawn));
+            if (kaz != null)
+            {
+                kaz.name = "Cook_Kazan"; kaz.AddComponent<CookStation>();
+                var bc = kaz.AddComponent<BoxCollider>(); bc.size = new Vector3(1.4f, 1.2f, 1.4f); bc.center = new Vector3(0f, 0.6f, 0f);
+                var lgo = new GameObject("FireGlow"); lgo.transform.SetParent(kaz.transform, false); lgo.transform.localPosition = new Vector3(0f, 0.3f, 0f);
+                var l = lgo.AddComponent<Light>(); l.type = LightType.Point; l.color = new Color(1f, 0.55f, 0.25f); l.range = 4f; l.intensity = 1.5f; l.shadows = LightShadows.None;
+            }
+            log4.Add($"казан: ({cp.x:0}, {cp.z:0})");
+        }
+        else log4.Add("казан: не нашлось места");
+        Transform bazaar = All(scene).FirstOrDefault(t => t.name == "Bazaar");
+        if (bazaar != null && FindSpotWhere(bazaar.position, 2.5f, 12f, 0.7f, q => FarFromNpc(q, 1.8f), out Vector3 gp))
+        {
+            var gr = Instance(M + "Cook_Groceries.obj", root, gp, Face(gp, bazaar.position));
+            if (gr != null) { gr.name = "Cook_Groceries"; gr.AddComponent<GroceriesSpot>(); }
+            log4.Add($"продукты: ({gp.x:0}, {gp.z:0})");
+        }
+        else log4.Add("продукты: нет базара или места");
+
+        // ---- 7. Убранство юрты — точка у входа собранной юрты
+        Transform built = All(scene).FirstOrDefault(t => t.name == "BuiltKerege");
+        Transform aks = All(scene).FirstOrDefault(t => t.name == "Aksakal");
+        Transform zy = All(scene).FirstOrDefault(t => t.name == "Zone_Yurt");
+        Transform bp = All(scene).FirstOrDefault(t => t.name == "BuildPoint");
+        Vector3 yc = bp != null ? bp.position : zy != null ? zy.position : spawn; float yr = 3.5f;
+        if (built != null)
+        {
+            bool any = false; Bounds b = default;
+            foreach (var mf in built.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (mf.sharedMesh == null) continue;
+                Bounds lb = mf.sharedMesh.bounds; var m = mf.transform.localToWorldMatrix;
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector3 corner = m.MultiplyPoint3x4(lb.center + Vector3.Scale(lb.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1)));
+                    if (!any) { b = new Bounds(corner, Vector3.zero); any = true; } else b.Encapsulate(corner);
+                }
+            }
+            if (any) { yc = new Vector3(b.center.x, b.min.y, b.center.z); yr = Mathf.Min(b.extents.x, b.extents.z); }
+        }
+        Vector3 door = aks != null ? Flat(aks.position - yc) : Vector3.forward;
+        door = door.sqrMagnitude > 0.01f ? door.normalized : Vector3.forward;
+        Vector3 sp = yc + door * (yr + 1.2f); GroundY(sp, out float syy); sp.y = syy;
+        var stn = new GameObject("YurtDecorStation");
+        stn.transform.SetParent(root, true); stn.transform.position = sp; stn.transform.rotation = Face(sp, yc);
+        var yd = stn.AddComponent<YurtDecorStation>(); yd.yurtBuilt = built; yd.doorHint = aks;
+        log4.Add($"убранство юрты: точка ({sp.x:0}, {sp.z:0}), радиус юрты {yr:0.0} м" + (built == null ? " (BuiltKerege не найден)" : ""));
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log("[Update v4] " + string.Join(" · ", log4));
+    }
+
+    static void TpTo(Component c, float back) { if (Playing() && c != null) Teleport(c.transform.position - c.transform.forward * back + Vector3.up * 0.2f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Kok-boru: teleport")] static void TTpKb() { TpTo(Object.FindAnyObjectByType<KokBoruStarter>(), 2.5f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Kok-boru: start")] static void TKb() { var s = Object.FindAnyObjectByType<KokBoruStarter>(); if (Playing() && s != null) s.Play(); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Kok-boru: quit")] static void TKbQ() { if (Playing() && KokBoruGame.Instance != null && KokBoruGame.Active) KokBoruGame.Instance.End(false); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Ordo: teleport")] static void TTpOrdo() { TpTo(Object.FindAnyObjectByType<OrdoStation>(), 3.5f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Ordo: open")] static void TOrdo() { if (Playing()) OrdoGame.Ensure().Open(); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Cook: give groceries + open")] static void TCook() { if (Playing()) { foreach (string n in new[] { "et", "un", "piyaz" }) if (Inventory.Count(n) < 1) Inventory.Add(n, 1, false); CookingGame.Ensure().Open(); } }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Cook: teleport to kazan")] static void TTpCook() { TpTo(Object.FindAnyObjectByType<CookStation>(), 2f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Yurt decor: teleport")] static void TTpYd() { TpTo(Object.FindAnyObjectByType<YurtDecorStation>(), -1.5f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Yurt decor: start + give all")]
+    static void TYd()
+    {
+        if (!Playing()) return;
+        if (SaveData.Get("yd") == 0) SaveData.Set("yd", 1);
+        foreach (var it in YurtDecor.Items) if (!YurtDecor.Placed(it) && Inventory.Count(it.inv) < 1) { SaveData.Set("yd_g_" + it.id, 1); Inventory.Add(it.inv, 1, false); }
+        YurtDecor.UpdateHud();
+    }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Yurt decor: place all")]
+    static void TYdPlace()
+    {
+        if (!Playing()) return;
+        foreach (var it in YurtDecor.Items) SaveData.Set("yd_" + it.id, 1);
+        var s = Object.FindAnyObjectByType<YurtDecorStation>(); if (s != null) s.SpawnPlaced();
+    }
+
+    // ======================================================================== More houses (v5)
+    static readonly (string model, float hw, float hd)[] NewHouses =
+    {
+        ("KG_House_TwoStory", 4.6f, 4.6f), ("KG_House_Adobe", 4.2f, 4.2f), ("KG_House_Veranda", 5.4f, 4.4f), ("KG_House_Brick", 3.8f, 3.6f),
+        ("KG_House_TwoStory", 4.6f, 4.6f), ("KG_House_Brick", 3.8f, 3.6f), ("KG_House_Veranda", 5.4f, 4.4f), ("KG_House_Adobe", 4.2f, 4.2f),
+    };
+
+    [MenuItem("Tools/Diploma/Add More Houses (two-storey, adobe, veranda, brick + darbaza)")]
+    public static void InstallHouses()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        foreach (Transform t in All(scene).Where(t => t.name == "Village_Houses_More").ToList()) if (t != null) Object.DestroyImmediate(t.gameObject);
+        Physics.SyncTransforms();
+        BuildRiver(scene);
+        const string HD = "Assets/Game/Models/Houses/";
+        var logH = new List<string>();
+
+        Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
+        var root = new GameObject("Village_Houses_More").transform; root.SetParent(env, false);
+        Transform vh = All(scene).FirstOrDefault(t => t.name == "Village_Houses");
+        var old = vh != null ? vh.Cast<Transform>().Where(t => t.name.StartsWith("House_")).Select(t => t.position).ToList() : new List<Vector3>();
+        if (old.Count < 2) { Debug.LogWarning("[Houses] Нет Village_Houses — сначала Build Village Life"); return; }
+        float roadX = old.Average(p => p.x);
+        float leftX = old.Where(p => p.x < roadX).DefaultIfEmpty(new Vector3(roadX - 16f, 0, 0)).Average(p => p.x);
+        float rightX = old.Where(p => p.x >= roadX).DefaultIfEmpty(new Vector3(roadX + 16f, 0, 0)).Average(p => p.x);
+        float zMin = old.Min(p => p.z), zMax = old.Max(p => p.z), y0 = old.Average(p => p.y);
+
+        // что обходить
+        var avoid = new List<(Vector3 p, float r)>();
+        foreach (Transform t in All(scene))
+        {
+            string n = t.name;
+            if (n.StartsWith("House_") && t.parent == vh) avoid.Add((t.position, 11f));
+            else if (n.StartsWith("Zone_")) avoid.Add((t.position, 16f));
+            else if (n == "RaceTrack") avoid.Add((t.position, 40f));
+            else if (n == "Farm" || n == "Bazaar") avoid.Add((t.position, 18f));
+            else if (n == "NPC_Aibek" || n == "Aksakal" || n == "Ezhe" || n == "Kitchen") avoid.Add((t.position, 9f));
+            else if ((n.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null) && t.parent != null && !t.parent.name.StartsWith("NPC_")) avoid.Add((t.position, 5f));
+            else if (t.parent != null && (t.parent.name == "Update_v3" || t.parent.name == "Update_v4")) avoid.Add((t.position, 6f));
+        }
+        Vector2 F(Vector3 v) => new Vector2(v.x, v.z);
+        bool Clear(Vector3 q, float r) => avoid.All(a => Vector2.Distance(F(q), F(a.p)) > a.r + r) && !NearRiver(q, r + 2f);
+
+        // места: продолжаем ряды вдоль тропы в обе стороны, потом второй ряд
+        var slots = new List<(Vector3 p, float side)>();
+        for (int k = 1; k <= 3; k++)
+            foreach (float side in new[] { -1f, 1f })
+            {
+                float x = side < 0 ? leftX : rightX;
+                slots.Add((new Vector3(x, y0, zMax + 20f * k), side));
+                slots.Add((new Vector3(x, y0, zMin - 20f * k), side));
+            }
+        for (float z = zMin; z <= zMax; z += 22f)
+        {
+            slots.Add((new Vector3(leftX - 18f, y0, z + 8f), -1f));
+            slots.Add((new Vector3(rightX + 18f, y0, z - 4f), 1f));
+        }
+
+        int hi = 0, placed = 0, gates = 0;
+        foreach (var slot in slots)
+        {
+            if (hi >= NewHouses.Length) break;
+            var spec = NewHouses[hi];
+            float r = Mathf.Max(spec.hw, spec.hd);
+            if (!FindSpotWhere(slot.p, 0f, 12f, r * 0.85f, q => Clear(q, r), out Vector3 at)) continue;
+            // дом смотрит дверью на тропу
+            Vector3 fwd = new Vector3(roadX - at.x, 0f, 0f).normalized; if (fwd.sqrMagnitude < 0.5f) fwd = Vector3.right * -slot.side;
+            Quaternion rot = Quaternion.LookRotation(fwd) * Quaternion.Euler(0f, Random.Range(-6f, 6f), 0f);
+            float low = at.y;
+            foreach (Vector3 o in new[] { new Vector3(spec.hw, 0, spec.hd), new Vector3(-spec.hw, 0, spec.hd), new Vector3(spec.hw, 0, -spec.hd), new Vector3(-spec.hw, 0, -spec.hd) })
+                if (GroundY(at + rot * o, out float gy)) low = Mathf.Min(low, gy);
+            var house = Instance(HD + spec.model + ".obj", root, new Vector3(at.x, low, at.z), rot);
+            if (house == null) { hi++; continue; }
+            house.name = "House_More_" + (placed + 1) + "_" + spec.model.Replace("KG_House_", "");
+            foreach (var mf in house.GetComponentsInChildren<MeshFilter>()) { var mc = mf.gameObject.AddComponent<MeshCollider>(); mc.sharedMesh = mf.sharedMesh; }
+            house.isStatic = true; foreach (Transform c in house.transform) c.gameObject.isStatic = true;
+            avoid.Add((at, r + 3f));
+            placed++; hi++;
+
+            // дарбаза с забором перед домом, у тропы (через один дом)
+            if (placed % 2 == 1)
+            {
+                Vector3 gp = at + fwd * (spec.hd + 4.2f);
+                if (GroundY(gp, out float gy2) && !NearRiver(gp, 2f) && avoid.Where(a => a.p != at).All(a => Vector2.Distance(F(gp), F(a.p)) > a.r * 0.6f))
+                {
+                    var g = Instance(HD + "KG_Darbaza.obj", root, new Vector3(gp.x, gy2, gp.z), rot);
+                    if (g != null)
+                    {
+                        g.name = "Darbaza_" + placed;
+                        foreach (var mf in g.GetComponentsInChildren<MeshFilter>()) { var mc = mf.gameObject.AddComponent<MeshCollider>(); mc.sharedMesh = mf.sharedMesh; }
+                        gates++;
+                    }
+                }
+            }
+            logH.Add($"{spec.model.Replace("KG_House_", "")} ({at.x:0}, {at.z:0})");
+        }
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Houses] Новых домов: {placed}, дарбаза: {gates} · " + string.Join(" · ", logH));
+    }
+
     static void DailyProp(Transform root, string model, Vector3 p, DailyTasks.T task, string item, int bit, bool reusable)
     {
         var go = Instance(M + model + ".obj", root, p, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));

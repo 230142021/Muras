@@ -1,0 +1,192 @@
+newmtl KG_House_Veranda_Window
+Kd 0.160 0.200 0.240
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Frame
+Kd 0.940 0.940 0.910
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Sill
+Kd 0.800 0.800 0.780
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Metal
+Kd 0.420 0.430 0.450
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Door
+Kd 0.460 0.300 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_DoorTrim
+Kd 0.380 0.240 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Chimney
+Kd 0.920 0.920 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_ChimneyCap
+Kd 0.300 0.280 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Plinth
+Kd 0.700 0.660 0.580
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_PlinthDark
+Kd 0.300 0.280 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Concrete
+Kd 0.620 0.600 0.560
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Wall
+Kd 0.950 0.950 0.930
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_VerWall
+Kd 0.300 0.520 0.740
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_FrameBlue
+Kd 0.220 0.450 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Roof
+Kd 0.300 0.520 0.380
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_RoofRib
+Kd 0.340 0.580 0.420
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_RoofRidge
+Kd 0.240 0.420 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Roof2
+Kd 0.640 0.640 0.620
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Roof2Rib
+Kd 0.700 0.700 0.670
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Fascia
+Kd 0.920 0.920 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Gable
+Kd 0.220 0.450 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_GableDark
+Kd 0.170 0.360 0.560
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Carve
+Kd 0.960 0.960 0.940
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_Veranda_Shutter
+Kd 0.220 0.450 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

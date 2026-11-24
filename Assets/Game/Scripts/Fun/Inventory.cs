@@ -40,6 +40,13 @@ public static class Inventory
         I("chaka", Kind.Keepsake, "Чака суу", "Ведро воды", "Bucket of water", "Вода из горной реки — для апы.", "Water from the mountain river — for Apa."),
         I("otun", Kind.Keepsake, "Отун", "Дрова", "Firewood", "Вязанка дров для байке. Нужно три.", "A bundle of firewood for Baike. Three are needed."),
         I("felt", Kind.Keepsake, "Кийиз кесими", "Кусочек войлока", "Piece of felt", "Апа подарила кусочек войлока с узором кочкор мүйүз.", "Apa gave you a piece of felt with the kochkor müyüz pattern."),
+        I("beshbarmak", Kind.Food, "Бешбармак", "Бешбармак", "Beshbarmak", "Бешбармак, который ты сварил сам! Бег +30% на две минуты.", "Beshbarmak you cooked yourself! Run +30% for two minutes.", 25, 0.30f, 120f),
+        I("et", Kind.Keepsake, "Эт", "Мясо", "Meat", "Баранина для бешбармака. С базара, от Асана.", "Mutton for beshbarmak. From Asan at the bazaar."),
+        I("un", Kind.Keepsake, "Ун", "Мука", "Flour", "Мука для теста — камыр.", "Flour for the dough — kamyr."),
+        I("piyaz", Kind.Keepsake, "Пияз", "Лук", "Onion", "Лук для соуса чык.", "Onion for the chyk sauce."),
+        I("tush_kiyiz", Kind.Keepsake, "Түш кийиз", "Түш кийиз", "Tush kiyiz", "Вышитый настенный ковёр апы. Повесь на төр в юрте.", "Apa's embroidered wall hanging. Hang it on the tör in the yurt."),
+        I("ala_kiyiz", Kind.Keepsake, "Ала кийиз", "Ала кийиз", "Ala kiyiz", "Войлочный ковёр с вкатанным узором от байке. Постели у входа в юрту.", "A pressed felt rug from Baike. Lay it by the yurt entrance."),
+        I("shyrdak_big", Kind.Keepsake, "Шырдак", "Шырдак", "Shyrdak", "Большой мозаичный шырдак чабана. Постели в центре юрты.", "The shepherd's big mosaic shyrdak. Lay it in the middle of the yurt."),
     };
 
     public static event Action Changed;

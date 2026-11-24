@@ -114,6 +114,19 @@ public static class Vocab
         W("tumar", Cat.Ornament, "Тумар", "tumar", "Оберег; треугольный узор, хранит от беды", "Amulet; a triangle pattern that protects from harm", "Шырдак: узор 1", "Shyrdak: pattern 1"),
         W("kochkor", Cat.Ornament, "Кочкор мүйүз", "kochkor müyüz", "«Рога барана» — узор богатства и силы", "\"Ram's horns\" — a pattern of wealth and strength", "Шырдак: узор 2", "Shyrdak: pattern 2"),
         W("it_kuyruk", Cat.Ornament, "Ит куйрук", "it kuyruk", "«Собачий хвост» — узор-волна, символ верности", "\"Dog's tail\" — a wave pattern of loyalty", "Шырдак: узор 3", "Shyrdak: pattern 3"),
+        W("kok_boru", Cat.Games, "Көк бөрү", "kök börü", "«Серый волк» — конная игра за тушу (улак тартыш)", "\"Grey wolf\" — a horseback game for a goat carcass (ulak tartysh)", "Сыграй в кок-бору", "Play kok-boru"),
+        W("ulak", Cat.Games, "Улак", "ulak", "Туша козла, за которую борются всадники", "The goat carcass the riders fight over", "Сыграй в кок-бору", "Play kok-boru"),
+        W("kazan", Cat.Games, "Казан", "kazan", "Котёл; в кок-бору — «ворота», куда бросают улак", "Cauldron; in kok-boru — the goal where the ulak is thrown", "Забей улак в казан", "Score the ulak in the kazan"),
+        W("ordo", Cat.Games, "Ордо", "ordo", "Игра в альчики: выбить их из круга битой", "Knucklebone game: knock them out of the circle", "Сыграй в ордо с детьми", "Play ordo with the children"),
+        W("saka", Cat.Games, "Сака", "saka", "Бита — тяжёлый альчик, которым бьют", "The striker — a heavy knucklebone you throw", "Сыграй в ордо", "Play ordo"),
+        W("han", Cat.Games, "Хан", "han", "Главный альчик в центре круга", "The main knucklebone in the centre of the circle", "Сыграй в ордо", "Play ordo"),
+        W("beshbarmak", Cat.Food, "Бешбармак", "beshbarmak", "«Пять пальцев» — мясо с тестом, едят руками", "\"Five fingers\" — meat with noodles, eaten by hand", "Свари бешбармак", "Cook beshbarmak"),
+        W("et", Cat.Food, "Эт", "et", "Мясо", "Meat", "Свари бешбармак", "Cook beshbarmak"),
+        W("un", Cat.Food, "Ун", "un", "Мука", "Flour", "Свари бешбармак", "Cook beshbarmak"),
+        W("kamyr", Cat.Food, "Камыр", "kamyr", "Тесто", "Dough", "Замеси тесто", "Knead the dough"),
+        W("piyaz", Cat.Food, "Пияз", "piyaz", "Лук", "Onion", "Нарежь лук", "Slice the onion"),
+        W("ala_kiyiz", Cat.Yurt, "Ала кийиз", "ala kiyiz", "Войлочный ковёр с вкатанным узором", "Felt rug with a pressed-in pattern", "Укрась юрту", "Decorate the yurt"),
+        W("tor", Cat.Yurt, "Төр", "tör", "Почётное место в юрте напротив входа", "The place of honour opposite the yurt door", "Укрась юрту", "Decorate the yurt"),
     };
 
     public static event System.Action Changed;

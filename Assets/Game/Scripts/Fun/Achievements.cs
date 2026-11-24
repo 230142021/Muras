@@ -28,6 +28,10 @@ public static class Achievements
         A("detective", "Тергөөчү", "Сыщик", "Detective", "Найди наушники Анаса и помири его с участковым", "Find Anas's headphones and reconcile him with the officer"),
         A("manas", "Манас таануучу", "Знаток «Манаса»", "Manas expert", "Дослушай манасчы и ответь на викторину", "Listen to the manaschy and pass the quiz"),
         A("daily", "Эмгекчил", "Трудяга", "Hard worker", "Выполни все задания дня", "Complete all daily tasks of a day"),
+        A("kokboru", "Көк бөрү", "Кок-бору", "Kok-boru", "Выиграй в кок-бору", "Win a game of kok-boru"),
+        A("ordo", "Ордочу", "Мастер ордо", "Ordo master", "Выиграй турнир по ордо", "Win the ordo tournament"),
+        A("cook", "Ашпозчу", "Повар", "Cook", "Свари бешбармак", "Cook beshbarmak"),
+        A("yurt_decor", "Боз үйдүн ээси", "Хозяин юрты", "Master of the yurt", "Укрась юрту коврами", "Decorate the yurt with rugs"),
     };
 
     public static event System.Action Changed;

@@ -1,0 +1,32 @@
+newmtl KokBoru_Kazan_Earth
+Kd 0.480 0.360 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KokBoru_Kazan_Stone
+Kd 0.550 0.540 0.520
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KokBoru_Kazan_Pole
+Kd 0.350 0.250 0.150
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KokBoru_Kazan_Flag
+Kd 0.850 0.150 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

@@ -1,0 +1,176 @@
+newmtl KG_House_TwoStory_Window
+Kd 0.160 0.200 0.240
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Frame
+Kd 0.960 0.960 0.950
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Sill
+Kd 0.800 0.800 0.780
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Metal
+Kd 0.420 0.430 0.450
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Door
+Kd 0.460 0.300 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_DoorTrim
+Kd 0.380 0.240 0.140
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Chimney
+Kd 0.920 0.920 0.900
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_ChimneyCap
+Kd 0.300 0.280 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Plinth
+Kd 0.700 0.660 0.580
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_PlinthDark
+Kd 0.300 0.280 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Concrete
+Kd 0.660 0.640 0.600
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Wall
+Kd 0.930 0.860 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Wall2
+Kd 0.930 0.860 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Belt
+Kd 0.820 0.780 0.700
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Brick
+Kd 0.660 0.380 0.280
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Roof
+Kd 0.620 0.200 0.160
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_RoofRib
+Kd 0.700 0.240 0.190
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_RoofRidge
+Kd 0.480 0.150 0.120
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Fascia
+Kd 0.400 0.280 0.180
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Rail
+Kd 0.300 0.300 0.330
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Door2
+Kd 0.900 0.900 0.880
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Dish
+Kd 0.880 0.880 0.860
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
