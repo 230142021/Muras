@@ -53,4 +53,12 @@ public static class DialogTestMenu
             var cg = t.GetComponent<CanvasGroup>(); if (cg != null) cg.alpha = 1f;
         }
     }
+
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Quest UI: Collapse or expand quests (K)")]
+    static void G()
+    {
+        if (!Application.isPlaying) return;
+        var t = Object.FindAnyObjectByType<QuestCardToggle>();
+        if (t != null) t.Toggle();
+    }
 }

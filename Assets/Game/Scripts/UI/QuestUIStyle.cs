@@ -15,7 +15,7 @@ public static class QuestUIStyle
     static readonly Color Gold = new Color(0.91f, 0.69f, 0.29f);
     static readonly Color Cream = new Color(1f, 0.97f, 0.92f);
     static readonly Color Muted = new Color(0.80f, 0.77f, 0.72f);
-    static readonly Color Dark = new Color(0.055f, 0.047f, 0.08f, 0.88f);
+    static readonly Color Dark = new Color(0.07f, 0.055f, 0.05f, 0.86f);   // тёплый тёмный, как войлок ночью
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Init()
@@ -42,6 +42,7 @@ public static class QuestUIStyle
             Answer(root.Find("QuizPanel_Food"), "ezhe", "Эже", Loc.T("мастерица кухни", "master cook"));
             Banner(root.Find("QuestCompleteBanner"));
             Hud(root.Find("LeftHud"));
+            Chips(root);
         }
     }
 
@@ -231,12 +232,29 @@ public static class QuestUIStyle
             img.sprite = card; img.type = Image.Type.Sliced; img.color = new Color(1f, 1f, 1f, 0.92f);
             NoFrame(c.gameObject);
         }
+        foreach (TMP_Text t in hud.GetComponentsInChildren<TMP_Text>(true)) t.color = Cream;
         Transform qc = hud.Find("QuestCard");
         if (qc == null) return;
         Transform head = qc.Find("QuestHeader");
         if (head != null && head.TryGetComponent(out TMP_Text ht)) { ht.color = Gold; ht.fontStyle = FontStyles.Bold; ht.characterSpacing = 6f; }
-        foreach (TMP_Text t in qc.GetComponentsInChildren<TMP_Text>(true))
-            if (t.transform != head) t.color = Cream;
+        if (qc.GetComponent<QuestCardToggle>() == null) qc.gameObject.AddComponent<QuestCardToggle>();
+    }
+
+    // ------------------------------------------------------------------ остальные плашки (XP, часы, сообщения, подсказка E)
+
+    static void Chips(Transform root)
+    {
+        Sprite chip = Load("MURAS/Dialog/chip", new Vector4(22f, 18f, 22f, 18f));
+        foreach (string n in new[] { "XPBadge", "Clock", "MessageToast", "InteractionHintPanel" })
+        {
+            Transform t = root.Find(n);
+            if (t == null || !t.TryGetComponent(out Image img)) continue;
+            img.sprite = chip; img.type = Image.Type.Sliced; img.color = Color.white;
+            NoFrame(t.gameObject);
+            foreach (TMP_Text x in t.GetComponentsInChildren<TMP_Text>(true)) x.color = Cream;
+        }
+        Transform xp = root.Find("XPBadge/XPText");
+        if (xp != null && xp.TryGetComponent(out TMP_Text xt)) xt.color = new Color(1f, 0.86f, 0.55f);
     }
 }
 
@@ -262,5 +280,74 @@ public class BustMotion : MonoBehaviour
         rt.anchoredPosition = home + new Vector2(-(1f - ease) * 60f, breathe * 1.5f);
         rt.localScale = Vector3.one * (1f + breathe * 0.006f);
         if (img != null) { Color c = img.color; c.a = ease; img.color = c; }
+    }
+}
+
+/// <summary>
+/// Список заданий можно свернуть: клавиша K (квест) или клик по заголовку «ЗАДАНИЕ».
+/// В свёрнутом виде остаётся только заголовок со счётчиком заданий. Состояние запоминается.
+/// </summary>
+public class QuestCardToggle : MonoBehaviour
+{
+    public KeyCode key = KeyCode.K;
+    private const string Pref = "MURAS_QuestCardCollapsed";
+
+    private bool collapsed;
+    private TMP_Text header;
+
+    void Start()
+    {
+        collapsed = PlayerPrefs.GetInt(Pref, 0) == 1;
+        Transform h = transform.Find("QuestHeader");
+        if (h != null)
+        {
+            header = h.GetComponent<TMP_Text>();
+            foreach (var lt in h.GetComponents<LocalizedText>()) lt.enabled = false;   // заголовок теперь пишем сами
+            header.raycastTarget = true;
+            var b = h.GetComponent<Button>() ?? h.gameObject.AddComponent<Button>();
+            b.transition = Selectable.Transition.None;
+            b.onClick.AddListener(Toggle);
+        }
+    }
+
+    public void Toggle()
+    {
+        collapsed = !collapsed;
+        PlayerPrefs.SetInt(Pref, collapsed ? 1 : 0);
+        GameAudio.Interact();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(key) && Modal.Free && !TypingInField()) Toggle();
+    }
+
+    static bool TypingInField()
+    {
+        var es = UnityEngine.EventSystems.EventSystem.current;
+        return es != null && es.currentSelectedGameObject != null && es.currentSelectedGameObject.GetComponent<TMP_InputField>() != null;
+    }
+
+    void LateUpdate()
+    {
+        int count = 0;
+        foreach (Transform c in transform)
+        {
+            if (c.name == "QuestHeader") continue;
+            TMP_Text t = c.GetComponent<TMP_Text>();
+            bool hasText = t != null && c.gameObject.activeSelf && !string.IsNullOrWhiteSpace(t.text);
+            if (hasText) count++;
+
+            var le = c.GetComponent<LayoutElement>() ?? c.gameObject.AddComponent<LayoutElement>();
+            if (le.ignoreLayout != collapsed) le.ignoreLayout = collapsed;
+            if (t != null && t.enabled == collapsed) t.enabled = !collapsed;
+        }
+
+        if (header != null)
+        {
+            string title = Loc.T("ЗАДАНИЯ", "QUESTS");
+            string state = collapsed ? (count > 0 ? "  <color=#F5EBDA>" + count + "</color>" : "") : "";
+            header.text = title + state + "   <size=75%><color=#9C9283>[K] " + (collapsed ? "+" : "–") + "</color></size>";
+        }
     }
 }

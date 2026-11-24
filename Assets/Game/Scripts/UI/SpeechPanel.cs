@@ -127,7 +127,7 @@ public class SpeechPanel : MonoBehaviour
         {
             bg.sprite = Load("MURAS/Dialog/strip");
             bg.type = Image.Type.Simple;
-            bg.color = new Color(0.055f, 0.047f, 0.08f, 0.84f);
+            bg.color = new Color(0.07f, 0.055f, 0.05f, 0.86f);
         }
         foreach (Outline o in GetComponents<Outline>()) o.enabled = false;
         foreach (Shadow s in GetComponents<Shadow>()) s.enabled = false;
