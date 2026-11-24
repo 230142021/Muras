@@ -1,0 +1,24 @@
+newmtl Daily_Bucket_Metal
+Kd 0.620 0.640 0.660
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Daily_Bucket_Water
+Kd 0.350 0.600 0.800
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Daily_Bucket_Handle
+Kd 0.250 0.250 0.270
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

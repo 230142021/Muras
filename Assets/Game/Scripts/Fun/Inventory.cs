@@ -36,6 +36,9 @@ public static class Inventory
         I("altyn", Kind.Fish, "Алтын мөңкө", "Золотая форель", "Golden trout", "Редчайшая золотая форель! Асан заплатит щедро.", "The rarest golden trout! Asan pays generously.", 40),
         I("feather", Kind.Keepsake, "Бүркүт канаты", "Перо беркута", "Eagle feather", "Подарок Болота. Перо беркута — оберег охотника.", "A gift from Bolot. An eagle feather is a hunter's charm."),
         I("chuko", Kind.Keepsake, "Чүкө", "Косточки чүкө", "Chükö bones", "Подарок детей: ты теперь умеешь играть в чүкө.", "A gift from the children: now you know how to play chükö."),
+        I("kulakchyn", Kind.Keepsake, "Кулакчын", "Наушники Анаса", "Anas's headphones", "Нашлись в гнезде сороки. Верни их Анасу!", "Found in a magpie's nest. Return them to Anas!"),
+        I("chaka", Kind.Keepsake, "Чака суу", "Ведро воды", "Bucket of water", "Вода из горной реки — для апы.", "Water from the mountain river — for Apa."),
+        I("otun", Kind.Keepsake, "Отун", "Дрова", "Firewood", "Вязанка дров для байке. Нужно три.", "A bundle of firewood for Baike. Three are needed."),
         I("felt", Kind.Keepsake, "Кийиз кесими", "Кусочек войлока", "Piece of felt", "Апа подарила кусочек войлока с узором кочкор мүйүз.", "Apa gave you a piece of felt with the kochkor müyüz pattern."),
     };
 

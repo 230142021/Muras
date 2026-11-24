@@ -421,6 +421,426 @@ public static class FunInstaller
         if (cc != null) cc.enabled = true;
     }
 
+    // ================================================================== Участковый Актан Турдакунович
+
+    [MenuItem("Tools/Diploma/Install NPC: Uchastkovyi Aktan Turdakunovich")]
+    public static void InstallAktan()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        foreach (Transform t in All(scene).Where(t => t.name == "NPC_Aktan").ToList()) if (t != null) Object.DestroyImmediate(t.gameObject);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        Physics.SyncTransforms();
+
+        GameObject player = All(scene).Select(t => t.GetComponent<PlayerMovement>()).Where(p => p != null).Select(p => p.gameObject).FirstOrDefault();
+        Vector3 spawn = player != null ? player.transform.position : Vector3.zero;
+        Transform parent = All(scene).FirstOrDefault(t => t.name == "Villagers") ?? All(scene).FirstOrDefault(t => t.name == "Environment");
+        TMP_Text story = All(scene).Select(t => t.GetComponent<VillagerTalk>()).Where(v => v != null && v.storyText != null).Select(v => v.storyText).FirstOrDefault()
+                         ?? All(scene).Select(t => t.GetComponent<TMP_Text>()).FirstOrDefault(t => t != null && t.name == "StoryText");
+
+        // стоит на виду в центре села: у базара или рядом с Айбеком, но не на ферме и не вплотную к другим NPC
+        Transform farm = All(scene).FirstOrDefault(t => t.name == "Farm" && t.parent != null && t.parent.name == "Environment") ?? All(scene).FirstOrDefault(t => t.name == "Farm");
+        var others = All(scene).Where(t => t.name.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null).Select(t => t.position).ToList();
+        var centers = new[] { "Bazaar", "NPC_Aibek" }.Select(n => All(scene).FirstOrDefault(t => t.name == n)).Where(t => t != null).Select(t => t.position).ToList();
+        centers.Add(spawn);
+        Vector3 p = spawn + new Vector3(5f, 0f, 3f); bool found = false;
+        foreach (Vector3 c in centers)
+        {
+            for (float r = 4f; r <= 14f && !found; r += 1.5f)
+                for (int k = 0; k < 16 && !found; k++)
+                {
+                    float a = k * Mathf.PI / 8f + r;
+                    Vector3 q = c + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r);
+                    if (farm != null && Vector2.Distance(new Vector2(q.x, q.z), new Vector2(farm.position.x, farm.position.z)) < 22f) continue;
+                    if (others.Any(o => Vector2.Distance(new Vector2(q.x, q.z), new Vector2(o.x, o.z)) < 3.5f)) continue;
+                    if (!Free(q, 0.9f, 0.4f, out float gy)) continue;
+                    p = new Vector3(q.x, gy, q.z); found = true;
+                }
+            if (found) break;
+        }
+        var npc = Npc(parent, "NPC_Aktan", M + "NPC_Aktan.obj", p, Face(p, spawn));
+
+        // настоящее лицо с фотографии — на голову модели (PNG с прозрачными краями)
+        Transform model = npc.transform.Find("NPC_Aktan");
+        var face = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        face.name = "PhotoFace";
+        Object.DestroyImmediate(face.GetComponent<Collider>());
+        face.transform.SetParent(model != null ? model : npc.transform, false);
+        face.transform.localPosition = new Vector3(0f, 1.575f, 0.136f);
+        face.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        face.transform.localScale = new Vector3(0.23f, 0.23f * 243f / 288f, 1f);
+        var fr = face.GetComponent<MeshRenderer>();
+        fr.sharedMaterial = FaceMaterial();
+        fr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        var talk = npc.AddComponent<VillagerTalk>();
+        talk.speakerKey = "Актан";
+        talk.nameRu = "Актаном Турдакуновичем";
+        talk.nameEn = "Aktan Turdakunovich";
+        talk.storyText = story;
+        talk.talkDistance = 2.8f;
+        talk.linesRu = new[]
+        {
+            "Салам, жигит! Мен Актан Турдакунович — айылдын участковыйы. Я участковый этого села, будем знакомы.",
+            "Айылда тынчтык — в селе у нас спокойно. Тынчтык — значит «мир, покой». Хорошее слово, запомни.",
+            "Тартип баарынан жогору — порядок превыше всего! Если что-то случится, сразу иди ко мне.",
+            "На ат чабыше скачи осторожно: ат — не машина, тормозов у него нет.",
+            "Вечером без чырака далеко не ходи. Фонари фонарями, а у реки темно.",
+            "Асан на базаре — честный торговец, лично проверял. А вот цену всегда спрашивай заранее!",
+            "Мыйзам — это закон, урмат — уважение. Кто уважает старших, тот и закон уважает.",
+        };
+        talk.linesEn = new[]
+        {
+            "Salam, young man! Мен Актан Турдакунович — I'm the district officer of this village. Nice to meet you.",
+            "Айылда тынчтык — our village is peaceful. Тынчтык means \"peace, calm\". A good word to remember.",
+            "Тартип баарынан жогору — order above all! If anything happens, come straight to me.",
+            "Ride carefully at the ат чабыш: a horse is not a car, it has no brakes.",
+            "Don't wander far at night without a lantern. Street lamps are fine, but it's dark by the river.",
+            "Asan at the bazaar is an honest trader — I checked myself. Still, always ask the price first!",
+            "Мыйзам is law, урмат is respect. Whoever respects the elders respects the law too.",
+        };
+        talk.nightGreetingRu = "Түн жакшы болсун! Поздно уже — я делаю обход, в селе всё спокойно.";
+        talk.nightGreetingEn = "Түн жакшы болсун! It's late — I'm on my night round, all is calm in the village.";
+        var known = new HashSet<string>(Vocab.Words.Select(w => w.id));
+        talk.vocabWords = new[] { "tynchtyk", "tartip", "myizam", "urmat" }.Where(known.Contains).ToArray();
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Aktan] Участковый Актан Турдакунович стоит в ({p.x:0}, {p.z:0}). Подойди и нажми E.");
+        Selection.activeGameObject = npc;
+    }
+
+    static Material FaceMaterial() => FaceMaterial(M + "aktan_face.png", MatDir + "Aktan_Face.mat");
+
+    static Material FaceMaterial(string texPath, string matPath)
+    {
+        if (AssetImporter.GetAtPath(texPath) is TextureImporter ti && (!ti.alphaIsTransparency || ti.wrapMode != TextureWrapMode.Clamp))
+        { ti.alphaIsTransparency = true; ti.wrapMode = TextureWrapMode.Clamp; ti.mipmapEnabled = true; ti.SaveAndReimport(); }
+        var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(texPath);
+        var m = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+        if (m == null)
+        {
+            if (!AssetDatabase.IsValidFolder(MatDir.TrimEnd('/'))) AssetDatabase.CreateFolder("Assets/Game", "Materials");
+            m = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            AssetDatabase.CreateAsset(m, matPath);
+        }
+        m.SetTexture("_BaseMap", tex);
+        m.SetColor("_BaseColor", Color.white);
+        m.SetFloat("_AlphaClip", 1f);
+        m.SetFloat("_Cutoff", 0.5f);
+        m.EnableKeyword("_ALPHATEST_ON");
+        m.SetFloat("_Smoothness", 0.1f);
+        m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+        EditorUtility.SetDirty(m);
+        return m;
+    }
+
+    // ================================================================== Местный бунтарь
+
+    [MenuItem("Tools/Diploma/Install NPC: Buntar (local rebel)")]
+    public static void InstallBuntar()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        foreach (Transform t in All(scene).Where(t => t.name == "NPC_Buntar").ToList()) if (t != null) Object.DestroyImmediate(t.gameObject);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        Physics.SyncTransforms();
+
+        GameObject player = All(scene).Select(t => t.GetComponent<PlayerMovement>()).Where(p => p != null).Select(p => p.gameObject).FirstOrDefault();
+        Vector3 spawn = player != null ? player.transform.position : Vector3.zero;
+        Transform parent = All(scene).FirstOrDefault(t => t.name == "Villagers") ?? All(scene).FirstOrDefault(t => t.name == "Environment");
+        TMP_Text story = All(scene).Select(t => t.GetComponent<VillagerTalk>()).Where(v => v != null && v.storyText != null).Select(v => v.storyText).FirstOrDefault()
+                         ?? All(scene).Select(t => t.GetComponent<TMP_Text>()).FirstOrDefault(t => t != null && t.name == "StoryText");
+
+        // тусуется у игрового луга, подальше от участкового
+        Transform farm = All(scene).FirstOrDefault(t => t.name == "Farm" && t.parent != null && t.parent.name == "Environment") ?? All(scene).FirstOrDefault(t => t.name == "Farm");
+        Transform aktan = All(scene).FirstOrDefault(t => t.name == "NPC_Aktan");
+        var others = All(scene).Where(t => t.name.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null).Select(t => t.position).ToList();
+        var centers = new[] { "Zone_Games", "Zone_Yurt", "NPC_Aibek" }.Select(n => All(scene).FirstOrDefault(t => t.name == n)).Where(t => t != null).Select(t => t.position).ToList();
+        centers.Add(spawn);
+        Vector3 p = spawn + new Vector3(-6f, 0f, 4f); bool found = false;
+        foreach (Vector3 c in centers)
+        {
+            for (float r = 6f; r <= 16f && !found; r += 1.5f)
+                for (int k = 0; k < 16 && !found; k++)
+                {
+                    float a = k * Mathf.PI / 8f + r * 0.7f;
+                    Vector3 q = c + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r);
+                    Vector2 q2 = new Vector2(q.x, q.z);
+                    if (farm != null && Vector2.Distance(q2, new Vector2(farm.position.x, farm.position.z)) < 22f) continue;
+                    if (aktan != null && Vector2.Distance(q2, new Vector2(aktan.position.x, aktan.position.z)) < 14f) continue;
+                    if (others.Any(o => Vector2.Distance(q2, new Vector2(o.x, o.z)) < 4f)) continue;
+                    if (!Free(q, 0.9f, 0.4f, out float gy)) continue;
+                    p = new Vector3(q.x, gy, q.z); found = true;
+                }
+            if (found) break;
+        }
+        var npc = Npc(parent, "NPC_Buntar", M + "NPC_Buntar.obj", p, Face(p, spawn));
+
+        Transform model = npc.transform.Find("NPC_Buntar");
+        var face = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        face.name = "PhotoFace";
+        Object.DestroyImmediate(face.GetComponent<Collider>());
+        face.transform.SetParent(model != null ? model : npc.transform, false);
+        face.transform.localPosition = new Vector3(0f, 1.587f, 0.146f);
+        face.transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
+        face.transform.localScale = new Vector3(0.23f, 0.23f * 308f / 264f, 1f);
+        var fr = face.GetComponent<MeshRenderer>();
+        fr.sharedMaterial = FaceMaterial(M + "buntar_face.png", MatDir + "Buntar_Face.mat");
+        fr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
+        var talk = npc.AddComponent<VillagerTalk>();
+        talk.speakerKey = "Бунтарь";
+        talk.nameRu = "Анасом";
+        talk.nameEn = "Anas";
+        talk.storyText = story;
+        talk.talkDistance = 2.8f;
+        talk.linesRu = new[]
+        {
+            "Эй, кимсиң? А, новенький... Мен Анас — я тут местный бунтарь. Правила? Не, не слышал.",
+            "Эркиндик! Свобода — вот что главное. Эркиндик — запомни это слово.",
+            "Актан Турдакунович опять говорит, что музыка у меня в наушниках слишком громкая. Как он вообще её слышит?!",
+            "Весь айыл встаёт в пять утра... а я — к обеду. Кто-то же должен отдыхать за всех.",
+            "Когда-нибудь уеду в шаар — в город. Бишкек, огни... Хотя апа говорит, что без её боорсоков я там пропаду. Наверное, права.",
+            "На ат чабыше я бы всех обогнал. Просто... лошади меня почему-то не любят.",
+            "Только никому не говори: я тоже помогаю аксакалу с юртой. Бунтарь — не значит лентяй! Достор — друзья — так и делают.",
+        };
+        talk.linesEn = new[]
+        {
+            "Hey, кимсиң? Ah, the new guy... Мен Анас — I'm the local rebel. Rules? Never heard of them.",
+            "Эркиндик! Freedom — that's what matters. Эркиндик — remember that word.",
+            "Aktan Turdakunovich says my headphones are too loud again. How can he even hear them?!",
+            "The whole айыл gets up at five... I get up for lunch. Someone has to rest for everyone.",
+            "One day I'll move to the шаар — the city. Bishkek, the lights... But apa says without her boorsok I'd be lost there. She's probably right.",
+            "I'd win the ат чабыш easily. It's just... horses don't seem to like me.",
+            "Don't tell anyone: I help the aksakal with the yurt too. A rebel isn't a slacker! That's what достор — friends — do.",
+        };
+        talk.nightGreetingRu = "Түн? Для меня день только начинается. Тсс, участковому не говори!";
+        talk.nightGreetingEn = "Night? For me the day is just starting. Shh, don't tell the officer!";
+        var known = new HashSet<string>(Vocab.Words.Select(w => w.id));
+        talk.vocabWords = new[] { "erkindik", "shaar", "dostor" }.Where(known.Contains).ToArray();
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Buntar] Анас, местный бунтарь, стоит в ({p.x:0}, {p.z:0}). Подойди и нажми E.");
+        Selection.activeGameObject = npc;
+    }
+
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Teleport To Buntar")]
+    static void TTpBuntar()
+    {
+        if (!Playing()) return;
+        GameObject a = GameObject.Find("NPC_Buntar");
+        if (a != null) Teleport(a.transform.position + a.transform.forward * 2f);
+    }
+
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Dialog: Buntar")]
+    static void TBuntarSay()
+    {
+        if (Playing() && SpeechPanel.Instance != null && SpeechPanel.Instance.text != null)
+            SpeechPanel.Instance.text.text = "Бунтарь: Эй, кимсиң? А, новенький... Я тут местный бунтарь. Правила? Не, не слышал.";
+    }
+
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Teleport To Uchastkovyi")]
+    static void TTpAktan()
+    {
+        if (!Playing()) return;
+        GameObject a = GameObject.Find("NPC_Aktan");
+        if (a != null) Teleport(a.transform.position + a.transform.forward * 2f);
+    }
+
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Dialog: Uchastkovyi")]
+    static void TAktanSay()
+    {
+        if (Playing() && SpeechPanel.Instance != null && SpeechPanel.Instance.text != null)
+            SpeechPanel.Instance.text.text = "Актан: Салам, жигит! Мен Актан Турдакунович — айылдын участковыйы. Я участковый этого села, будем знакомы.";
+    }
+
+    // ================================================================== Обновление v3: детектив, манасчы, утренние задания
+
+    [MenuItem("Tools/Diploma/Install Update v3 (detective, Manaschy, daily tasks)")]
+    public static void InstallV3()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        foreach (string p in new[] { "manas_chant" })
+            if (AssetImporter.GetAtPath("Assets/Game/Resources/MURAS/Audio/" + p + ".ogg") is AudioImporter ai)
+            { var st = ai.defaultSampleSettings; if (st.loadType != AudioClipLoadType.Streaming) { st.loadType = AudioClipLoadType.Streaming; ai.defaultSampleSettings = st; ai.SaveAndReimport(); } }
+        for (int i = 1; i <= 6; i++)
+            if (AssetImporter.GetAtPath("Assets/Game/Resources/MURAS/Manas/manas_" + i + ".png") is TextureImporter ti && (ti.mipmapEnabled || ti.npotScale != TextureImporterNPOTScale.None))
+            { ti.mipmapEnabled = false; ti.wrapMode = TextureWrapMode.Clamp; ti.npotScale = TextureImporterNPOTScale.None; ti.SaveAndReimport(); }
+        foreach (Transform t in All(scene).Where(t => t.name == "Update_v3").ToList()) if (t != null) Object.DestroyImmediate(t.gameObject);
+        Physics.SyncTransforms();
+        BuildRiver(scene);
+        var log3 = new List<string>();
+
+        GameObject player = All(scene).Select(t => t.GetComponent<PlayerMovement>()).Where(p => p != null).Select(p => p.gameObject).FirstOrDefault();
+        Vector3 spawn = player != null ? player.transform.position : Vector3.zero;
+        Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
+        var root = new GameObject("Update_v3").transform; root.SetParent(env, false);
+        Transform farm = All(scene).FirstOrDefault(t => t.name == "Farm" && t.parent != null && t.parent.name == "Environment") ?? All(scene).FirstOrDefault(t => t.name == "Farm");
+        var others = All(scene).Where(t => t.name.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null || t.name == "Aksakal" || t.name == "Ezhe").Select(t => t.position).ToList();
+        Vector2 F(Vector3 v) => new Vector2(v.x, v.z);
+        bool FarFromAll(Vector3 q, float npc) => (farm == null || Vector2.Distance(F(q), F(farm.position)) > 22f) && others.All(o => Vector2.Distance(F(q), F(o)) > npc);
+
+        // ---- 1. Манасчы у костра (рядом с юртой, на тихом месте)
+        Transform yurt = All(scene).FirstOrDefault(t => t.name == "Zone_Yurt");
+        Vector3 yc = yurt != null ? yurt.position : spawn;
+        Vector3 firePos = Vector3.zero; bool fireOk = false;
+        for (float r = 9f; r <= 26f && !fireOk; r += 1.5f)
+            for (int k = 0; k < 20 && !fireOk; k++)
+            {
+                float a = k * Mathf.PI / 10f + r * 0.37f;
+                Vector3 q = yc + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r);
+                if (!FarFromAll(q, 7f) || NearRiver(q, 4f)) continue;
+                Vector3 toSpawn = Flat(spawn - q).normalized;
+                Vector3 seat = q - toSpawn * 1.9f;
+                if (!Free(q, 1.3f, 0.35f, out float gy) || !Free(seat, 0.8f, 0.35f, out float sy)) continue;
+                firePos = new Vector3(q.x, gy, q.z); fireOk = true;
+            }
+        if (fireOk)
+        {
+            Vector3 toSpawn = Flat(spawn - firePos).normalized;
+            var fire = Instance(M + "Campfire.obj", root, firePos, Quaternion.identity);
+            if (fire != null)
+            {
+                fire.name = "Campfire";
+                var flame = Emissive("Fire_Flame", new Color(1f, 0.45f, 0.08f), 2.6f);
+                var core = Emissive("Fire_Core", new Color(1f, 0.85f, 0.35f), 3.2f);
+                var ember = Emissive("Fire_Ember", new Color(0.9f, 0.2f, 0.05f), 1.6f);
+                foreach (var r in fire.GetComponentsInChildren<MeshRenderer>())
+                {
+                    var mats = r.sharedMaterials;
+                    for (int i = 0; i < mats.Length; i++)
+                    {
+                        if (mats[i] == null) continue;
+                        if (mats[i].name.Contains("FlameCore")) mats[i] = core;
+                        else if (mats[i].name.Contains("Flame")) mats[i] = flame;
+                        else if (mats[i].name.Contains("Ember")) mats[i] = ember;
+                    }
+                    r.sharedMaterials = mats;
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
+                var lgo = new GameObject("FireLight"); lgo.transform.SetParent(fire.transform, false); lgo.transform.localPosition = new Vector3(0f, 0.8f, 0f);
+                var l = lgo.AddComponent<Light>(); l.type = LightType.Point; l.color = new Color(1f, 0.6f, 0.3f); l.range = 9f; l.intensity = 3f; l.shadows = LightShadows.None;
+                var fl = fire.AddComponent<FireFlicker>(); fl.fireLight = l;
+                var src = fire.AddComponent<AudioSource>();
+                src.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Game/Resources/MURAS/Audio/fire_loop.ogg");
+                src.loop = true; src.playOnAwake = true; src.spatialBlend = 1f; src.volume = 0.55f; src.minDistance = 2f; src.maxDistance = 16f; src.rolloffMode = AudioRolloffMode.Linear;
+                var col = fire.AddComponent<SphereCollider>(); col.radius = 0.6f; col.center = new Vector3(0f, 0.3f, 0f);
+            }
+            Vector3 seat = firePos - toSpawn * 1.9f; GroundY(seat, out float sy2); seat.y = sy2;
+            var man = new GameObject("NPC_Manaschy");
+            man.transform.SetParent(root, true);
+            man.transform.position = seat; man.transform.rotation = Face(seat, firePos);
+            var cap = man.AddComponent<CapsuleCollider>(); cap.center = new Vector3(0f, 0.6f, 0f); cap.height = 1.2f; cap.radius = 0.55f; cap.direction = 0;
+            var mm = Instance(M + "NPC_Manaschy.obj", man.transform, seat, man.transform.rotation);
+            if (mm != null) mm.name = "NPC_Manaschy";
+            man.AddComponent<ManasStory>();
+            log3.Add($"манасчы и костёр: ({firePos.x:0}, {firePos.z:0})");
+        }
+        else log3.Add("манасчы: не нашлось места рядом с юртой");
+
+        // ---- 2. Гнездо сороки с наушниками — у реки, за пирсом
+        var fishing = All(scene).Select(t => t.GetComponent<FishingSpot>()).FirstOrDefault(f => f != null);
+        Vector3 pc = fishing != null ? fishing.transform.position : spawn;
+        if (FindSpotWhere(pc, 5f, 14f, 0.6f, q => FarFromAll(q, 4f), out Vector3 nestPos))
+        {
+            var nest = Instance(M + "Clue_Nest.obj", root, nestPos, Quaternion.Euler(0f, 37f, 0f));
+            if (nest != null)
+            {
+                nest.name = "Clue_MagpieNest";
+                var ph = Instance(M + "Clue_Headphones.obj", nest.transform, nestPos + Vector3.up * 0.08f, Quaternion.identity);
+                if (ph != null) { ph.name = "Headphones"; ph.transform.localScale = Vector3.one * 0.9f; }
+                var clue = nest.AddComponent<HeadphonesClue>(); clue.headphones = ph;
+                log3.Add($"гнездо сороки: ({nestPos.x:0}, {nestPos.z:0})");
+            }
+        }
+        else log3.Add("гнездо: не нашлось места у пирса");
+
+        // ---- 3. Утренние задания: ведро у реки, корзина с нан у кухни, три вязанки по селу
+        if (FindSpotWhere(pc, 2f, 7f, 0.4f, q => true, out Vector3 bucketPos))
+            DailyProp(root, "Daily_Bucket", bucketPos, DailyTasks.T.Water, "chaka", 0, false);
+        Transform kitchen = All(scene).FirstOrDefault(t => t.name == "Kitchen") ?? All(scene).FirstOrDefault(t => t.name == "Zone_Food");
+        if (kitchen != null && FindSpotWhere(kitchen.position, 2.5f, 8f, 0.4f, q => true, out Vector3 basketPos))
+            DailyProp(root, "Daily_NanBasket", basketPos, DailyTasks.T.Bread, "nan", 0, true);
+        var woodSpots = new List<Vector3>();
+        for (int i = 0; i < 3; i++)
+        {
+            float baseA = i * Mathf.PI * 2f / 3f + 0.6f;
+            for (float r = 14f; r <= 38f; r += 3f)
+            {
+                Vector3 q = spawn + new Vector3(Mathf.Cos(baseA) * r, 0f, Mathf.Sin(baseA) * r);
+                if (!FarFromAll(q, 3f) || NearRiver(q, 3f) || woodSpots.Any(w => Vector3.Distance(w, q) < 10f)) continue;
+                if (!Free(q, 0.5f, 0.4f, out float wy)) continue;
+                q.y = wy; woodSpots.Add(q);
+                DailyProp(root, "Daily_Firewood", q, DailyTasks.T.Wood, "otun", 1 + i, false);
+                break;
+            }
+        }
+        log3.Add($"утренние задания: ведро, корзина, вязанок {woodSpots.Count}");
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log("[Update v3] " + string.Join(" · ", log3));
+    }
+
+    static void DailyProp(Transform root, string model, Vector3 p, DailyTasks.T task, string item, int bit, bool reusable)
+    {
+        var go = Instance(M + model + ".obj", root, p, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+        if (go == null) return;
+        var spot = go.AddComponent<DailySpot>();
+        spot.task = task; spot.item = item; spot.bit = bit; spot.reusable = reusable;
+    }
+
+    static bool FindSpotWhere(Vector3 c, float rMin, float rMax, float half, System.Func<Vector3, bool> ok, out Vector3 spot)
+    {
+        for (float r = rMin; r <= rMax; r += 1f)
+            for (int k = 0; k < 16; k++)
+            {
+                float a = k * Mathf.PI * 2f / 16f + r;
+                Vector3 p = c + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r);
+                if (ok(p) && Free(p, half, 0.4f, out float gy)) { spot = new Vector3(p.x, gy, p.z); return true; }
+            }
+        spot = c; return false;
+    }
+
+    static Material Emissive(string name, Color c, float intensity)
+    {
+        string path = MatDir + name + ".mat";
+        var m = AssetDatabase.LoadAssetAtPath<Material>(path);
+        if (m == null) { m = new Material(Shader.Find("Universal Render Pipeline/Lit")); AssetDatabase.CreateAsset(m, path); }
+        m.SetColor("_BaseColor", c);
+        m.EnableKeyword("_EMISSION");
+        m.SetColor("_EmissionColor", c * intensity);
+        m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+        EditorUtility.SetDirty(m);
+        return m;
+    }
+
+    [MenuItem("Tools/Diploma/Play Mode: Story/Manas: open story")] static void TManas() { if (Playing()) ManasStory.OpenNearest(); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Teleport To Manaschy")] static void TTpManas() { var m = Object.FindAnyObjectByType<ManasStory>(); if (Playing() && m != null) Teleport(m.transform.position + m.transform.forward * 3.4f); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Teleport To Magpie Nest")] static void TTpNest() { var m = Object.FindAnyObjectByType<HeadphonesClue>(); if (Playing() && m != null) Teleport(m.transform.position + new Vector3(1.6f, 0f, 0f)); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Detective: next step")]
+    static void TDetective()
+    {
+        if (!Playing()) return;
+        string who = HeadphonesQuest.Stage switch { 0 => "Бунтарь", 1 => "Актан", 2 => SaveData.Get("hq_apa") == 0 ? "Апа" : SaveData.Get("hq_baike") == 0 ? "Байке" : SaveData.Get("hq_chaban") == 0 ? "Чабан" : null, 3 => "Бунтарь", 4 => "Актан", _ => null };
+        if (who == null && HeadphonesQuest.Stage == 2) { HeadphonesQuest.FoundHeadphones(); return; }
+        if (who != null && QuestTalk.TryHandle(who, out string line)) QuestTalk.Say(who, line);
+    }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Daily: new day")] static void TDailyDay() { if (Playing()) DailyTasks.TestNewDay(); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Daily: finish one task")]
+    static void TDailyOne()
+    {
+        if (!Playing() || DailyTasks.Instance == null) return;
+        for (int i = 0; i < 3; i++) { var t = DailyTasks.TaskAt(i); if (!DailyTasks.Done(t)) { DailyTasks.Instance.Advance(t, 3); return; } }
+    }
+
     // ================================================================== общие помощники
 
     static void PrepareImports()

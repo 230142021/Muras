@@ -59,7 +59,7 @@ public class SpeechPanel : MonoBehaviour
         { "Аксакал", "aksakal" }, { "Эже", "ezhe" }, { "Бала", "bala" }, { "Кыз", "kyz" },
         { "Айбек", "aibek" }, { "Aibek", "aibek" }, { "Апа", "apa" }, { "Байке", "baike" },
         { "Чабан", "chaban" }, { "Болот", "bolot" }, { "Bolot", "bolot" },
-        { "Асан", "asan" }, { "Нурлан", "nurlan" }, { "Эрмек", "ermek" },
+        { "Асан", "asan" }, { "Нурлан", "nurlan" }, { "Эрмек", "ermek" }, { "Актан", "aktan" }, { "Бунтарь", "buntar" }, { "Анас", "buntar" }, { "Манасчы", "manaschy" },
     };
 
     private string shown;
@@ -74,6 +74,7 @@ public class SpeechPanel : MonoBehaviour
     private float lastLineTime = -100f;
     private bool rightSide;
     private float bustAnim, bustIn = 1f;
+    private float tagWidth = 250f;
 
     private void Awake()
     {
@@ -94,16 +95,19 @@ public class SpeechPanel : MonoBehaviour
 
     void AddMissingSpeakers()
     {
-        void Add(string key, string role, string roleEn, float pitch)
+        void Add(string key, string role, string roleEn, float pitch, string display = null)
         {
             if (speakers.Exists(s => string.Equals(s.key, key, System.StringComparison.OrdinalIgnoreCase))) return;
-            speakers.Add(new Speaker { key = key, displayName = key, role = role, roleEn = roleEn, voicePitch = pitch });
+            speakers.Add(new Speaker { key = key, displayName = display ?? key, role = role, roleEn = roleEn, voicePitch = pitch });
         }
         Add("Асан", "торговец", "trader", 0.9f);
         Add("Нурлан", "комузчу", "komuz player", 0.95f);
         Add("Эрмек", "чабандес", "horse rider", 1.0f);
         Add("Болот", "бүркүтчү", "eagle hunter", 0.85f);
         Add("Апа", "мастерица шырдака", "shyrdak master", 0.85f);
+        Add("Актан", "участковый", "district officer", 0.82f, "Актан Турдакунович");
+        Add("Бунтарь", "местный бунтарь", "local rebel", 1.05f, "Анас");
+        Add("Манасчы", "сказитель «Манаса»", "Manas storyteller", 0.72f);
 
         foreach (Speaker s in speakers)
             if (s.bust == null && BustFiles.TryGetValue(s.key, out string file))
@@ -245,7 +249,7 @@ public class SpeechPanel : MonoBehaviour
         {
             roleRt.anchorMin = roleRt.anchorMax = new Vector2(right ? 1f : 0f, 1f);
             roleRt.pivot = new Vector2(right ? 1f : 0f, 0f);
-            roleRt.anchoredPosition = new Vector2(edge * (tagX + 268f), 6f);
+            roleRt.anchoredPosition = new Vector2(edge * (tagX + tagWidth + 18f), 6f);
             roleText.alignment = right ? TextAlignmentOptions.BottomRight : TextAlignmentOptions.BottomLeft;
         }
         if (textRt != null)
@@ -361,7 +365,12 @@ public class SpeechPanel : MonoBehaviour
         if (nameTag != null) nameTag.SetActive(hasSpeaker);
         if (hasSpeaker)
         {
-            if (nameText != null) nameText.text = speaker.displayName;
+            if (nameText != null)
+            {
+                nameText.text = speaker.displayName;
+                tagWidth = Mathf.Max(250f, nameText.GetPreferredValues(speaker.displayName).x + 64f);   // длинное имя — шире табличка
+                if (tagRt != null) tagRt.sizeDelta = new Vector2(tagWidth, 54f);
+            }
             if (roleText != null) roleText.text = Loc.T(speaker.role, speaker.roleEn);
         }
         else if (roleText != null) roleText.text = "";

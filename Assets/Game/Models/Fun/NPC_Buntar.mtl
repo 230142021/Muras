@@ -1,0 +1,136 @@
+newmtl NPC_Buntar_Skin
+Kd 0.840 0.620 0.500
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Hair
+Kd 0.070 0.060 0.060
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Eyes
+Kd 0.050 0.040 0.040
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Mouth
+Kd 0.620 0.300 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Cheek
+Kd 0.900 0.580 0.520
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Shirt
+Kd 0.940 0.930 0.890
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Gold
+Kd 0.850 0.660 0.220
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Pants
+Kd 0.180 0.170 0.200
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Boots
+Kd 0.100 0.080 0.060
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Kalpak
+Kd 0.960 0.950 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_KalpakBlack
+Kd 0.060 0.060 0.070
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Tee
+Kd 0.950 0.950 0.940
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Ink
+Kd 0.080 0.080 0.090
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Jeans
+Kd 0.700 0.780 0.860
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Sneaker
+Kd 0.930 0.930 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Sole
+Kd 0.800 0.800 0.800
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl NPC_Buntar_Phones
+Kd 0.240 0.240 0.270
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

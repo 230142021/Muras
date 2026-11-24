@@ -25,6 +25,9 @@ public static class Achievements
         A("eagle", "Салбуурун", "Охота с беркутом", "Eagle hunt", "Посмотри полёт беркута", "Watch the golden eagle fly"),
         A("night", "Түнкү айыл", "Ночной айыл", "Village at night", "Встреть ночь в селе", "See the village at night"),
         A("weather", "Жамгыр астында", "Под дождём", "In the rain", "Попади под дождь или снег", "Get caught in rain or snow"),
+        A("detective", "Тергөөчү", "Сыщик", "Detective", "Найди наушники Анаса и помири его с участковым", "Find Anas's headphones and reconcile him with the officer"),
+        A("manas", "Манас таануучу", "Знаток «Манаса»", "Manas expert", "Дослушай манасчы и ответь на викторину", "Listen to the manaschy and pass the quiz"),
+        A("daily", "Эмгекчил", "Трудяга", "Hard worker", "Выполни все задания дня", "Complete all daily tasks of a day"),
     };
 
     public static event System.Action Changed;

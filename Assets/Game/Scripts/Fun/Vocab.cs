@@ -34,6 +34,21 @@ public static class Vocab
         W("aksakal", Cat.Salam, "Аксакал", "aksakal", "Старейшина (букв. «белая борода»)", "Village elder (lit. \"white beard\")", "Построй юрту с аксакалом", "Build the yurt with the aksakal"),
         W("bala", Cat.Salam, "Бала", "bala", "Ребёнок", "Child", "Сыграй с детьми в чүкө", "Play chүkө with the children"),
         W("soodager", Cat.Salam, "Соодагер", "soodager", "Торговец", "Trader", "Загляни на базар", "Visit the bazaar"),
+        W("tynchtyk", Cat.Salam, "Тынчтык", "tynchtyk", "Мир, покой", "Peace, calm", "Поговори с участковым", "Talk to the district officer"),
+        W("tartip", Cat.Salam, "Тартип", "tartip", "Порядок", "Order", "Поговори с участковым", "Talk to the district officer"),
+        W("myizam", Cat.Salam, "Мыйзам", "myyzam", "Закон", "Law", "Поговори с участковым", "Talk to the district officer"),
+        W("urmat", Cat.Salam, "Урмат", "urmat", "Уважение", "Respect", "Поговори с участковым", "Talk to the district officer"),
+        W("erkindik", Cat.Salam, "Эркиндик", "erkindik", "Свобода", "Freedom", "Поговори с Анасом", "Talk to Anas"),
+        W("shaar", Cat.Salam, "Шаар", "shaar", "Город", "City", "Поговори с Анасом", "Talk to Anas"),
+        W("dostor", Cat.Salam, "Достор", "dostor", "Друзья", "Friends", "Поговори с Анасом", "Talk to Anas"),
+        W("kim", Cat.Salam, "Ким?", "kim", "Кто?", "Who?", "Расследуй пропажу наушников", "Investigate the missing headphones"),
+        W("kayda", Cat.Salam, "Кайда?", "kayda", "Где?", "Where?", "Расследуй пропажу наушников", "Investigate the missing headphones"),
+        W("kachan", Cat.Salam, "Качан?", "kachan", "Когда?", "When?", "Расследуй пропажу наушников", "Investigate the missing headphones"),
+        W("kechirim", Cat.Salam, "Кечирим", "kechirim", "Прощение", "Forgiveness", "Помири Анаса и участкового", "Reconcile Anas and the officer"),
+        W("manaschy", Cat.Games, "Манасчы", "manaschy", "Сказитель «Манаса»", "Manas storyteller", "Найди старика у костра", "Find the old man by the fire"),
+        W("baatyr", Cat.Games, "Баатыр", "baatyr", "Богатырь, герой", "Hero", "Послушай «Манас» вечером", "Listen to Manas in the evening"),
+        W("choro", Cat.Games, "Чоро", "choro", "Дружинник, верный воин", "Loyal warrior", "Послушай «Манас» вечером", "Listen to Manas in the evening"),
+        W("el", Cat.Salam, "Эл", "el", "Народ", "People, nation", "Дослушай «Манас»", "Hear Manas to the end"),
 
         // Боз үй — юрта
         W("boz_uy", Cat.Yurt, "Боз үй", "boz üy", "Юрта (букв. «серый дом»)", "Yurt (lit. \"grey house\")", "Задание аксакала", "The aksakal's quest"),
@@ -43,6 +58,7 @@ public static class Vocab
         W("kiyiz", Cat.Yurt, "Кийиз", "kiyiz", "Войлок, которым покрывают юрту", "Felt that covers the yurt", "Задание аксакала", "The aksakal's quest"),
         W("tushkiyiz", Cat.Yurt, "Түшкийиз", "tüshkiyiz", "Вышитый настенный ковёр", "Embroidered wall hanging", "Зайди в дом", "Go inside a house"),
         W("juk", Cat.Yurt, "Жүк", "jük", "Стопка одеял и подушек у стены", "A stack of blankets and pillows by the wall", "Зайди в дом", "Go inside a house"),
+        W("chaka", Cat.Yurt, "Чака", "chaka", "Ведро", "Bucket", "Утреннее задание апы", "Apa's morning task"),
 
         // Тамак — еда
         W("alma", Cat.Food, "Алма", "alma", "Яблоко", "Apple", "Собери яблоки для Айбека", "Collect apples for Aibek"),
@@ -83,6 +99,8 @@ public static class Vocab
         W("burkut", Cat.Nature, "Бүркүт", "bürküt", "Беркут — горный орёл", "Golden eagle", "Поговори с Болотом", "Talk to Bolot"),
         W("burkutchu", Cat.Nature, "Бүркүтчү", "bürkütchü", "Охотник с беркутом", "Eagle hunter", "Поговори с Болотом", "Talk to Bolot"),
         W("salbuurun", Cat.Nature, "Салбуурун", "salbuurun", "Старинная охота с беркутом, собаками и луком", "Traditional hunting with eagles, hounds and bows", "Посмотри полёт беркута", "Watch the eagle fly"),
+        W("sagyzgan", Cat.Nature, "Сагызган", "sagyzgan", "Сорока", "Magpie", "Спроси чабана, что он видел", "Ask the shepherd what he saw"),
+        W("otun", Cat.Nature, "Отун", "otun", "Дрова", "Firewood", "Утреннее задание байке", "Baike's morning task"),
         W("balyk", Cat.Nature, "Балык", "balyk", "Рыба", "Fish", "Порыбачь на реке", "Go fishing"),
         W("monko", Cat.Nature, "Мөңкө", "möŋkö", "Горная форель", "Mountain trout", "Поймай форель", "Catch a trout"),
         W("jamgyr", Cat.Nature, "Жамгыр", "jamgyr", "Дождь", "Rain", "Попади под дождь", "Get caught in the rain"),

@@ -1,0 +1,40 @@
+newmtl Campfire_Stone
+Kd 0.450 0.440 0.420
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Campfire_Wood
+Kd 0.300 0.190 0.100
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Campfire_Ember
+Kd 0.550 0.120 0.050
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Campfire_Flame
+Kd 1.000 0.450 0.080
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Campfire_FlameCore
+Kd 1.000 0.850 0.300
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

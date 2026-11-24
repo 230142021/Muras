@@ -1,0 +1,16 @@
+newmtl Clue_Headphones_Phones
+Kd 0.220 0.220 0.250
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl Clue_Headphones_Pad
+Kd 0.080 0.080 0.090
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

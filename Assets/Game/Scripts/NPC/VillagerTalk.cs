@@ -56,6 +56,13 @@ public class VillagerTalk : MonoBehaviour
     {
         if (storyText == null) return;
         string line;
+        if (QuestTalk.TryHandle(speakerKey, out string questLine))      // побочный квест хочет особую фразу
+        {
+            shownText = speakerKey + ": " + questLine;
+            storyText.text = shownText;
+            hideAt = Time.time + showSeconds + questLine.Length * 0.03f;
+            return;
+        }
         if (DayNightCycle.IsNight && index == 0)
             line = Loc.T(nightGreetingRu, nightGreetingEn);
         else
