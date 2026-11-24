@@ -841,6 +841,166 @@ public static class FunInstaller
         for (int i = 0; i < 3; i++) { var t = DailyTasks.TaskAt(i); if (!DailyTasks.Done(t)) { DailyTasks.Instance.Advance(t, 3); return; } }
     }
 
+    // ================================================================== Разбросать деревья и камни у дороги по всему селу
+
+    [MenuItem("Tools/Diploma/Scatter Trees + Rocks Around Village")]
+    public static void ScatterTrees()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        valley = All(scene).FirstOrDefault(t => t.name == "MountainValley");
+        BuildRiver(scene);
+        Physics.SyncTransforms();
+
+        Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
+        if (env == null) { Debug.LogWarning("[Scatter] Нет Environment"); return; }
+        var items = new List<Transform>();
+        bool TreeOrRock(string n) => n.StartsWith("PP_Rock") || n.StartsWith("PP_Tree") || n.StartsWith("PP_Birch") || n.StartsWith("PP_Pine") || System.Text.RegularExpressions.Regex.IsMatch(n, @"^Tree\d");
+        foreach (string group in new[] { "Trees", "Trees (1)", "Mountains", "Decorations" })
+            foreach (Transform g in env.Cast<Transform>().Where(c => c.name == group))
+                foreach (Transform c in g)
+                    if (group == "Trees" || group == "Trees (1)" || TreeOrRock(c.name)) items.Add(c);
+        if (items.Count == 0) { Debug.LogWarning("[Scatter] Деревья и камни не найдены"); return; }
+
+        GameObject player = All(scene).Select(t => t.GetComponent<PlayerMovement>()).Where(p => p != null).Select(p => p.gameObject).FirstOrDefault();
+        Vector3 spawn = player != null ? player.transform.position : Vector3.zero;
+        GroundY(spawn, out float baseY);
+
+        // что нельзя загораживать: жители, костёр, гнёзда, фонари, трасса скачек, вход в юрту
+        var keep = All(scene).Where(t => t.name.StartsWith("NPC_") || t.name == "Aksakal" || t.name == "Ezhe" || t.name.StartsWith("Child_NPC")
+                                       || t.name == "Campfire" || t.name.StartsWith("Daily_") || t.name.StartsWith("Clue_") || t.name == "StreetLamp"
+                                       || t.name.StartsWith("Race_") || t.name.StartsWith("Zone_") || t.name == "Bazaar" || t.name.StartsWith("Fishing"))
+                             .Select(t => t.position).ToList();
+        var race = All(scene).Select(t => t.GetComponent<RaceManager>()).FirstOrDefault(r => r != null);
+        if (race != null && race.gates != null) keep.AddRange(race.gates.Where(g => g != null).Select(g => g.position));
+
+        // временно выключаем коллайдеры переносимых объектов, чтобы они не мешали сами себе
+        var cols = items.SelectMany(i => i.GetComponentsInChildren<Collider>()).Where(c => c.enabled).ToList();
+        foreach (var c in cols) c.enabled = false;
+        Physics.SyncTransforms();
+
+        var rnd = new System.Random(2026);
+        var placed = new List<Vector3>();
+        int moved = 0;
+        foreach (Transform it in items.OrderBy(_ => rnd.Next()))
+        {
+            bool rock = it.name.StartsWith("PP_Rock");
+            for (int attempt = 0; attempt < 400; attempt++)
+            {
+                float ang = (float)(rnd.NextDouble() * Mathf.PI * 2);
+                float r = 14f + (float)System.Math.Sqrt(rnd.NextDouble()) * 78f;      // равномерно по площади
+                Vector3 q = spawn + new Vector3(Mathf.Cos(ang) * r, 0f, Mathf.Sin(ang) * r);
+                if (!GroundY(q, out float gy) || Mathf.Abs(gy - baseY) > 5f) continue;          // не на горы
+                if (NearRiver(q, rock ? 2.5f : 4f)) continue;
+                if (placed.Any(p => (Flat(p) - Flat(q)).sqrMagnitude < (rock ? 7f * 7f : 6f * 6f))) continue;
+                if (keep.Any(k => (Flat(k) - Flat(q)).sqrMagnitude < 7f * 7f)) continue;
+                if (!Free(q, rock ? 1.6f : 1.1f, 0.6f, out gy)) continue;
+                if (Physics.OverlapSphere(new Vector3(q.x, gy + 0.5f, q.z), 3f, ~0, QueryTriggerInteraction.Collide).Any(c => IsPath(c))) continue;  // не на дорогу
+                if (OnRoad(q)) continue;
+                it.position = new Vector3(q.x, gy - (rock ? 0.15f : 0.05f), q.z);
+                it.rotation = Quaternion.Euler(0f, (float)rnd.NextDouble() * 360f, 0f);
+                it.localScale *= 0.9f + (float)rnd.NextDouble() * 0.25f;
+                placed.Add(q); moved++;
+                break;
+            }
+        }
+        foreach (var c in cols) c.enabled = true;
+
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Scatter] Перенесено {moved} из {items.Count} деревьев и камней — теперь они по всему селу.");
+        MoveBirdsToTrees();
+    }
+
+    [MenuItem("Tools/Diploma/Move Bird Sounds To Trees")]
+    public static void MoveBirdsToTrees()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) { if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return; scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single); }
+        Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
+        Transform birds = All(scene).FirstOrDefault(t => t.name == "Birds");
+        if (env == null || birds == null) { Debug.LogWarning("[Birds] Нет Environment или Birds"); return; }
+
+        bool IsTree(string n) => n.StartsWith("PP_Tree") || n.StartsWith("PP_Birch") || n.StartsWith("PP_Pine") || System.Text.RegularExpressions.Regex.IsMatch(n, @"^Tree\d");
+        var trees = env.Cast<Transform>().Where(g => g.name == "Trees" || g.name == "Trees (1)" || g.name == "Decorations")
+                       .SelectMany(g => g.Cast<Transform>()).Where(t => IsTree(t.name)).ToList();
+        if (trees.Count == 0) { Debug.LogWarning("[Birds] Деревья не найдены"); return; }
+
+        var rnd = new System.Random(77);
+        var order = trees.OrderBy(_ => rnd.Next()).ToList();
+        int i = 0, moved = 0;
+        foreach (Transform b in birds.Cast<Transform>().Where(b => b.name.StartsWith("Bird") || b.name.StartsWith("Owl")).ToList())
+        {
+            Transform tree = order[i % order.Count]; i++;
+            // высота кроны: верх рендереров дерева
+            float top = tree.position.y + 4f;
+            var rs = tree.GetComponentsInChildren<Renderer>();
+            if (rs.Length > 0) top = rs.Max(r => r.bounds.max.y);
+            float h = Mathf.Lerp(tree.position.y + 1.5f, top, 0.75f);
+            Vector2 off = new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f) * 1.2f;
+            b.position = new Vector3(tree.position.x + off.x, h, tree.position.z + off.y);
+            moved++;
+        }
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Birds] Звуки птиц и сов ({moved}) пересажены на деревья ({Mathf.Min(moved, trees.Count)} деревьев).");
+    }
+
+    static readonly List<Bounds> roadBounds = new List<Bounds>();
+    static bool OnRoad(Vector3 q)
+    {
+        if (roadBounds.Count == 0)
+            foreach (var r in Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
+            {
+                string n = r.name.ToLower();
+                if (n.Contains("road") || n.Contains("meadow_path") || n.Contains("path_") || n.Contains("dirt")) roadBounds.Add(r.bounds);
+            }
+        foreach (Bounds b in roadBounds)
+        {
+            // широкие дороги-меши: проверяем по треугольникам грубо — по рамке, но только для узких объектов
+            if (Mathf.Min(b.size.x, b.size.z) > 30f) continue;
+            Bounds e = b; e.Expand(new Vector3(4f, 100f, 4f));
+            if (e.Contains(new Vector3(q.x, b.center.y, q.z))) return true;
+        }
+        return RoadTris(q) < 3f;
+    }
+
+    static List<Vector2[]> roadTris2;
+    static float RoadTris(Vector3 p)
+    {
+        if (roadTris2 == null)
+        {
+            roadTris2 = new List<Vector2[]>();
+            foreach (var mf in Object.FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
+            {
+                string n = mf.name.ToLower();
+                if (mf.sharedMesh == null || !(n.Contains("road") || n.Contains("meadow_path"))) continue;
+                Vector3[] v = mf.sharedMesh.vertices; int[] tr = mf.sharedMesh.triangles; Matrix4x4 m = mf.transform.localToWorldMatrix;
+                for (int i = 0; i + 2 < tr.Length; i += 3)
+                {
+                    Vector3 a = m.MultiplyPoint3x4(v[tr[i]]), b = m.MultiplyPoint3x4(v[tr[i + 1]]), c = m.MultiplyPoint3x4(v[tr[i + 2]]);
+                    roadTris2.Add(new[] { new Vector2(a.x, a.z), new Vector2(b.x, b.z), new Vector2(c.x, c.z) });
+                }
+            }
+        }
+        var q = new Vector2(p.x, p.z); float best = 999f;
+        foreach (var t in roadTris2)
+        {
+            float d1 = (t[1].x - t[0].x) * (q.y - t[0].y) - (t[1].y - t[0].y) * (q.x - t[0].x);
+            float d2 = (t[2].x - t[1].x) * (q.y - t[1].y) - (t[2].y - t[1].y) * (q.x - t[1].x);
+            float d3 = (t[0].x - t[2].x) * (q.y - t[2].y) - (t[0].y - t[2].y) * (q.x - t[2].x);
+            if (!((d1 < 0 || d2 < 0 || d3 < 0) && (d1 > 0 || d2 > 0 || d3 > 0))) return 0f;
+            for (int k = 0; k < 3; k++)
+            {
+                Vector2 a = t[k], b = t[(k + 1) % 3], ab = b - a;
+                float u = ab.sqrMagnitude < 1e-6f ? 0f : Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude);
+                best = Mathf.Min(best, Vector2.Distance(q, a + ab * u));
+            }
+        }
+        return best;
+    }
+
     // ================================================================== общие помощники
 
     static void PrepareImports()
