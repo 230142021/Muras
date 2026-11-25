@@ -174,3 +174,27 @@ Ns 10
 d 1
 illum 2
 
+newmtl KG_House_TwoStory_Floor
+Kd 0.550 0.400 0.260
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Ceiling
+Kd 0.950 0.950 0.930
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+
+newmtl KG_House_TwoStory_Curtain
+Kd 0.970 0.960 0.920
+Ka 0 0 0
+Ks 0.05 0.05 0.05
+Ns 10
+d 1
+illum 2
+

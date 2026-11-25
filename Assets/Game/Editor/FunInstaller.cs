@@ -930,11 +930,25 @@ public static class FunInstaller
     }
 
     // ======================================================================== More houses (v5)
+    class HouseSpec { public float floor; public Vector3 door, porch, light, chimney; public Vector4 yard; public (string m, Vector3 p, float yaw)[] fur; }
+    static readonly Dictionary<string, HouseSpec> HouseSpecs = new Dictionary<string, HouseSpec>
+    {
+        { "KG_House_TwoStory", new HouseSpec { floor = 0.5f, door = new Vector3(1.400f, 0.500f, 3.350f), porch = new Vector3(0.900f, 3.050f, 4.000f), light = new Vector3(0.000f, 2.400f, 0.000f), chimney = new Vector3(-2.400f, 8.520f, -1.400f), yard = new Vector4(-4.0f, 4.0f, -3.5f, 3.5f),
+            fur = new[] { ("Interior_Shyrdak", new Vector3(-0.000f, 0.512f, -0.200f), 0f), ("Interior_Dastorkon", new Vector3(-0.000f, 0.527f, -0.200f), 0f), ("Interior_Tushkiyiz", new Vector3(-0.000f, 1.950f, -3.180f), 0f), ("Interior_Juk", new Vector3(-3.020f, 0.500f, -2.870f), 0f), ("Interior_Stove", new Vector3(3.120f, 0.500f, -2.770f), 0f), ("Interior_Bed", new Vector3(-3.220f, 0.500f, 1.800f), 0f), ("Interior_Cupboard", new Vector3(3.470f, 0.500f, 1.300f), -90f), ("Interior_Lamp", new Vector3(-0.000f, 3.240f, 0.000f), 0f) } } },
+        { "KG_House_Adobe", new HouseSpec { floor = 0.3f, door = new Vector3(0.700f, 0.300f, 2.450f), porch = new Vector3(0.200f, 2.600f, 3.100f), light = new Vector3(0.000f, 2.200f, 0.000f), chimney = new Vector3(2.600f, 4.150f, -1.000f), yard = new Vector4(-3.7f, 3.7f, -2.6f, 2.6f),
+            fur = new[] { ("Interior_Shyrdak", new Vector3(-0.000f, 0.312f, -0.200f), 0f), ("Interior_Dastorkon", new Vector3(-0.000f, 0.327f, -0.200f), 0f), ("Interior_Tushkiyiz", new Vector3(-0.000f, 1.750f, -2.280f), 0f), ("Interior_Juk", new Vector3(-2.720f, 0.300f, -1.970f), 0f), ("Interior_Stove", new Vector3(2.820f, 0.300f, -1.870f), 0f), ("Interior_Bed", new Vector3(-2.920f, 0.300f, 0.900f), 0f), ("Interior_Cupboard", new Vector3(3.170f, 0.300f, 0.400f), -90f), ("Interior_Lamp", new Vector3(-0.000f, 2.640f, 0.000f), 0f) } } },
+        { "KG_House_Veranda", new HouseSpec { floor = 0.6f, door = new Vector3(-2.500f, 0.600f, 2.850f), porch = new Vector3(-3.000f, 3.150f, 3.500f), light = new Vector3(0.000f, 2.500f, 0.000f), chimney = new Vector3(2.500f, 5.700f, -1.000f), yard = new Vector4(-5.0f, 5.0f, -3.0f, 3.0f),
+            fur = new[] { ("Interior_Shyrdak", new Vector3(-0.000f, 0.612f, -0.200f), 0f), ("Interior_Dastorkon", new Vector3(-0.000f, 0.627f, -0.200f), 0f), ("Interior_Tushkiyiz", new Vector3(-0.000f, 2.050f, -2.680f), 0f), ("Interior_Juk", new Vector3(4.020f, 0.600f, -2.370f), 0f), ("Interior_Stove", new Vector3(-4.120f, 0.600f, -2.270f), 0f), ("Interior_Bed", new Vector3(4.220f, 0.600f, 1.300f), 0f), ("Interior_Cupboard", new Vector3(-4.470f, 0.600f, 0.800f), 90f), ("Interior_Lamp", new Vector3(-0.000f, 3.240f, 0.000f), 0f) } } },
+        { "KG_House_Brick", new HouseSpec { floor = 0.45f, door = new Vector3(-1.100f, 0.450f, 2.650f), porch = new Vector3(-1.600f, 3.000f, 3.300f), light = new Vector3(0.000f, 2.350f, 0.000f), chimney = new Vector3(1.500f, 5.150f, -0.800f), yard = new Vector4(-3.2f, 3.2f, -2.8f, 2.8f),
+            fur = new[] { ("Interior_Shyrdak", new Vector3(-0.000f, 0.462f, -0.200f), 0f), ("Interior_Dastorkon", new Vector3(-0.000f, 0.477f, -0.200f), 0f), ("Interior_Tushkiyiz", new Vector3(-0.000f, 1.900f, -2.480f), 0f), ("Interior_Juk", new Vector3(2.220f, 0.450f, -2.170f), 0f), ("Interior_Stove", new Vector3(-2.320f, 0.450f, -2.070f), 0f), ("Interior_Bed", new Vector3(2.420f, 0.450f, 1.100f), 0f), ("Interior_Cupboard", new Vector3(-2.670f, 0.450f, 0.600f), 90f), ("Interior_Lamp", new Vector3(-0.000f, 2.990f, 0.000f), 0f) } } },
+    };
+
     static readonly (string model, float hw, float hd)[] NewHouses =
     {
-        ("KG_House_TwoStory", 4.6f, 4.6f), ("KG_House_Adobe", 4.2f, 4.2f), ("KG_House_Veranda", 5.4f, 4.4f), ("KG_House_Brick", 3.8f, 3.6f),
-        ("KG_House_TwoStory", 4.6f, 4.6f), ("KG_House_Brick", 3.8f, 3.6f), ("KG_House_Veranda", 5.4f, 4.4f), ("KG_House_Adobe", 4.2f, 4.2f),
+        ("KG_House_TwoStory", 4.6f, 5.0f), ("KG_House_Adobe", 4.2f, 4.8f), ("KG_House_Veranda", 5.4f, 4.6f), ("KG_House_Brick", 3.8f, 4.0f),
+        ("KG_House_TwoStory", 4.6f, 5.0f), ("KG_House_Brick", 3.8f, 4.0f), ("KG_House_Veranda", 5.4f, 4.6f), ("KG_House_Adobe", 4.2f, 4.8f),
     };
+    static readonly string[] YardSet = { "Yard_Firewood", "Yard_Tandyr", "Yard_Clothesline", "Yard_ShyrdakFence", "Yard_Barrel", "Yard_Haystack" };
 
     [MenuItem("Tools/Diploma/Add More Houses (two-storey, adobe, veranda, brick + darbaza)")]
     public static void InstallHouses()
@@ -948,6 +962,7 @@ public static class FunInstaller
         BuildRiver(scene);
         const string HD = "Assets/Game/Models/Houses/";
         var logH = new List<string>();
+        var rnd = new System.Random(5);
 
         Transform env = All(scene).FirstOrDefault(t => t.name == "Environment");
         var root = new GameObject("Village_Houses_More").transform; root.SetParent(env, false);
@@ -958,24 +973,29 @@ public static class FunInstaller
         float leftX = old.Where(p => p.x < roadX).DefaultIfEmpty(new Vector3(roadX - 16f, 0, 0)).Average(p => p.x);
         float rightX = old.Where(p => p.x >= roadX).DefaultIfEmpty(new Vector3(roadX + 16f, 0, 0)).Average(p => p.x);
         float zMin = old.Min(p => p.z), zMax = old.Max(p => p.z), y0 = old.Average(p => p.y);
+        Material smoke = AssetDatabase.LoadAssetAtPath<Material>(MatDir + "ChimneySmoke.mat");
 
-        // что обходить
         var avoid = new List<(Vector3 p, float r)>();
         foreach (Transform t in All(scene))
         {
             string n = t.name;
-            if (n.StartsWith("House_") && t.parent == vh) avoid.Add((t.position, 11f));
+            if (n.StartsWith("House_") && t.parent == vh) avoid.Add((t.position, 12f));
             else if (n.StartsWith("Zone_")) avoid.Add((t.position, 16f));
             else if (n == "RaceTrack") avoid.Add((t.position, 40f));
             else if (n == "Farm" || n == "Bazaar") avoid.Add((t.position, 18f));
             else if (n == "NPC_Aibek" || n == "Aksakal" || n == "Ezhe" || n == "Kitchen") avoid.Add((t.position, 9f));
             else if ((n.StartsWith("NPC_") || t.GetComponent<VillagerTalk>() != null) && t.parent != null && !t.parent.name.StartsWith("NPC_")) avoid.Add((t.position, 5f));
             else if (t.parent != null && (t.parent.name == "Update_v3" || t.parent.name == "Update_v4")) avoid.Add((t.position, 6f));
+            else if (t.parent != null && t.parent.parent == env && (t.parent.name.StartsWith("Trees") || t.parent.name == "Mountains" || t.parent.name == "Decorations"))
+            {
+                var rr = t.GetComponentInChildren<Renderer>();
+                if (rr != null && rr.bounds.size.magnitude > 3f) avoid.Add((t.position, Mathf.Min(6f, Mathf.Max(rr.bounds.extents.x, rr.bounds.extents.z) * 0.6f + 0.8f)));
+            }
+            else if (t.name == "StreetLamp" || t.name.StartsWith("Race_") || t.name == "Campfire") avoid.Add((t.position, 3f));
         }
         Vector2 F(Vector3 v) => new Vector2(v.x, v.z);
         bool Clear(Vector3 q, float r) => avoid.All(a => Vector2.Distance(F(q), F(a.p)) > a.r + r) && !NearRiver(q, r + 2f);
 
-        // места: продолжаем ряды вдоль тропы в обе стороны, потом второй ряд
         var slots = new List<(Vector3 p, float side)>();
         for (int k = 1; k <= 3; k++)
             foreach (float side in new[] { -1f, 1f })
@@ -990,38 +1010,113 @@ public static class FunInstaller
             slots.Add((new Vector3(rightX + 18f, y0, z - 4f), 1f));
         }
 
-        int hi = 0, placed = 0, gates = 0;
+        int hi = 0, placed = 0, gates = 0, animals = 0;
         foreach (var slot in slots)
         {
             if (hi >= NewHouses.Length) break;
             var spec = NewHouses[hi];
+            HouseSpecs.TryGetValue(spec.model, out HouseSpec hs);
             float r = Mathf.Max(spec.hw, spec.hd);
-            if (!FindSpotWhere(slot.p, 0f, 12f, r * 0.85f, q => Clear(q, r), out Vector3 at)) continue;
-            // дом смотрит дверью на тропу
+            if (!FindSpotWhere(slot.p, 0f, 12f, r * 0.85f, q => Clear(q, r + 2.5f), out Vector3 at)) continue;
             Vector3 fwd = new Vector3(roadX - at.x, 0f, 0f).normalized; if (fwd.sqrMagnitude < 0.5f) fwd = Vector3.right * -slot.side;
-            Quaternion rot = Quaternion.LookRotation(fwd) * Quaternion.Euler(0f, Random.Range(-6f, 6f), 0f);
-            float low = at.y;
-            foreach (Vector3 o in new[] { new Vector3(spec.hw, 0, spec.hd), new Vector3(-spec.hw, 0, spec.hd), new Vector3(spec.hw, 0, -spec.hd), new Vector3(-spec.hw, 0, -spec.hd) })
-                if (GroundY(at + rot * o, out float gy)) low = Mathf.Min(low, gy);
-            var house = Instance(HD + spec.model + ".obj", root, new Vector3(at.x, low, at.z), rot);
+            Quaternion rot = Quaternion.LookRotation(fwd) * Quaternion.Euler(0f, (float)(rnd.NextDouble() * 10.0 - 5.0), 0f);
+            // высота: пол дома выше самой высокой земли внутри, низ — не выше самой низкой точки по углам
+            float low = float.MaxValue, highIn = float.MinValue;
+            for (float u = -1f; u <= 1.01f; u += 0.25f)
+                for (float w = -1f; w <= 1.01f; w += 0.25f)
+                    if (GroundY(at + rot * new Vector3(u * (spec.hw - 0.5f), 0f, w * (spec.hd - 1.2f)), out float gy)) { low = Mathf.Min(low, gy); highIn = Mathf.Max(highIn, gy); }
+            if (low == float.MaxValue) { low = at.y; highIn = at.y; }
+            float floorH = hs != null ? hs.floor : 0.5f;
+            float baseY = Mathf.Max(low, highIn - floorH + 0.12f);
+            var house = Instance(HD + spec.model + ".obj", root, new Vector3(at.x, baseY, at.z), rot);
             if (house == null) { hi++; continue; }
             house.name = "House_More_" + (placed + 1) + "_" + spec.model.Replace("KG_House_", "");
-            foreach (var mf in house.GetComponentsInChildren<MeshFilter>()) { var mc = mf.gameObject.AddComponent<MeshCollider>(); mc.sharedMesh = mf.sharedMesh; }
-            house.isStatic = true; foreach (Transform c in house.transform) c.gameObject.isStatic = true;
-            avoid.Add((at, r + 3f));
+            foreach (var mf in house.GetComponentsInChildren<MeshFilter>()) if (mf.sharedMesh != null) mf.gameObject.AddComponent<MeshCollider>().sharedMesh = mf.sharedMesh;
+            GameObjectUtility.SetStaticEditorFlags(house, StaticEditorFlags.BatchingStatic);
+            // фундамент под домом, если земля ниже (не висит в воздухе)
+            if (baseY - low > 0.05f)
+            {
+                var fnd = GameObject.CreatePrimitive(PrimitiveType.Cube); fnd.name = "Foundation";
+                Object.DestroyImmediate(fnd.GetComponent<Collider>());
+                fnd.transform.SetParent(house.transform, false);
+                float hgt = baseY - low + 0.6f;
+                fnd.transform.localPosition = new Vector3(0f, 0.02f - hgt / 2f, 0f);
+                fnd.transform.localScale = new Vector3(hs != null ? hs.yard.y - hs.yard.x + 0.1f : spec.hw * 2f, hgt, hs != null ? hs.yard.w - hs.yard.z + 0.1f : spec.hd * 2f);
+                var pr = house.GetComponentsInChildren<MeshRenderer>().FirstOrDefault(x => x != fnd.GetComponent<MeshRenderer>());
+                var pm = pr != null ? pr.sharedMaterials.FirstOrDefault(m => m != null && (m.name.Contains("PlinthDark") || m.name.Contains("ClayDark"))) : null;
+                if (pm != null) fnd.GetComponent<MeshRenderer>().sharedMaterial = pm;
+            }
+            ClearSmallDecor(scene, house);
+
+            if (hs != null)
+            {
+                // свет у крыльца и в окнах ночью
+                var lightGo = new GameObject("PorchLight"); lightGo.transform.SetParent(house.transform, false); lightGo.transform.localPosition = hs.porch;
+                var pl = lightGo.AddComponent<Light>(); pl.type = LightType.Point; pl.range = 9f; pl.color = new Color(1f, 0.72f, 0.42f); pl.intensity = 0f; pl.shadows = LightShadows.None; pl.enabled = false;
+                var hl = house.AddComponent<HouseLights>(); hl.porchLight = pl;
+                // обстановка внутри
+                var room = new GameObject("Interior").transform; room.SetParent(house.transform, false);
+                foreach (var f in hs.fur)
+                {
+                    var go = Instance(HD + f.m + ".obj", room, Vector3.zero, Quaternion.identity);
+                    if (go == null) continue;
+                    go.transform.localPosition = f.p; go.transform.localRotation = Quaternion.Euler(0f, f.yaw, 0f);
+                    if (f.m == "Interior_Juk" || f.m == "Interior_Stove" || f.m == "Interior_Bed" || f.m == "Interior_Cupboard")
+                    {
+                        Bounds b = LocalBoundsOf(go); var bc = go.AddComponent<BoxCollider>(); bc.center = b.center; bc.size = b.size;
+                    }
+                }
+                var lg = new GameObject("InteriorLight"); lg.transform.SetParent(room, false); lg.transform.localPosition = hs.light;
+                var il = lg.AddComponent<Light>(); il.type = LightType.Point; il.range = 7.5f; il.intensity = 0.55f; il.color = new Color(1f, 0.82f, 0.6f); il.shadows = LightShadows.None;
+                hl.interiorLight = il;
+                // дверь на петле
+                var door = Instance(HD + "KG_Door.obj", house.transform, Vector3.zero, Quaternion.identity);
+                if (door != null) { door.name = "Door"; door.transform.localPosition = hs.door; door.transform.localRotation = Quaternion.identity; door.AddComponent<HouseDoor>(); }
+                // дым из трубы
+                if (smoke != null) AddChimneySmoke(house.transform, hs.chimney, smoke);
+            }
+
+            // двор: сарай сзади, 3 вещи по бокам, лавочка у двери
+            var yard = new GameObject("Yard").transform; yard.SetParent(house.transform, false);
+            float hw = spec.hw, hd = hs != null ? hs.yard.w : spec.hd;
+            YardProp(yard, HD + "KG_Saray.obj", new Vector3(1.8f, 0f, -hd - 4.6f), 180f, true);
+            var picks = YardSet.OrderBy(_ => rnd.Next()).Take(3).ToList();
+            var spots = new[] { (new Vector3(-hw - 1.6f, 0f, 0.4f), 90f), (new Vector3(hw + 1.6f, 0f, -0.6f), -90f), (new Vector3(-1.8f, 0f, -hd - 2.2f), 0f) };
+            for (int k = 0; k < picks.Count; k++) YardProp(yard, HD + picks[k] + ".obj", spots[k].Item1, spots[k].Item2 + (float)(rnd.NextDouble() * 20 - 10), picks[k] != "Yard_Clothesline" && picks[k] != "Yard_ShyrdakFence");
+            if (hs != null) YardProp(yard, HD + "Yard_Bench.obj", new Vector3(hs.door.x + 1.7f, 0f, hs.yard.w + 0.5f), 180f, false);
+            // животное во дворе: собака или козы
+            string beast = placed % 3 == 0 ? "Animal_Dog" : placed % 3 == 1 ? "Animal_Goat" : null;
+            if (beast != null)
+            {
+                var area = new GameObject("YardArea").transform; area.SetParent(yard, false); area.localPosition = new Vector3(-2.5f, 0f, -hd - 2.2f);
+                Vector3 w0 = area.position;
+                if (GroundY(w0, out float ay))
+                {
+                    var a = new GameObject(beast.Replace("Animal_", "")); a.transform.SetParent(yard, true);
+                    a.transform.position = new Vector3(w0.x, ay, w0.z); a.transform.rotation = Quaternion.Euler(0f, (float)rnd.NextDouble() * 360f, 0f);
+                    var m = Instance("Assets/Game/Models/Farm/" + beast + ".obj", a.transform, a.transform.position, a.transform.rotation);
+                    var aw = a.AddComponent<AnimalWander>(); aw.area = area; aw.halfSize = new Vector2(hw + 1f, 1.8f);
+                    var clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Game/Audio/SFX/" + (beast == "Animal_Dog" ? "dog_1" : "goat_1") + ".wav");
+                    aw.calls = clip != null ? new[] { clip } : new AudioClip[0];
+                    if (beast == "Animal_Dog") { aw.walkSpeed = 1.2f; aw.idleTime = new Vector2(2f, 5f); aw.stepRate = 9f; aw.grazeTilt = 0f; aw.callPause = new Vector2(30f, 70f); }
+                    else { aw.walkSpeed = 0.6f; aw.callPause = new Vector2(25f, 55f); }
+                    animals++;
+                }
+            }
+            avoid.Add((at, r + 4f));
             placed++; hi++;
 
-            // дарбаза с забором перед домом, у тропы (через один дом)
             if (placed % 2 == 1)
             {
-                Vector3 gp = at + fwd * (spec.hd + 4.2f);
+                Vector3 gp = at + fwd * (spec.hd + 4.6f);
                 if (GroundY(gp, out float gy2) && !NearRiver(gp, 2f) && avoid.Where(a => a.p != at).All(a => Vector2.Distance(F(gp), F(a.p)) > a.r * 0.6f))
                 {
                     var g = Instance(HD + "KG_Darbaza.obj", root, new Vector3(gp.x, gy2, gp.z), rot);
                     if (g != null)
                     {
                         g.name = "Darbaza_" + placed;
-                        foreach (var mf in g.GetComponentsInChildren<MeshFilter>()) { var mc = mf.gameObject.AddComponent<MeshCollider>(); mc.sharedMesh = mf.sharedMesh; }
+                        // коллайдеры только у столбов и забора; створки ворот проходимы — это вход во двор
+                        foreach (var mf in g.GetComponentsInChildren<MeshFilter>()) if (mf.sharedMesh != null) mf.gameObject.AddComponent<MeshCollider>().sharedMesh = mf.sharedMesh;
                         gates++;
                     }
                 }
@@ -1030,8 +1125,116 @@ public static class FunInstaller
         }
         EditorSceneManager.MarkSceneDirty(scene);
         EditorSceneManager.SaveScene(scene);
-        Debug.Log($"[Houses] Новых домов: {placed}, дарбаза: {gates} · " + string.Join(" · ", logH));
+        Debug.Log($"[Houses] Новых домов: {placed}, дарбаза: {gates}, животных: {animals} · " + string.Join(" · ", logH));
     }
+
+    static Bounds LocalBoundsOf(GameObject go)
+    {
+        var b = new Bounds(); bool first = true;
+        foreach (MeshFilter mf in go.GetComponentsInChildren<MeshFilter>())
+        {
+            if (mf.sharedMesh == null) continue;
+            Matrix4x4 m = go.transform.worldToLocalMatrix * mf.transform.localToWorldMatrix;
+            Bounds mb = mf.sharedMesh.bounds;
+            for (int i = 0; i < 8; i++)
+            {
+                Vector3 c = m.MultiplyPoint3x4(mb.center + Vector3.Scale(mb.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1)));
+                if (first) { b = new Bounds(c, Vector3.zero); first = false; } else b.Encapsulate(c);
+            }
+        }
+        return b;
+    }
+
+    static void YardProp(Transform parent, string path, Vector3 local, float yaw, bool collider)
+    {
+        Vector3 w = parent.TransformPoint(local);
+        if (!GroundY(w, out float y)) return;
+        foreach (Collider c in Physics.OverlapSphere(new Vector3(w.x, y + 0.6f, w.z), 0.6f, ~0, QueryTriggerInteraction.Collide))
+            if (!IsGround(c) && !IsPath(c) && !c.transform.IsChildOf(parent.parent)) return;
+        var go = Instance(path, parent, new Vector3(w.x, y, w.z), parent.rotation * Quaternion.Euler(0f, yaw, 0f));
+        if (go == null) return;
+        if (collider) { Bounds b = LocalBoundsOf(go); var bc = go.AddComponent<BoxCollider>(); bc.center = b.center; bc.size = b.size; }
+        GameObjectUtility.SetStaticEditorFlags(go, StaticEditorFlags.BatchingStatic);
+    }
+
+    static void ClearSmallDecor(Scene scene, GameObject house)
+    {
+        Physics.SyncTransforms();
+        var b = new Bounds(house.transform.position, Vector3.zero);
+        foreach (Renderer r in house.GetComponentsInChildren<Renderer>()) b.Encapsulate(r.bounds);
+        b.Expand(new Vector3(1f, 10f, 1f));
+        var kill = new List<GameObject>();
+        foreach (string rn in new[] { "Decor_Trail", "Decor_Valley", "Decorations" })
+        {
+            Transform root = All(scene).FirstOrDefault(t => t.name == rn && t.parent != null);
+            if (root == null) continue;
+            foreach (Transform t in root.GetComponentsInChildren<Transform>())
+            {
+                if (t == root || t.parent != root && t.parent.parent != root) continue;
+                Renderer r = t.GetComponentInChildren<Renderer>();
+                if (r == null || r.bounds.size.magnitude > 3.5f) continue;
+                if (b.Contains(r.bounds.center) && !t.name.Contains("Fence") && !t.name.Contains("Floor_Tile") && !t.name.Contains("Meadow") && !t.name.Contains("Road"))
+                    kill.Add(PrefabUtility.GetOutermostPrefabInstanceRoot(t.gameObject) ?? t.gameObject);
+            }
+        }
+        foreach (GameObject g in kill.Distinct()) if (g != null) Object.DestroyImmediate(g);
+    }
+
+    static void AddChimneySmoke(Transform house, Vector3 local, Material mat)
+    {
+        var go = new GameObject("ChimneySmoke");
+        go.transform.SetParent(house, false); go.transform.localPosition = local; go.transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
+        var ps = go.AddComponent<ParticleSystem>();
+        var main = ps.main;
+        main.startLifetime = new ParticleSystem.MinMaxCurve(6f, 9f); main.startSpeed = new ParticleSystem.MinMaxCurve(0.4f, 0.7f);
+        main.startSize = new ParticleSystem.MinMaxCurve(0.5f, 0.9f); main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+        main.startColor = new Color(0.85f, 0.85f, 0.85f, 0.5f); main.simulationSpace = ParticleSystemSimulationSpace.World;
+        main.maxParticles = 60; main.gravityModifier = -0.01f; main.prewarm = true;
+        var em = ps.emission; em.rateOverTime = 3.5f;
+        var shape = ps.shape; shape.shapeType = ParticleSystemShapeType.Cone; shape.angle = 8f; shape.radius = 0.12f;
+        var size = ps.sizeOverLifetime; size.enabled = true; size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.6f), new Keyframe(1f, 3.2f)));
+        var col = ps.colorOverLifetime; col.enabled = true;
+        var g = new Gradient();
+        g.SetKeys(new[] { new GradientColorKey(Color.white, 0f), new GradientColorKey(new Color(0.8f, 0.8f, 0.82f), 1f) },
+                  new[] { new GradientAlphaKey(0f, 0f), new GradientAlphaKey(0.55f, 0.15f), new GradientAlphaKey(0.25f, 0.6f), new GradientAlphaKey(0f, 1f) });
+        col.color = g;
+        var vel = ps.velocityOverLifetime; vel.enabled = true; vel.space = ParticleSystemSimulationSpace.World;
+        vel.x = new ParticleSystem.MinMaxCurve(0.25f, 0.45f); vel.y = new ParticleSystem.MinMaxCurve(0.1f, 0.2f); vel.z = new ParticleSystem.MinMaxCurve(0.05f, 0.15f);
+        var noise = ps.noise; noise.enabled = true; noise.strength = 0.2f; noise.frequency = 0.3f;
+        var pr = go.GetComponent<ParticleSystemRenderer>(); pr.sharedMaterial = mat;
+        pr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off; pr.receiveShadows = false;
+    }
+
+    [MenuItem("Tools/Diploma/Fix House Floors (old houses)")]
+    public static void FixHouseFloors()
+    {
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.path != ScenePath) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+        Transform vh = All(scene).FirstOrDefault(t => t.name == "Village_Houses");
+        int n = 0;
+        if (vh != null)
+            foreach (Transform t in vh.GetComponentsInChildren<Transform>(true))
+            {
+                // ковёр и дастаркон чуть выше пола — без мерцания
+                if (t.name.StartsWith("Interior_Shyrdak") && t.parent != null && t.parent.name == "Interior") { var p = t.localPosition; p.y = 0.55f + 0.012f; t.localPosition = p; n++; }
+                if (t.name.StartsWith("Interior_Dastorkon") && t.parent != null && t.parent.name == "Interior") { var p = t.localPosition; p.y = 0.55f + 0.027f; t.localPosition = p; n++; }
+            }
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log($"[Floors] Пол в старых домах исправлен (модели), ковров поднято: {n}");
+    }
+
+    static void TpHouse(int i)
+    {
+        if (!Playing()) return;
+        var h = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).Where(t => t.name.StartsWith("House_More_")).OrderBy(t => t.name).ElementAtOrDefault(i);
+        if (h != null) Teleport(h.TransformPoint(new Vector3(0f, 0.6f, 0f)));
+    }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Houses: inside new house 1")] static void TH1() { TpHouse(0); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Houses: inside new house 2")] static void TH2() { TpHouse(1); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Houses: inside new house 3")] static void TH3() { TpHouse(2); }
+    [MenuItem("Tools/Diploma/Play Mode: Story/Houses: inside new house 4")] static void TH4() { TpHouse(3); }
 
     static void DailyProp(Transform root, string model, Vector3 p, DailyTasks.T task, string item, int bit, bool reusable)
     {
