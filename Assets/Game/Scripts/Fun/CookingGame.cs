@@ -229,6 +229,7 @@ public class CookingGame : MonoBehaviour, IModal
         bool first = SaveData.Get("cook_done") == 0;
         int xp = first ? FirstXp : RepeatXp;
         SaveData.Add("cook_done", 1);
+        MurasCloud.ReportScore("cooking", Mathf.Max(0, 100 - mistakes * 10));
         if (GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         Inventory.Add("beshbarmak");
         Achievements.Give("cook");

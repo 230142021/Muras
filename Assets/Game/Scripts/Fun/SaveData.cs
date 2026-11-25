@@ -30,13 +30,32 @@ public static class SaveData
     public static int Get(string key, int def = 0) => D.TryGetValue(key, out int v) ? v : def;
     public static bool Has(string key) => D.ContainsKey(key);
 
+    /// <summary>Растёт при каждом изменении — облачная синхронизация по нему понимает, что пора сохранить.</summary>
+    public static int Revision { get; private set; }
+
     public static void Set(string key, int value)
     {
         D[key] = value;
+        Write();
+    }
+
+    static void Write()
+    {
         var sb = new StringBuilder();
         foreach (var kv in D) sb.Append(kv.Key).Append('=').Append(kv.Value).Append(';');
         PlayerPrefs.SetString(Key, sb.ToString());
         PlayerPrefs.Save();
+        Revision++;
+    }
+
+    /// <summary>Копия всех значений (для облачного сохранения).</summary>
+    public static Dictionary<string, int> Snapshot() => new Dictionary<string, int>(D);
+
+    /// <summary>Заменить всё содержимое одним разом (применение облачного сохранения).</summary>
+    public static void ReplaceAll(Dictionary<string, int> values)
+    {
+        data = new Dictionary<string, int>(values);
+        Write();
     }
 
     public static void Add(string key, int delta) => Set(key, Get(key) + delta);
@@ -54,6 +73,7 @@ public static class SaveData
         data = new Dictionary<string, int>();
         PlayerPrefs.DeleteKey(Key);
         PlayerPrefs.Save();
+        Revision++;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

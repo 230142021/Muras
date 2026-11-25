@@ -45,6 +45,7 @@ public static class Achievements
         if (a == null || Has(id)) return;
         if (SceneManager.GetActiveScene().name == PauseMenu.MenuScene) return;
         SaveData.Set("a_" + id, 1);
+        MurasCloud.Track("achievement", CloudJson.Object("id", id));
         if (GameManager.Instance != null) GameManager.Instance.AddXP(Xp);
         MurasToast.Push("Жетишкендик!  +" + Xp + " XP", "<b>" + a.ky + "</b> — " + Loc.T(a.ru, a.en) + "\n<size=85%><color=#C9BFA6>" + Loc.T(a.descRu, a.descEn) + "</color></size>",
                         new Color(0.45f, 0.72f, 0.38f), "achievement");

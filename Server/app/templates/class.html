@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ cls.name }} · MURAS{% endblock %}
+{% block body %}
+<p><a href="{{ url_for('dashboard.home') }}">← Все классы</a></p>
+<div class="head-row">
+  <h1>{{ cls.name }}</h1>
+  <div class="code-box">Код класса <span class="code">{{ cls.join_code }}</span></div>
+</div>
+
+<div class="stats">
+  <div class="stat"><b>{{ a.students }}</b><span>учеников</span></div>
+  <div class="stat"><b>{{ a.avg_words }}</b><span>слов в среднем из {{ a.words_total }}</span></div>
+  <div class="stat"><b>{{ a.avg_quests }}</b><span>заданий в среднем</span></div>
+  <div class="stat"><b>{{ a.avg_xp }}</b><span>XP в среднем</span></div>
+</div>
+
+<section class="card">
+  <div class="head-row"><h2>Ученики</h2>
+    <a class="btn ghost" href="{{ url_for('dashboard.export_csv', class_id=cls.id) }}">Скачать CSV</a></div>
+  {% if students %}
+  <table>
+    <thead><tr>
+      <th><a href="?sort=name">Имя</a></th><th><a href="?sort=xp">XP</a></th><th><a href="?sort=words">Слова</a></th>
+      <th>Задания</th><th>Достижения</th><th><a href="?sort=seen">Был(а) в игре</a></th></tr></thead>
+    <tbody>
+    {% for s in students %}
+      <tr>
+        <td><a href="{{ url_for('dashboard.student_page', class_id=cls.id, user_id=s.user_id) }}">{{ s.display_name }}</a> <span class="muted small">@{{ s.username }}</span></td>
+        <td>{{ s.xp }}</td>
+        <td><div class="bar" role="img" aria-label="{{ s.words }} из {{ s.words_total }}"><i style="width: {{ (100 * s.words / s.words_total) | round(1) if s.words_total else 0 }}%"></i></div> {{ s.words }}/{{ s.words_total }}</td>
+        <td>{{ s.quests }}/{{ s.quests_total }}</td>
+        <td>{{ s.achievements }}</td>
+        <td class="small">{{ (s.last_seen_at or '—') | replace('T', ' ') | replace('Z', '') }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">В классе пока нет учеников. Попросите их открыть в игре «Аккаунт» и ввести код <b>{{ cls.join_code }}</b>.</p>
+  {% endif %}
+</section>
+
+<div class="grid two">
+  <section class="card">
+    <h2>Самые трудные слова</h2>
+    <p class="muted small">Слова, которые открыли меньше всего учеников — их стоит повторить на уроке.</p>
+    <ol class="words">
+    {% for w in a.hardest_words %}
+      <li><b>{{ w.ky }}</b> — {{ w.ru }} <span class="pct">{{ w.pct }}%</span></li>
+    {% endfor %}
+    </ol>
+  </section>
+  <section class="card">
+    <h2>Основные задания</h2>
+    {% for q in a.quests %}
+      <div class="qrow"><span>{{ q.name }}</span><div class="bar"><i style="width: {{ q.pct }}%"></i></div><span class="pct">{{ q.pct }}%</span></div>
+    {% endfor %}
+    <h2 class="mt">Активность за 14 дней</h2>
+    {% set peak = (a.activity | map(attribute='events') | max) if a.activity else 0 %}
+    <div class="spark" role="img" aria-label="События по дням">
+      {% for d in a.activity %}<i title="{{ d.day }}: {{ d.events }} событий, {{ d.players }} игроков" style="height: {{ (100 * d.events / peak) | round(0) if peak else 0 }}%"></i>{% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

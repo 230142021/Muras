@@ -1,0 +1,862 @@
+{
+ "words": [
+  {
+   "id": "salam",
+   "cat": "Salam",
+   "ky": "Салам",
+   "tr": "salam",
+   "ru": "Привет",
+   "en": "Hello"
+  },
+  {
+   "id": "rahmat",
+   "cat": "Salam",
+   "ky": "Рахмат",
+   "tr": "rakhmat",
+   "ru": "Спасибо",
+   "en": "Thank you"
+  },
+  {
+   "id": "kosh",
+   "cat": "Salam",
+   "ky": "Кош келиңиз",
+   "tr": "kosh keliŋiz",
+   "ru": "Добро пожаловать",
+   "en": "Welcome"
+  },
+  {
+   "id": "apa",
+   "cat": "Salam",
+   "ky": "Апа",
+   "tr": "apa",
+   "ru": "Мама; так уважительно зовут пожилую женщину",
+   "en": "Mother; also a respectful word for an elderly woman"
+  },
+  {
+   "id": "baike",
+   "cat": "Salam",
+   "ky": "Байке",
+   "tr": "baike",
+   "ru": "Старший брат; обращение к мужчине старше тебя",
+   "en": "Elder brother; how you address an older man"
+  },
+  {
+   "id": "ezhe",
+   "cat": "Salam",
+   "ky": "Эже",
+   "tr": "ezhe",
+   "ru": "Старшая сестра; обращение к женщине старше",
+   "en": "Elder sister; how you address an older woman"
+  },
+  {
+   "id": "aksakal",
+   "cat": "Salam",
+   "ky": "Аксакал",
+   "tr": "aksakal",
+   "ru": "Старейшина (букв. «белая борода»)",
+   "en": "Village elder (lit. \"white beard\")"
+  },
+  {
+   "id": "bala",
+   "cat": "Salam",
+   "ky": "Бала",
+   "tr": "bala",
+   "ru": "Ребёнок",
+   "en": "Child"
+  },
+  {
+   "id": "soodager",
+   "cat": "Salam",
+   "ky": "Соодагер",
+   "tr": "soodager",
+   "ru": "Торговец",
+   "en": "Trader"
+  },
+  {
+   "id": "tynchtyk",
+   "cat": "Salam",
+   "ky": "Тынчтык",
+   "tr": "tynchtyk",
+   "ru": "Мир, покой",
+   "en": "Peace, calm"
+  },
+  {
+   "id": "tartip",
+   "cat": "Salam",
+   "ky": "Тартип",
+   "tr": "tartip",
+   "ru": "Порядок",
+   "en": "Order"
+  },
+  {
+   "id": "myizam",
+   "cat": "Salam",
+   "ky": "Мыйзам",
+   "tr": "myyzam",
+   "ru": "Закон",
+   "en": "Law"
+  },
+  {
+   "id": "urmat",
+   "cat": "Salam",
+   "ky": "Урмат",
+   "tr": "urmat",
+   "ru": "Уважение",
+   "en": "Respect"
+  },
+  {
+   "id": "erkindik",
+   "cat": "Salam",
+   "ky": "Эркиндик",
+   "tr": "erkindik",
+   "ru": "Свобода",
+   "en": "Freedom"
+  },
+  {
+   "id": "shaar",
+   "cat": "Salam",
+   "ky": "Шаар",
+   "tr": "shaar",
+   "ru": "Город",
+   "en": "City"
+  },
+  {
+   "id": "dostor",
+   "cat": "Salam",
+   "ky": "Достор",
+   "tr": "dostor",
+   "ru": "Друзья",
+   "en": "Friends"
+  },
+  {
+   "id": "kim",
+   "cat": "Salam",
+   "ky": "Ким?",
+   "tr": "kim",
+   "ru": "Кто?",
+   "en": "Who?"
+  },
+  {
+   "id": "kayda",
+   "cat": "Salam",
+   "ky": "Кайда?",
+   "tr": "kayda",
+   "ru": "Где?",
+   "en": "Where?"
+  },
+  {
+   "id": "kachan",
+   "cat": "Salam",
+   "ky": "Качан?",
+   "tr": "kachan",
+   "ru": "Когда?",
+   "en": "When?"
+  },
+  {
+   "id": "kechirim",
+   "cat": "Salam",
+   "ky": "Кечирим",
+   "tr": "kechirim",
+   "ru": "Прощение",
+   "en": "Forgiveness"
+  },
+  {
+   "id": "manaschy",
+   "cat": "Games",
+   "ky": "Манасчы",
+   "tr": "manaschy",
+   "ru": "Сказитель «Манаса»",
+   "en": "Manas storyteller"
+  },
+  {
+   "id": "baatyr",
+   "cat": "Games",
+   "ky": "Баатыр",
+   "tr": "baatyr",
+   "ru": "Богатырь, герой",
+   "en": "Hero"
+  },
+  {
+   "id": "choro",
+   "cat": "Games",
+   "ky": "Чоро",
+   "tr": "choro",
+   "ru": "Дружинник, верный воин",
+   "en": "Loyal warrior"
+  },
+  {
+   "id": "el",
+   "cat": "Salam",
+   "ky": "Эл",
+   "tr": "el",
+   "ru": "Народ",
+   "en": "People, nation"
+  },
+  {
+   "id": "boz_uy",
+   "cat": "Yurt",
+   "ky": "Боз үй",
+   "tr": "boz üy",
+   "ru": "Юрта (букв. «серый дом»)",
+   "en": "Yurt (lit. \"grey house\")"
+  },
+  {
+   "id": "kerege",
+   "cat": "Yurt",
+   "ky": "Кереге",
+   "tr": "kerege",
+   "ru": "Решётчатые стены юрты",
+   "en": "The lattice walls of a yurt"
+  },
+  {
+   "id": "uuk",
+   "cat": "Yurt",
+   "ky": "Уук",
+   "tr": "uuk",
+   "ru": "Жерди купола юрты",
+   "en": "The roof poles of a yurt"
+  },
+  {
+   "id": "tunduk",
+   "cat": "Yurt",
+   "ky": "Түндүк",
+   "tr": "tündük",
+   "ru": "Круглый верх юрты — он изображён на флаге Кыргызстана",
+   "en": "The crown ring of a yurt — it is on the flag of Kyrgyzstan"
+  },
+  {
+   "id": "kiyiz",
+   "cat": "Yurt",
+   "ky": "Кийиз",
+   "tr": "kiyiz",
+   "ru": "Войлок, которым покрывают юрту",
+   "en": "Felt that covers the yurt"
+  },
+  {
+   "id": "tushkiyiz",
+   "cat": "Yurt",
+   "ky": "Түшкийиз",
+   "tr": "tüshkiyiz",
+   "ru": "Вышитый настенный ковёр",
+   "en": "Embroidered wall hanging"
+  },
+  {
+   "id": "juk",
+   "cat": "Yurt",
+   "ky": "Жүк",
+   "tr": "jük",
+   "ru": "Стопка одеял и подушек у стены",
+   "en": "A stack of blankets and pillows by the wall"
+  },
+  {
+   "id": "chaka",
+   "cat": "Yurt",
+   "ky": "Чака",
+   "tr": "chaka",
+   "ru": "Ведро",
+   "en": "Bucket"
+  },
+  {
+   "id": "alma",
+   "cat": "Food",
+   "ky": "Алма",
+   "tr": "alma",
+   "ru": "Яблоко",
+   "en": "Apple"
+  },
+  {
+   "id": "boorsok",
+   "cat": "Food",
+   "ky": "Боорсок",
+   "tr": "boorsok",
+   "ru": "Жареные кусочки теста",
+   "en": "Fried pieces of dough"
+  },
+  {
+   "id": "kuurdak",
+   "cat": "Food",
+   "ky": "Куурдак",
+   "tr": "kuurdak",
+   "ru": "Жареное мясо с луком и картошкой",
+   "en": "Fried meat with onion and potatoes"
+  },
+  {
+   "id": "dastorkon",
+   "cat": "Food",
+   "ky": "Дасторкон",
+   "tr": "dastorkon",
+   "ru": "Скатерть с угощением, накрытый стол",
+   "en": "A tablecloth laid with food for guests"
+  },
+  {
+   "id": "nan",
+   "cat": "Food",
+   "ky": "Нан",
+   "tr": "nan",
+   "ru": "Хлеб, лепёшка",
+   "en": "Bread, flatbread"
+  },
+  {
+   "id": "chay",
+   "cat": "Food",
+   "ky": "Чай",
+   "tr": "chay",
+   "ru": "Чай",
+   "en": "Tea"
+  },
+  {
+   "id": "kymyz",
+   "cat": "Food",
+   "ky": "Кымыз",
+   "tr": "kymyz",
+   "ru": "Кобылье молоко — любимый напиток кочевников",
+   "en": "Fermented mare's milk, the nomads' favourite drink"
+  },
+  {
+   "id": "chuko",
+   "cat": "Games",
+   "ky": "Чүкө",
+   "tr": "chükö",
+   "ru": "Косточки для детской игры",
+   "en": "Knucklebones for a children's game"
+  },
+  {
+   "id": "at_chabysh",
+   "cat": "Games",
+   "ky": "Ат чабыш",
+   "tr": "at chabysh",
+   "ru": "Скачки на лошадях",
+   "en": "Horse racing"
+  },
+  {
+   "id": "chabandes",
+   "cat": "Games",
+   "ky": "Чабандес",
+   "tr": "chabandes",
+   "ru": "Всадник на скачках",
+   "en": "Jockey, race rider"
+  },
+  {
+   "id": "komuz",
+   "cat": "Games",
+   "ky": "Комуз",
+   "tr": "komuz",
+   "ru": "Трёхструнный кыргызский инструмент",
+   "en": "Three-stringed Kyrgyz instrument"
+  },
+  {
+   "id": "kuu",
+   "cat": "Games",
+   "ky": "Күү",
+   "tr": "küü",
+   "ru": "Мелодия для комуза без слов",
+   "en": "An instrumental komuz piece"
+  },
+  {
+   "id": "komuzchu",
+   "cat": "Games",
+   "ky": "Комузчу",
+   "tr": "komuzchu",
+   "ru": "Музыкант, играющий на комузе",
+   "en": "A komuz player"
+  },
+  {
+   "id": "kalpak",
+   "cat": "Clothes",
+   "ky": "Ак калпак",
+   "tr": "ak kalpak",
+   "ru": "Белая войлочная шапка",
+   "en": "White felt hat"
+  },
+  {
+   "id": "tebetey",
+   "cat": "Clothes",
+   "ky": "Тебетей",
+   "tr": "tebetey",
+   "ru": "Меховая шапка",
+   "en": "Fur hat"
+  },
+  {
+   "id": "chapan",
+   "cat": "Clothes",
+   "ky": "Чапан",
+   "tr": "chapan",
+   "ru": "Длинный халат",
+   "en": "Long robe"
+  },
+  {
+   "id": "elechek",
+   "cat": "Clothes",
+   "ky": "Элечек",
+   "tr": "elechek",
+   "ru": "Белый головной убор замужней женщины",
+   "en": "White headdress of a married woman"
+  },
+  {
+   "id": "otuk",
+   "cat": "Clothes",
+   "ky": "Өтүк",
+   "tr": "ötük",
+   "ru": "Сапоги",
+   "en": "Boots"
+  },
+  {
+   "id": "ail",
+   "cat": "Nature",
+   "ky": "Айыл",
+   "tr": "ayyl",
+   "ru": "Село",
+   "en": "Village"
+  },
+  {
+   "id": "too",
+   "cat": "Nature",
+   "ky": "Тоо",
+   "tr": "too",
+   "ru": "Гора",
+   "en": "Mountain"
+  },
+  {
+   "id": "suu",
+   "cat": "Nature",
+   "ky": "Суу",
+   "tr": "suu",
+   "ru": "Вода",
+   "en": "Water"
+  },
+  {
+   "id": "dariya",
+   "cat": "Nature",
+   "ky": "Дарыя",
+   "tr": "dariya",
+   "ru": "Река",
+   "en": "River"
+  },
+  {
+   "id": "jailoo",
+   "cat": "Nature",
+   "ky": "Жайлоо",
+   "tr": "jayloo",
+   "ru": "Летнее горное пастбище",
+   "en": "Summer mountain pasture"
+  },
+  {
+   "id": "koy",
+   "cat": "Nature",
+   "ky": "Кой",
+   "tr": "koy",
+   "ru": "Овца",
+   "en": "Sheep"
+  },
+  {
+   "id": "echki",
+   "cat": "Nature",
+   "ky": "Эчки",
+   "tr": "echki",
+   "ru": "Коза",
+   "en": "Goat"
+  },
+  {
+   "id": "uy",
+   "cat": "Nature",
+   "ky": "Уй",
+   "tr": "uy",
+   "ru": "Корова",
+   "en": "Cow"
+  },
+  {
+   "id": "at",
+   "cat": "Nature",
+   "ky": "Ат",
+   "tr": "at",
+   "ru": "Лошадь",
+   "en": "Horse"
+  },
+  {
+   "id": "it",
+   "cat": "Nature",
+   "ky": "Ит",
+   "tr": "it",
+   "ru": "Собака",
+   "en": "Dog"
+  },
+  {
+   "id": "chaban",
+   "cat": "Nature",
+   "ky": "Чабан",
+   "tr": "chaban",
+   "ru": "Пастух",
+   "en": "Shepherd"
+  },
+  {
+   "id": "burkut",
+   "cat": "Nature",
+   "ky": "Бүркүт",
+   "tr": "bürküt",
+   "ru": "Беркут — горный орёл",
+   "en": "Golden eagle"
+  },
+  {
+   "id": "burkutchu",
+   "cat": "Nature",
+   "ky": "Бүркүтчү",
+   "tr": "bürkütchü",
+   "ru": "Охотник с беркутом",
+   "en": "Eagle hunter"
+  },
+  {
+   "id": "salbuurun",
+   "cat": "Nature",
+   "ky": "Салбуурун",
+   "tr": "salbuurun",
+   "ru": "Старинная охота с беркутом, собаками и луком",
+   "en": "Traditional hunting with eagles, hounds and bows"
+  },
+  {
+   "id": "sagyzgan",
+   "cat": "Nature",
+   "ky": "Сагызган",
+   "tr": "sagyzgan",
+   "ru": "Сорока",
+   "en": "Magpie"
+  },
+  {
+   "id": "otun",
+   "cat": "Nature",
+   "ky": "Отун",
+   "tr": "otun",
+   "ru": "Дрова",
+   "en": "Firewood"
+  },
+  {
+   "id": "balyk",
+   "cat": "Nature",
+   "ky": "Балык",
+   "tr": "balyk",
+   "ru": "Рыба",
+   "en": "Fish"
+  },
+  {
+   "id": "monko",
+   "cat": "Nature",
+   "ky": "Мөңкө",
+   "tr": "möŋkö",
+   "ru": "Горная форель",
+   "en": "Mountain trout"
+  },
+  {
+   "id": "jamgyr",
+   "cat": "Nature",
+   "ky": "Жамгыр",
+   "tr": "jamgyr",
+   "ru": "Дождь",
+   "en": "Rain"
+  },
+  {
+   "id": "kar",
+   "cat": "Nature",
+   "ky": "Кар",
+   "tr": "kar",
+   "ru": "Снег",
+   "en": "Snow"
+  },
+  {
+   "id": "tun",
+   "cat": "Nature",
+   "ky": "Түн",
+   "tr": "tün",
+   "ru": "Ночь",
+   "en": "Night"
+  },
+  {
+   "id": "bazar",
+   "cat": "Nature",
+   "ky": "Базар",
+   "tr": "bazar",
+   "ru": "Рынок",
+   "en": "Market"
+  },
+  {
+   "id": "shyrdak",
+   "cat": "Ornament",
+   "ky": "Шырдак",
+   "tr": "shyrdak",
+   "ru": "Войлочный ковёр с мозаичным узором",
+   "en": "Felt carpet with a mosaic pattern"
+  },
+  {
+   "id": "oyu",
+   "cat": "Ornament",
+   "ky": "Оюу",
+   "tr": "oyuu",
+   "ru": "Узор, орнамент",
+   "en": "Pattern, ornament"
+  },
+  {
+   "id": "tumar",
+   "cat": "Ornament",
+   "ky": "Тумар",
+   "tr": "tumar",
+   "ru": "Оберег; треугольный узор, хранит от беды",
+   "en": "Amulet; a triangle pattern that protects from harm"
+  },
+  {
+   "id": "kochkor",
+   "cat": "Ornament",
+   "ky": "Кочкор мүйүз",
+   "tr": "kochkor müyüz",
+   "ru": "«Рога барана» — узор богатства и силы",
+   "en": "\"Ram's horns\" — a pattern of wealth and strength"
+  },
+  {
+   "id": "it_kuyruk",
+   "cat": "Ornament",
+   "ky": "Ит куйрук",
+   "tr": "it kuyruk",
+   "ru": "«Собачий хвост» — узор-волна, символ верности",
+   "en": "\"Dog's tail\" — a wave pattern of loyalty"
+  },
+  {
+   "id": "kok_boru",
+   "cat": "Games",
+   "ky": "Көк бөрү",
+   "tr": "kök börü",
+   "ru": "«Серый волк» — конная игра за тушу (улак тартыш)",
+   "en": "\"Grey wolf\" — a horseback game for a goat carcass (ulak tartysh)"
+  },
+  {
+   "id": "ulak",
+   "cat": "Games",
+   "ky": "Улак",
+   "tr": "ulak",
+   "ru": "Туша козла, за которую борются всадники",
+   "en": "The goat carcass the riders fight over"
+  },
+  {
+   "id": "kazan",
+   "cat": "Games",
+   "ky": "Казан",
+   "tr": "kazan",
+   "ru": "Котёл; в кок-бору — «ворота», куда бросают улак",
+   "en": "Cauldron; in kok-boru — the goal where the ulak is thrown"
+  },
+  {
+   "id": "ordo",
+   "cat": "Games",
+   "ky": "Ордо",
+   "tr": "ordo",
+   "ru": "Игра в альчики: выбить их из круга битой",
+   "en": "Knucklebone game: knock them out of the circle"
+  },
+  {
+   "id": "saka",
+   "cat": "Games",
+   "ky": "Сака",
+   "tr": "saka",
+   "ru": "Бита — тяжёлый альчик, которым бьют",
+   "en": "The striker — a heavy knucklebone you throw"
+  },
+  {
+   "id": "han",
+   "cat": "Games",
+   "ky": "Хан",
+   "tr": "han",
+   "ru": "Главный альчик в центре круга",
+   "en": "The main knucklebone in the centre of the circle"
+  },
+  {
+   "id": "beshbarmak",
+   "cat": "Food",
+   "ky": "Бешбармак",
+   "tr": "beshbarmak",
+   "ru": "«Пять пальцев» — мясо с тестом, едят руками",
+   "en": "\"Five fingers\" — meat with noodles, eaten by hand"
+  },
+  {
+   "id": "et",
+   "cat": "Food",
+   "ky": "Эт",
+   "tr": "et",
+   "ru": "Мясо",
+   "en": "Meat"
+  },
+  {
+   "id": "un",
+   "cat": "Food",
+   "ky": "Ун",
+   "tr": "un",
+   "ru": "Мука",
+   "en": "Flour"
+  },
+  {
+   "id": "kamyr",
+   "cat": "Food",
+   "ky": "Камыр",
+   "tr": "kamyr",
+   "ru": "Тесто",
+   "en": "Dough"
+  },
+  {
+   "id": "piyaz",
+   "cat": "Food",
+   "ky": "Пияз",
+   "tr": "piyaz",
+   "ru": "Лук",
+   "en": "Onion"
+  },
+  {
+   "id": "ala_kiyiz",
+   "cat": "Yurt",
+   "ky": "Ала кийиз",
+   "tr": "ala kiyiz",
+   "ru": "Войлочный ковёр с вкатанным узором",
+   "en": "Felt rug with a pressed-in pattern"
+  },
+  {
+   "id": "tor",
+   "cat": "Yurt",
+   "ky": "Төр",
+   "tr": "tör",
+   "ru": "Почётное место в юрте напротив входа",
+   "en": "The place of honour opposite the yurt door"
+  }
+ ],
+ "achievements": [
+  {
+   "id": "word1",
+   "ky": "Биринчи сөз",
+   "ru": "Первое слово",
+   "en": "First word"
+  },
+  {
+   "id": "word25",
+   "ky": "Сөз жыйноочу",
+   "ru": "Собиратель слов",
+   "en": "Word collector"
+  },
+  {
+   "id": "wordall",
+   "ky": "Тил билгич",
+   "ru": "Знаток языка",
+   "en": "Language expert"
+  },
+  {
+   "id": "quests",
+   "ky": "Айылдын досу",
+   "ru": "Друг айыла",
+   "en": "Friend of the village"
+  },
+  {
+   "id": "buy1",
+   "ky": "Биринчи соода",
+   "ru": "Первая покупка",
+   "en": "First purchase"
+  },
+  {
+   "id": "buyall",
+   "ky": "Бай",
+   "ru": "Богач",
+   "en": "Rich man"
+  },
+  {
+   "id": "race",
+   "ky": "Чабандес",
+   "ru": "Наездник",
+   "en": "Jockey"
+  },
+  {
+   "id": "komuz",
+   "ky": "Күүчү",
+   "ru": "Мастер күү",
+   "en": "Küü master"
+  },
+  {
+   "id": "shyrdak",
+   "ky": "Шырдакчы",
+   "ru": "Мастер шырдака",
+   "en": "Shyrdak maker"
+  },
+  {
+   "id": "fish5",
+   "ky": "Балыкчы",
+   "ru": "Рыбак",
+   "en": "Fisher"
+  },
+  {
+   "id": "eagle",
+   "ky": "Салбуурун",
+   "ru": "Охота с беркутом",
+   "en": "Eagle hunt"
+  },
+  {
+   "id": "night",
+   "ky": "Түнкү айыл",
+   "ru": "Ночной айыл",
+   "en": "Village at night"
+  },
+  {
+   "id": "weather",
+   "ky": "Жамгыр астында",
+   "ru": "Под дождём",
+   "en": "In the rain"
+  },
+  {
+   "id": "detective",
+   "ky": "Тергөөчү",
+   "ru": "Сыщик",
+   "en": "Detective"
+  },
+  {
+   "id": "manas",
+   "ky": "Манас таануучу",
+   "ru": "Знаток «Манаса»",
+   "en": "Manas expert"
+  },
+  {
+   "id": "daily",
+   "ky": "Эмгекчил",
+   "ru": "Трудяга",
+   "en": "Hard worker"
+  },
+  {
+   "id": "kokboru",
+   "ky": "Көк бөрү",
+   "ru": "Кок-бору",
+   "en": "Kok-boru"
+  },
+  {
+   "id": "ordo",
+   "ky": "Ордочу",
+   "ru": "Мастер ордо",
+   "en": "Ordo master"
+  },
+  {
+   "id": "cook",
+   "ky": "Ашпозчу",
+   "ru": "Повар",
+   "en": "Cook"
+  },
+  {
+   "id": "yurt_decor",
+   "ky": "Боз үйдүн ээси",
+   "ru": "Хозяин юрты",
+   "en": "Master of the yurt"
+  }
+ ],
+ "quests": [
+  "greeting",
+  "guide",
+  "yurt",
+  "chuko",
+  "boorsok",
+  "kuurdak"
+ ],
+ "quest_names": {
+  "greeting": "Саламдашуу — знакомство",
+  "guide": "Айбек: яблоки",
+  "yurt": "Боз үй — юрта",
+  "chuko": "Чүкө атуу",
+  "boorsok": "Боорсок",
+  "kuurdak": "Улуттук тамак — куурдак"
+ }
+}

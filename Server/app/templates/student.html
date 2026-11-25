@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ s.display_name }} · MURAS{% endblock %}
+{% block body %}
+<p><a href="{{ url_for('dashboard.class_page', class_id=cls.id) }}">← {{ cls.name }}</a></p>
+<h1>{{ s.display_name }} <span class="muted small">@{{ s.username }}</span></h1>
+<div class="stats">
+  <div class="stat"><b>{{ s.xp }}</b><span>XP</span></div>
+  <div class="stat"><b>{{ s.words }}/{{ s.words_total }}</b><span>слов</span></div>
+  <div class="stat"><b>{{ s.quests }}/{{ s.quests_total }}</b><span>заданий</span></div>
+  <div class="stat"><b>{{ s.achievements }}</b><span>достижений</span></div>
+</div>
+<div class="grid two">
+  <section class="card">
+    <h2>Выученные слова ({{ s.known_words | length }})</h2>
+    <p class="chips">{% for w in s.known_words %}<span class="chip ok" title="{{ w.ru }}">{{ w.ky }}</span>{% else %}<span class="muted">пока нет</span>{% endfor %}</p>
+    <h2 class="mt">Ещё не открыты ({{ s.unknown_words | length }})</h2>
+    <p class="chips">{% for w in s.unknown_words %}<span class="chip" title="{{ w.ru }}">{{ w.ky }}</span>{% endfor %}</p>
+  </section>
+  <section class="card">
+    <h2>Мини-игры</h2>
+    {% if s.scores %}
+    <table><thead><tr><th>Игра</th><th>Лучший результат</th><th>Сыграно</th></tr></thead><tbody>
+    {% for sc in s.scores %}{% set g = games.get(sc.game) %}
+      <tr><td>{{ g.title if g else sc.game }}</td>
+          <td>{% if g and g.order == 'asc' %}{{ (sc.best_min / 1000) | round(1) }} с{% else %}{{ sc.best_max }} {{ g.unit if g else '' }}{% endif %}</td>
+          <td>{{ sc.plays }}</td></tr>
+    {% endfor %}</tbody></table>
+    {% else %}<p class="muted">Ещё не играл(а) в мини-игры.</p>{% endif %}
+    <h2 class="mt">Достижения</h2>
+    <p class="chips">{% for a in s.achievements_list %}<span class="chip gold">{{ a.ru }}</span>{% else %}<span class="muted">пока нет</span>{% endfor %}</p>
+    <h2 class="mt">Последние события</h2>
+    <ul class="events">
+    {% for e in s.recent_events %}<li><span class="small muted">{{ e.created_at | replace('T', ' ') | replace('Z', '') }}</span> {{ e.type }} {% if e.payload.id %}<b>{{ e.payload.id }}</b>{% endif %}{% if e.payload.score is defined %} — {{ e.payload.score }}{% endif %}</li>
+    {% else %}<li class="muted">нет событий</li>{% endfor %}
+    </ul>
+  </section>
+</div>
+<form method="post" action="{{ url_for('dashboard.remove_student', class_id=cls.id, user_id=s.user_id) }}" class="danger-zone">
+  <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+  <button class="danger" type="submit">Убрать из класса</button>
+</form>
+{% endblock %}

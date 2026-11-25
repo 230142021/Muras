@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -187,6 +188,26 @@ public class GameManager : MonoBehaviour
         }
     }
     public static bool HasSave => SavedXP > 0 || SavedQuestCount > 0;
+
+    /// <summary>Выполненные основные задания (для облачного сохранения).</summary>
+    public static List<string> CompletedQuestIds()
+    {
+        var list = new List<string>();
+        foreach (string id in QuestIds)
+            if (PlayerPrefs.GetInt(QuestKey + id, 0) == 1) list.Add(id);
+        return list;
+    }
+
+    /// <summary>Применить прогресс из облака: XP и выполненные задания (только известные игре).</summary>
+    public static void ApplyCloudProgress(int xp, IEnumerable<string> quests)
+    {
+        PlayerPrefs.SetInt(XPKey, Mathf.Max(0, xp));
+        var set = new HashSet<string>(quests);
+        foreach (string id in QuestIds)
+            if (set.Contains(id)) PlayerPrefs.SetInt(QuestKey + id, 1);
+        PlayerPrefs.Save();
+        if (Instance != null) { Instance.CurrentXP = Mathf.Max(0, xp); Instance.UpdateXPText(); }
+    }
 
     /// <summary>Стирает сохранённые XP и квесты. Можно вызывать без GameManager (например, из меню «Новая игра»).</summary>
     public static void ClearSavedProgress()

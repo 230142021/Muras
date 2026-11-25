@@ -236,6 +236,7 @@ public class RaceManager : MonoBehaviour
         int xp = place == 1 ? (firstWin ? FirstWinXp[Difficulty] : RepeatWinXp[Difficulty]) : place == 2 ? 20 + Difficulty * 10 : 5 + Difficulty * 5;
         if (place == 1) { SaveData.Add("race_wins", 1); SaveData.Set(winKey, SaveData.Get(winKey) + 1); Inventory.Add("kymyz"); }
         SaveData.SetMax("race_best_ms", -Mathf.RoundToInt(finishTime[0] * 1000f));
+        MurasCloud.ReportScore("race", Mathf.RoundToInt(finishTime[0] * 1000f), Mathf.RoundToInt(finishTime[0] * 1000f));
         if (GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         Vocab.Unlock("at_chabysh", "chabandes");
         if (place == 1) { Vocab.Unlock("kymyz"); Achievements.Give("race"); }

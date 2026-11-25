@@ -262,6 +262,7 @@ public class OrdoGame : MonoBehaviour, IModal
         bool first = win && SaveData.Get("ordo_win") == 0;
         int xp = win ? (first ? FirstWinXp : RepeatWinXp) : 8;
         if (win) { SaveData.Add("ordo_win", 1); Achievements.Give("ordo"); GameAudio.QuestComplete(); }
+        MurasCloud.ReportScore("ordo", score[0]);
         if (GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         infoText.text = (win ? Loc.T("<b>Жеңиш! Ты — хан ордо!</b>\n\nБала: «Ого, вот это бросок! Ты играешь как настоящий ордочу!»",
                                      "<b>Victory! You are the khan of ordo!</b>\n\nBala: \"Wow, what a throw! You play like a real ordo master!\"")

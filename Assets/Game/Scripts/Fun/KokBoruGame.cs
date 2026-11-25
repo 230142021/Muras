@@ -242,6 +242,7 @@ public class KokBoruGame : MonoBehaviour
         bool first = win && SaveData.Get("kokboru_win") == 0;
         int xp = win ? (first ? FirstWinXp : RepeatWinXp) : draw ? 15 : 10;
         if (win) { SaveData.Add("kokboru_win", 1); Achievements.Give("kokboru"); Vocab.Unlock("kazan"); }
+        MurasCloud.ReportScore("kokboru", myScore, Mathf.RoundToInt((Time.time - startTime) * 1000f));
         if (GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         MurasUI.Play("crowd_cheer", 0.8f);
         bigText.text = "<size=70%>" + (win ? Loc.T("Жеңиш!", "Victory!") : draw ? Loc.T("Тең!", "Draw!") : Loc.T("Утулдуң…", "You lost…")) + "</size>\n<size=40%>" + myScore + " : " + theirScore +

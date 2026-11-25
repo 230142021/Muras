@@ -277,6 +277,7 @@ public class KomuzGame : MonoBehaviour, IModal
         int[] xpFor = { 0, 30, 60, 100 };
         int xp = Mathf.Max(0, xpFor[stars] - xpFor[Mathf.Clamp(prev, 0, 3)]);
         if (stars > prev) SaveData.Set(key, stars);
+        MurasCloud.ReportScore("komuz", score);
         if (xp > 0 && GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         if (stars >= 1) Vocab.Unlock("komuz", "kuu", "komuzchu");
         if (stars >= 3) Achievements.Give("komuz");

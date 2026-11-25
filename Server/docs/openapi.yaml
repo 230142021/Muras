@@ -1,0 +1,313 @@
+openapi: 3.0.3
+info:
+  title: MURAS Game API
+  version: 1.0.0
+  description: |
+    Backend of MURAS, an educational 3D game about the Kyrgyz language and culture.
+    The Unity client uses it for accounts, cloud saves, gameplay analytics events and leaderboards;
+    teachers use it (and the /teacher web dashboard) to follow their class.
+
+    **Errors** always have the shape `{"error": {"code": "...", "message": "...", "details": [...]}}`.
+    **Auth**: `Authorization: Bearer <JWT>` from /auth/register or /auth/login (valid 14 days).
+servers:
+  - url: http://127.0.0.1:8000/api/v1
+    description: Local development
+tags:
+  - name: auth
+  - name: account
+  - name: progress
+  - name: analytics
+  - name: leaderboard
+  - name: teacher
+paths:
+  /auth/register:
+    post:
+      tags: [auth]
+      summary: Create an account (rate limited)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RegisterIn" }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/AuthOut" } } } }
+        "403": { $ref: "#/components/responses/Error", description: teacher_code_invalid }
+        "409": { $ref: "#/components/responses/Error", description: username_taken }
+        "422": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Log in (rate limited; same error for unknown user and wrong password)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties: { username: { type: string }, password: { type: string } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/AuthOut" } } } }
+        "401": { $ref: "#/components/responses/Error", description: invalid_credentials }
+        "429": { $ref: "#/components/responses/Error" }
+  /me:
+    get:
+      tags: [account]
+      security: [{ bearer: [] }]
+      summary: Current user and their classes
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user: { $ref: "#/components/schemas/User" }
+                  classes: { type: array, items: { type: object, properties: { id: { type: integer }, name: { type: string } } } }
+        "401": { $ref: "#/components/responses/Error" }
+    delete:
+      tags: [account]
+      security: [{ bearer: [] }]
+      summary: Delete the account and all its data (password confirmation)
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { password: { type: string } } } } }
+      responses:
+        "204": { description: Deleted }
+        "403": { $ref: "#/components/responses/Error" }
+  /me/export:
+    get:
+      tags: [account]
+      security: [{ bearer: [] }]
+      summary: Export every piece of data stored about the player (privacy)
+      responses:
+        "200": { description: JSON export }
+  /classes/join:
+    post:
+      tags: [account]
+      security: [{ bearer: [] }]
+      summary: Student joins a class with the teacher's 6-character code
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [code], properties: { code: { type: string, example: "K7QX2M" } } } } }
+      responses:
+        "200": { description: Joined (idempotent) }
+        "403": { $ref: "#/components/responses/Error", description: only students can join }
+        "404": { $ref: "#/components/responses/Error", description: class_not_found }
+  /progress:
+    get:
+      tags: [progress]
+      security: [{ bearer: [] }]
+      summary: Download the cloud save
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Save" } } } }
+    put:
+      tags: [progress]
+      security: [{ bearer: [] }]
+      summary: Upload the save (optimistic concurrency with automatic merge)
+      description: |
+        If `base_version` equals the server version the save is stored as is (`merged: false`).
+        If another device saved in between, the saves are merged — quests are united, progress keys
+        (words, achievements, stages, counters, records) take the maximum, keys with prefixes
+        `inv_`, `daily_`, `lantern_` take the client's value — and the merged `extra` is returned (`merged: true`).
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/SaveIn" } } }
+      responses:
+        "200":
+          description: Stored
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version: { type: integer }
+                  merged: { type: boolean }
+                  xp: { type: integer }
+                  quests: { type: array, items: { type: string } }
+                  extra: { type: object, nullable: true, additionalProperties: { type: integer } }
+        "409": { $ref: "#/components/responses/Error", description: version_ahead }
+        "413": { $ref: "#/components/responses/Error", description: body larger than 256 KB }
+        "422": { $ref: "#/components/responses/Error" }
+  /events:
+    post:
+      tags: [analytics]
+      security: [{ bearer: [] }]
+      summary: Upload a batch of gameplay events (idempotent by event id; used by the offline queue)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [events]
+              properties:
+                events: { type: array, minItems: 1, maxItems: 100, items: { $ref: "#/components/schemas/Event" } }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { type: object, properties: { accepted: { type: integer }, duplicates: { type: integer } } } } } }
+        "422": { $ref: "#/components/responses/Error" }
+  /games:
+    get:
+      tags: [leaderboard]
+      summary: Mini-games, their units, ordering and plausible score ranges
+      responses:
+        "200": { description: OK }
+  /scores:
+    post:
+      tags: [leaderboard]
+      security: [{ bearer: [] }]
+      summary: Submit a mini-game result (validated against plausible ranges; rejections are audited)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [game, score]
+              properties:
+                game: { type: string, enum: [ordo, kokboru, race, komuz, cooking, fishing] }
+                score: { type: integer }
+                duration_ms: { type: integer, minimum: 0 }
+      responses:
+        "201": { description: Saved, content: { application/json: { schema: { type: object, properties: { personal_best: { type: integer }, is_record: { type: boolean } } } } } }
+        "422": { $ref: "#/components/responses/Error", description: score_rejected / validation_error }
+  /leaderboard/{game}:
+    get:
+      tags: [leaderboard]
+      security: [{ bearer: [] }]
+      summary: Best result per player (global or within the player's classes)
+      parameters:
+        - { name: game, in: path, required: true, schema: { type: string } }
+        - { name: scope, in: query, schema: { type: string, enum: [global, class], default: global } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 50, default: 10 } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game: { type: string }
+                  order: { type: string, enum: [asc, desc] }
+                  top: { type: array, items: { $ref: "#/components/schemas/LeaderRow" } }
+                  me: { $ref: "#/components/schemas/LeaderRow" }
+        "404": { $ref: "#/components/responses/Error" }
+  /teacher/classes:
+    get:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: Teacher's classes with student counts (role teacher)
+      responses: { "200": { description: OK }, "403": { $ref: "#/components/responses/Error" } }
+    post:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: Create a class; a unique 6-character join code is generated
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [name], properties: { name: { type: string } } } } }
+      responses: { "201": { description: Created }, "403": { $ref: "#/components/responses/Error" } }
+  /teacher/classes/{id}:
+    get:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: Class with per-student summary (XP, words, quests, achievements, last seen)
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer } }]
+      responses: { "200": { description: OK }, "404": { $ref: "#/components/responses/Error", description: not found or not owned } }
+  /teacher/classes/{id}/analytics:
+    get:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: Class analytics — averages, word coverage, hardest words, quest completion, 14-day activity
+      parameters: [{ name: id, in: path, required: true, schema: { type: integer } }]
+      responses: { "200": { description: OK }, "404": { $ref: "#/components/responses/Error" } }
+  /teacher/classes/{id}/students/{userId}:
+    get:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: One student's known/unknown words, achievements, scores, recent events
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+        - { name: userId, in: path, required: true, schema: { type: integer } }
+      responses: { "200": { description: OK }, "404": { $ref: "#/components/responses/Error" } }
+    delete:
+      tags: [teacher]
+      security: [{ bearer: [] }]
+      summary: Remove a student from the class
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+        - { name: userId, in: path, required: true, schema: { type: integer } }
+      responses: { "204": { description: Removed } }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code: { type: string, example: validation_error }
+                  message: { type: string }
+                  details: { type: array, items: { type: object, properties: { field: { type: string }, message: { type: string } } } }
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        username: { type: string }
+        display_name: { type: string }
+        role: { type: string, enum: [student, teacher, admin] }
+    AuthOut:
+      type: object
+      properties:
+        token: { type: string }
+        user: { $ref: "#/components/schemas/User" }
+    RegisterIn:
+      type: object
+      required: [username, password, display_name]
+      properties:
+        username: { type: string, pattern: "^[A-Za-z0-9_.-]{3,32}$" }
+        password: { type: string, minLength: 8, maxLength: 128 }
+        display_name: { type: string, minLength: 1, maxLength: 48 }
+        role: { type: string, enum: [student, teacher], default: student }
+        teacher_code: { type: string, description: required when role is teacher }
+    Save:
+      type: object
+      properties:
+        version: { type: integer }
+        xp: { type: integer }
+        quests: { type: array, items: { type: string } }
+        extra: { type: object, additionalProperties: { type: integer }, description: "SaveData key/values: w_<word>, a_<achievement>, inv_<item>, ..." }
+        updated_at: { type: string, nullable: true }
+    SaveIn:
+      type: object
+      required: [base_version, xp]
+      properties:
+        base_version: { type: integer, minimum: 0 }
+        xp: { type: integer, minimum: 0, maximum: 1000000 }
+        quests: { type: array, maxItems: 64, items: { type: string, pattern: "^[a-z0-9_]{1,40}$" } }
+        extra: { type: object, maxProperties: 2000, additionalProperties: { type: integer, minimum: -10000000, maximum: 10000000 } }
+        client_info: { type: string, maxLength: 120 }
+    Event:
+      type: object
+      required: [id, type]
+      properties:
+        id: { type: string, minLength: 8, maxLength: 64, description: client-generated UUID }
+        type: { type: string, enum: [session_start, session_end, quest_completed, word_unlocked, achievement, minigame_result, level_up] }
+        payload: { type: object }
+        time: { type: string, description: client time (ISO 8601) }
+    LeaderRow:
+      type: object
+      nullable: true
+      properties:
+        rank: { type: integer }
+        user_id: { type: integer }
+        display_name: { type: string }
+        best: { type: integer }

@@ -63,6 +63,7 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
         if (!Input.GetKeyDown(KeyCode.Escape)) return;
+        if (AccountWindow.CloseIfOpen() || LeaderboardWindow.CloseIfOpen()) return;   // окна облака поверх паузы
         if (!IsPaused)
         {
             if (VillageShop.CloseIfOpen()) return;   // сначала закрываем окно базара
@@ -136,13 +137,15 @@ public class PauseMenu : MonoBehaviour
         root.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.6f);
 
         // Главное окно паузы
-        mainWindow = WindowBox(root.transform, new Vector2(560, 560));
-        Text(mainWindow.transform, Loc.T("ПАУЗА", "PAUSE"), 52, Gold, new Vector2(0, 205), new Vector2(500, 70), FontStyles.Bold);
-        Text(mainWindow.transform, Loc.T("Тыныгуу  ·  Esc — вернуться в игру", "Тыныгуу  ·  Esc — back to the game"), 20, Muted, new Vector2(0, 155), new Vector2(500, 30), FontStyles.Italic);
-        Button(mainWindow.transform, "Улантуу", Loc.T("Продолжить", "Continue"), new Vector2(0, 75), () => SetPaused(false));
-        Button(mainWindow.transform, "Жөндөөлөр", Loc.T("Настройки", "Settings"), new Vector2(0, -15), ShowSettings);
-        Button(mainWindow.transform, "Башкы меню", Loc.T("Главное меню (прогресс сохранён)", "Main menu (progress is saved)"), new Vector2(0, -105), ToMenu);
-        Button(mainWindow.transform, "Чыгуу", Loc.T("Выйти из игры", "Quit the game"), new Vector2(0, -195), Quit);
+        mainWindow = WindowBox(root.transform, new Vector2(560, 740));
+        Text(mainWindow.transform, Loc.T("ПАУЗА", "PAUSE"), 52, Gold, new Vector2(0, 295), new Vector2(500, 70), FontStyles.Bold);
+        Text(mainWindow.transform, Loc.T("Тыныгуу  ·  Esc — вернуться в игру", "Тыныгуу  ·  Esc — back to the game"), 20, Muted, new Vector2(0, 245), new Vector2(500, 30), FontStyles.Italic);
+        Button(mainWindow.transform, "Улантуу", Loc.T("Продолжить", "Continue"), new Vector2(0, 165), () => SetPaused(false));
+        Button(mainWindow.transform, "Аккаунт", MurasCloud.LoggedIn ? Loc.T("Облако: ", "Cloud: ") + MurasCloud.DisplayName : Loc.T("Вход, облачное сохранение, класс", "Log in, cloud save, class"), new Vector2(0, 75), AccountWindow.Open);
+        Button(mainWindow.transform, "Рекорддор", Loc.T("Таблица рекордов мини-игр", "Mini-game leaderboards"), new Vector2(0, -15), LeaderboardWindow.Open);
+        Button(mainWindow.transform, "Жөндөөлөр", Loc.T("Настройки", "Settings"), new Vector2(0, -105), ShowSettings);
+        Button(mainWindow.transform, "Башкы меню", Loc.T("Главное меню (прогресс сохранён)", "Main menu (progress is saved)"), new Vector2(0, -195), ToMenu);
+        Button(mainWindow.transform, "Чыгуу", Loc.T("Выйти из игры", "Quit the game"), new Vector2(0, -285), Quit);
 
         // Окно настроек
         settingsWindow = WindowBox(root.transform, new Vector2(700, 600));

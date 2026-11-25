@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Мои классы</h1>
+<div class="grid">
+  {% for c in classes %}
+  <a class="card class-card" href="{{ url_for('dashboard.class_page', class_id=c.id) }}">
+    <h2>{{ c.name }}</h2>
+    <p class="code" title="Код для входа в класс">{{ c.join_code }}</p>
+    <p class="muted">{{ c.students }} учеников</p>
+  </a>
+  {% else %}
+  <p class="muted">Пока нет классов. Создайте первый — ученики вводят его код в игре (Аккаунт → Класс).</p>
+  {% endfor %}
+</div>
+<section class="card narrow">
+  <h2>Новый класс</h2>
+  <form method="post" action="{{ url_for('dashboard.create_class') }}" class="row">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label class="sr" for="cn">Название класса</label>
+    <input id="cn" name="name" placeholder="Например: 7 «Б», кыргызский язык" maxlength="60" required>
+    <button type="submit">Создать</button>
+  </form>
+</section>
+{% endblock %}

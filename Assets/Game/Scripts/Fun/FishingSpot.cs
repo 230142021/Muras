@@ -154,6 +154,7 @@ public class FishingSpot : MonoBehaviour, IModal
         float size = f == 2 ? Random.Range(45f, 60f) : Random.Range(18f, 38f);
         int xp = f == 2 ? 30 : 10;
         SaveData.Add("fish", 1);
+        MurasCloud.ReportScore("fishing", SaveData.Get("fish"));
         if (GameManager.Instance != null) GameManager.Instance.AddXP(xp);
         Inventory.Add(f == 0 ? "monko" : f == 1 ? "chabak" : "altyn");
         Vocab.Unlock("balyk");

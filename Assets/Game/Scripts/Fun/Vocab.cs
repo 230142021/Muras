@@ -159,6 +159,7 @@ public static class Vocab
             fresh.Add(w);
         }
         if (fresh.Count == 0) return;
+        foreach (Word w in fresh) MurasCloud.Track("word_unlocked", CloudJson.Object("id", w.id));
 
         if (GameManager.Instance != null) GameManager.Instance.AddXP(XpPerWord * fresh.Count);
         string title = (fresh.Count == 1 ? "Жаңы сөз" : "Жаңы сөздөр") + "  +" + XpPerWord * fresh.Count + " XP";
