@@ -380,6 +380,6 @@ public class SpeechPanel : MonoBehaviour
         reveal = 0f;
         typing = true;
         text.maxVisibleCharacters = 0;
-        if (hasSpeaker) GameAudio.Babble(body, speaker.voicePitch);
+        if (hasSpeaker) GameAudio.Babble(body, speaker.voicePitch, speaker.key);
     }
 }

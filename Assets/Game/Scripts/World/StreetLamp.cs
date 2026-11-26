@@ -56,6 +56,7 @@ public class StreetLamp : MonoBehaviour
         }
         if (glow != null)
         {
+            if (mpb == null) mpb = new MaterialPropertyBlock();   // после перекомпиляции в Play Mode
             glow.GetPropertyBlock(mpb);
             Color off = new Color(0.35f, 0.32f, 0.26f);
             mpb.SetColor("_BaseColor", Color.Lerp(off, color, level));

@@ -97,7 +97,7 @@ public class DialogueManager : MonoBehaviour
 
         npcNameText.text = npcName;
         questionText.text = question;
-        GameAudio.Babble(question, 1.0f);
+        GameAudio.Babble(question, 1.05f, "Айбек");
         translationText.text = Loc.T(translation, translationEn);
 
         if (questCompleted)

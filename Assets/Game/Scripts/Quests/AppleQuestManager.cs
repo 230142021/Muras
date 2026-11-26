@@ -237,7 +237,7 @@ public class AppleQuestManager : MonoBehaviour, IQuestHintSource
 
     private void ShowMessage(string message)
     {
-        if (message.StartsWith("Айбек") || message.StartsWith("Aibek")) GameAudio.Babble(message, 1.0f);
+        if (message.StartsWith("Айбек") || message.StartsWith("Aibek")) GameAudio.Babble(message, 1.05f, "Айбек");
         if (messageText == null) return;
         messageText.text = message;
         Transform toast = messageText.transform.parent;

@@ -31,6 +31,17 @@ public class GraphicsPolish : MonoBehaviour
     Bloom bloom;
     Tonemapping tonemap;
     Vignette vignette;
+    DepthOfField dof;
+    float dofBlend;
+    Material skyMat, oldSky;
+
+    // цвет зенита по часам (горизонт берётся из цвета тумана DayNightCycle — горы тонут в той же дымке)
+    static readonly (float h, Color c)[] ZenithKeys =
+    {
+        (0f, new Color(0.015f, 0.022f, 0.06f)), (5f, new Color(0.03f, 0.04f, 0.10f)), (6.3f, new Color(0.20f, 0.27f, 0.48f)),
+        (8f, new Color(0.20f, 0.42f, 0.80f)), (17f, new Color(0.20f, 0.42f, 0.80f)), (18.6f, new Color(0.24f, 0.28f, 0.52f)),
+        (19.8f, new Color(0.08f, 0.09f, 0.22f)), (21f, new Color(0.02f, 0.026f, 0.07f)), (24f, new Color(0.015f, 0.022f, 0.06f)),
+    };
     Shader windShader;
     readonly Dictionary<(Material, bool), Material> windMats = new Dictionary<(Material, bool), Material>();
     float windTime;
@@ -73,16 +84,92 @@ public class GraphicsPolish : MonoBehaviour
 
     void Setup(Scene scene)
     {
-        bloom = null; tonemap = null; vignette = null;
+        bloom = null; tonemap = null; vignette = null; dof = null; dofBlend = 0f;
         SetupVolume();
         if (FindAnyObjectByType<DayNightCycle>() != null)
         {
+            SetupSky();
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Exponential;
             ApplyWindMaterials(scene);
         }
         ApplyQuality();
     }
+
+    // ------------------------------------------------------------------ небо
+    void SetupSky()
+    {
+        Shader sh = Shader.Find("MURAS/Sky");
+        if (sh == null || !sh.isSupported) { Debug.LogWarning("MURAS: шейдер MURAS/Sky не найден"); return; }
+        oldSky = RenderSettings.skybox;
+        skyMat = new Material(sh) { name = "MURAS Sky (runtime)" };
+        RenderSettings.skybox = skyMat;
+    }
+
+    void UpdateSky()
+    {
+        var dn = DayNightCycle.Instance;
+        if (skyMat == null || dn == null || RenderSettings.skybox != skyMat) return;
+        float h = dn.hour, t = h / 24f;
+        Color zen = ZenithKeys[0].c;
+        for (int i = 0; i < ZenithKeys.Length - 1; i++)
+            if (h >= ZenithKeys[i].h && h <= ZenithKeys[i + 1].h)
+            { zen = Color.Lerp(ZenithKeys[i].c, ZenithKeys[i + 1].c, Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(ZenithKeys[i].h, ZenithKeys[i + 1].h, h))); break; }
+        Color hor = RenderSettings.fogColor;
+        float grey = DayNightCycle.WeatherGrey;
+        float gz = zen.grayscale;
+        zen = Color.Lerp(zen, new Color(gz, gz, gz) * 1.1f + hor * 0.2f, grey * 0.8f);
+        skyMat.SetColor("_ZenithColor", zen);
+        skyMat.SetColor("_HorizonColor", hor);
+        skyMat.SetColor("_GroundColor", dn.groundAmbient.Evaluate(t) * 0.9f);
+        Shader.SetGlobalColor("_MurasSkyZenith", new Color(zen.r, zen.g, zen.b, 1f));
+        Shader.SetGlobalColor("_MurasSkyHorizon", new Color(hor.r, hor.g, hor.b, 1f));
+
+        float sunset = Mathf.Max(Mathf.Exp(-Mathf.Pow((h - 18.6f) / 1.1f, 2f)), Mathf.Exp(-Mathf.Pow((h - 6.2f) / 1.0f, 2f)));
+        if (dn.sun != null)
+        {
+            Vector3 sd = -dn.sun.transform.forward;
+            skyMat.SetVector("_SunDir", sd);
+            Color sc = dn.sunColor.Evaluate(t);
+            skyMat.SetColor("_SunColor", sc * Mathf.Lerp(7f, 4f, sunset) * (1f - grey * 0.85f));
+            skyMat.SetFloat("_SunAlpha", Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(-0.06f, 0.02f, sd.y)) * (1f - DayNightCycle.NightFactor));
+            skyMat.SetFloat("_SunSize", 0.032f + sunset * 0.012f);
+        }
+        skyMat.SetColor("_SunsetColor", new Color(1.5f, 0.62f, 0.3f) * (1f - grey * 0.7f));
+        skyMat.SetFloat("_Sunset", sunset);
+        if (dn.moon != null)
+        {
+            skyMat.SetVector("_MoonDir", -dn.moon.transform.forward);
+            float moonA = Mathf.Max(DayNightCycle.NightFactor, dn.moon.enabled ? 0.35f : 0f);
+            skyMat.SetFloat("_MoonAlpha", moonA * (1f - grey * 0.9f));
+        }
+        skyMat.SetFloat("_StarAlpha", DayNightCycle.NightFactor * (1f - grey));
+    }
+
+    // ------------------------------------------------------------------ размытие фона в диалоге
+    void UpdateDialogBlur()
+    {
+        if (dof == null) return;
+        bool talking = (SpeechPanel.Instance != null && SpeechPanel.Instance.IsShowing);
+        if (dialogue == null && Time.unscaledTime > nextDialogueSearch) { dialogue = FindAnyObjectByType<DialogueManager>(); nextDialogueSearch = Time.unscaledTime + 3f; }
+        if (dialogue != null && dialogue.IsOpen) talking = true;
+        bool allowed = Enhanced && GameSettings.Quality >= 1;
+        dofBlend = Mathf.MoveTowards(dofBlend, talking && allowed ? 1f : 0f, Time.unscaledDeltaTime * 2.5f);
+        dof.active = dofBlend > 0.01f;
+        if (!dof.active) return;
+        // резкость — на герое и собеседнике рядом с ним, дальше мягко размывается
+        Camera cam = Camera.main;
+        float focus = 6f;
+        if (cam != null && player == null) { var pm = FindAnyObjectByType<PlayerMovement>(); if (pm != null) player = pm.transform; }
+        if (cam != null && player != null) focus = Vector3.Distance(cam.transform.position, player.position);
+        dof.gaussianStart.Override(focus + 2.5f);
+        dof.gaussianEnd.Override(focus + 14f);
+        dof.gaussianMaxRadius.Override(Mathf.Lerp(0f, GameSettings.Quality == 2 ? 1.4f : 1.0f, dofBlend));
+        dof.highQualitySampling.Override(GameSettings.Quality == 2);
+    }
+    Transform player;
+    DialogueManager dialogue;
+    float nextDialogueSearch;
 
     // ------------------------------------------------------------------ пост-обработка
     void SetupVolume()
@@ -99,8 +186,12 @@ public class GraphicsPolish : MonoBehaviour
         bloom.scatter.Override(0.62f);
         bloom.tint.Override(new Color(1f, 0.93f, 0.82f));
         bloom.highQualityFiltering.Override(false);
+        if (!p.TryGet(out dof)) dof = p.Add<DepthOfField>(true);
+        dof.mode.Override(DepthOfFieldMode.Gaussian);
+        dof.gaussianMaxRadius.Override(0f);
+        dof.active = false;
         if (!p.TryGet(out vignette)) vignette = p.Add<Vignette>(true);
-        vignette.intensity.Override(0.16f);
+        vignette.intensity.Override(0.2f);
         vignette.smoothness.Override(0.45f);
         vignette.color.Override(new Color(0.08f, 0.05f, 0.03f));
     }
@@ -114,8 +205,11 @@ public class GraphicsPolish : MonoBehaviour
         var me = Instance;
         if (me.tonemap != null) me.tonemap.active = on;
         if (me.vignette != null) me.vignette.active = on;
+        if (me.skyMat != null) RenderSettings.skybox = on ? me.skyMat : (me.oldSky != null ? me.oldSky : RenderSettings.skybox);
         if (!on)
         {
+            Shader.SetGlobalColor("_MurasSkyZenith", Color.clear);
+            Shader.SetGlobalColor("_MurasSkyHorizon", Color.clear);
             if (me.bloom != null) me.bloom.active = false;
             RenderSettings.fogMode = FogMode.Linear; RenderSettings.fogStartDistance = 70f; RenderSettings.fogEndDistance = 480f;
             Camera cam = Camera.main;
@@ -163,6 +257,8 @@ public class GraphicsPolish : MonoBehaviour
                 }
             RenderSettings.fogDensity = d * (1f + DayNightCycle.WeatherGrey * 1.6f);   // в дождь и снег — гуще
         }
+        if (Enhanced) UpdateSky();
+        UpdateDialogBlur();
         // ветер: направление медленно гуляет, в непогоду сильнее
         windTime += Time.deltaTime;
         float a = 0.6f + Mathf.Sin(windTime * 0.02f) * 0.5f;

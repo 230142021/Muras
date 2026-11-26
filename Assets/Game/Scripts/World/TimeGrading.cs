@@ -18,11 +18,11 @@ public class TimeGrading : MonoBehaviour
     {
         (0f,    new Look(-22f, 6f, 0.30f, -16f, 4f)),
         (4.8f,  new Look(-20f, 6f, 0.30f, -14f, 4f)),
-        (6.5f,  new Look(2f, 6f, 0.10f, 6f, 0f)),
+        (6.5f,  new Look(8f, 7f, 0.10f, 7f, 0f)),
         (9f,    new Look(12f, 10f, 0.10f, -4f, 0f)),
         (16.5f, new Look(12f, 10f, 0.10f, -4f, 0f)),
-        (18.3f, new Look(4f, 6f, 0.05f, 8f, 2f)),
-        (19.4f, new Look(-6f, 4f, 0.15f, -8f, 4f)),
+        (18.3f, new Look(14f, 8f, 0.05f, 9f, 2f)),
+        (19.4f, new Look(-2f, 5f, 0.15f, -8f, 4f)),
         (20.8f, new Look(-20f, 6f, 0.30f, -16f, 4f)),
         (24f,   new Look(-22f, 6f, 0.30f, -16f, 4f)),
     };

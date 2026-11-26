@@ -85,6 +85,50 @@ public static class GraphicsTools
         Debug.Log("[Graphics] wind test saved");
     }
 
+    [MenuItem("Tools/Diploma/Play Mode: Fun/Graphics: capture sky + river")]
+    static void SkyRiver()
+    {
+        if (!Application.isPlaying || Camera.main == null || DayNightCycle.Instance == null) return;
+        string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "Temp", "shots"));
+        Directory.CreateDirectory(dir);
+        Camera cam = Camera.main;
+        var follow = cam.GetComponent<MonoBehaviour>();
+        Vector3 p0 = cam.transform.position; Quaternion r0 = cam.transform.rotation;
+        float keep = DayNightCycle.Instance.hour;
+        void Shot(string name, float hour)
+        {
+            DayNightCycle.Instance.hour = hour;
+            DayNightCycle.Instance.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            foreach (var tg in Object.FindObjectsByType<TimeGrading>(FindObjectsSortMode.None)) tg.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            GraphicsPolish.Instance.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            foreach (var cl in Object.FindObjectsByType<CloudLayer>(FindObjectsSortMode.None)) cl.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            Save(cam, Path.Combine(dir, name + ".png"));
+        }
+        // небо: камера смотрит выше горизонта на солнце / луну
+        foreach (var (n, h, lightName) in new[] { ("sky_noon", 12.5f, "sun"), ("sky_sunset", 18.55f, "sun"), ("sky_night", 23f, "moon") })
+        {
+            Light l = lightName == "sun" ? DayNightCycle.Instance.sun : DayNightCycle.Instance.moon;
+            DayNightCycle.Instance.hour = h; DayNightCycle.Instance.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            Vector3 d = l != null ? -l.transform.forward : Vector3.forward;
+            d.y = Mathf.Clamp(d.y, 0.05f, 0.35f);
+            cam.transform.rotation = Quaternion.LookRotation(d.normalized);
+            Shot(n, h);
+        }
+        // река: с пирса вдоль русла
+        var spot = Object.FindAnyObjectByType<FishingSpot>();
+        if (spot != null)
+        {
+            cam.transform.position = spot.transform.position + Vector3.up * 2.2f - spot.transform.forward * 1.5f;
+            cam.transform.rotation = Quaternion.LookRotation(spot.transform.forward + Vector3.down * 0.45f);
+            Shot("river_noon", 12.5f);
+            Shot("river_sunset", 18.4f);
+            Shot("river_night", 22.5f);
+        }
+        cam.transform.position = p0; cam.transform.rotation = r0;
+        DayNightCycle.Instance.hour = keep;
+        Debug.Log("[Graphics] небо и река: " + dir);
+    }
+
     static void Save(Camera cam, string path)
     {
         var rt = new RenderTexture(1280, 720, 24, RenderTextureFormat.ARGB32) { antiAliasing = 1 };
