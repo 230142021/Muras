@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 ///  • Тонемаппинг (мягкая передача ярких цветов) и Bloom — свечение фонарей, костра, окон, солнца.
 ///  • Сглаживание краёв: FXAA / SMAA / SMAA High.
 ///  • Ветер: трава и деревья качаются (шейдер MURAS/WindLit, материалы подменяются при загрузке сцены).
+///  • Отражения: realtime Reflection Probe рисует небо MURAS/Sky (сменяется со временем суток) — окна и вода отражают небо.
+///  • Тени: контактные тени (SSAO) под предметами и в траве, трава отбрасывает тени, уменьшен сдвиг теней (нет «висящих» объектов).
 /// Работает только во время игры; сцену и материалы проекта не меняет.
 /// </summary>
 public class GraphicsPolish : MonoBehaviour
@@ -48,6 +50,17 @@ public class GraphicsPolish : MonoBehaviour
 
     public static int WindRenderers { get; private set; }
 
+    // отражения и тени
+    ReflectionProbe skyProbe;
+    float nextProbe;
+    public static int GlassMaterials { get; private set; }
+    readonly Dictionary<Material, Material> glassMats = new Dictionary<Material, Material>();
+    readonly List<Renderer> grassRenderers = new List<Renderer>();
+    static bool shadowSaved;
+    static float baseDepthBias, baseNormalBias;
+    static bool baseSsao;
+    static UnityEngine.Rendering.Universal.ScriptableRendererFeature ssao;
+
     // поправки к цветокоррекции TimeGrading: тонемаппинг слегка гасит цвет и контраст — возвращаем их
     public static float ExposureAdd = 0.12f, SaturationAdd = 10f, ContrastAdd = 8f;
     public static TonemappingMode ToneMode = TonemappingMode.Neutral;
@@ -74,6 +87,7 @@ public class GraphicsPolish : MonoBehaviour
     {
         Instance = this;
         windShader = Shader.Find("MURAS/WindLit");
+        CreateSkyProbe();
         SceneManager.sceneLoaded += OnSceneLoaded;
         Setup(SceneManager.GetActiveScene());
     }
@@ -92,6 +106,8 @@ public class GraphicsPolish : MonoBehaviour
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Exponential;
             ApplyWindMaterials(scene);
+            ApplyGlass(scene);
+            nextProbe = 0f;
         }
         ApplyQuality();
     }
@@ -215,6 +231,8 @@ public class GraphicsPolish : MonoBehaviour
             Camera cam = Camera.main;
             if (cam != null) cam.GetUniversalAdditionalCameraData().antialiasing = AntialiasingMode.None;
             Shader.SetGlobalFloat("_MurasWind", 0f);
+            if (me.skyProbe != null) me.skyProbe.enabled = false;
+            RestoreShadows();
         }
         else { RenderSettings.fogMode = FogMode.Exponential; ApplyQuality(); }
     }
@@ -241,6 +259,8 @@ public class GraphicsPolish : MonoBehaviour
             data.antialiasingQuality = q == 2 ? AntialiasingQuality.High : AntialiasingQuality.Medium;
         }
         Shader.SetGlobalFloat("_MurasWind", q == 0 ? 0f : 1f);
+        me.ApplyShadows(q);
+        if (me.skyProbe != null) { me.skyProbe.enabled = true; me.skyProbe.resolution = q == 2 ? 256 : 128; me.nextProbe = 0f; }
     }
 
     // ------------------------------------------------------------------ туман и ветер по времени
@@ -257,7 +277,7 @@ public class GraphicsPolish : MonoBehaviour
                 }
             RenderSettings.fogDensity = d * (1f + DayNightCycle.WeatherGrey * 1.6f);   // в дождь и снег — гуще
         }
-        if (Enhanced) UpdateSky();
+        if (Enhanced) { UpdateSky(); UpdateSkyProbe(); }
         UpdateDialogBlur();
         // ветер: направление медленно гуляет, в непогоду сильнее
         windTime += Time.deltaTime;
@@ -266,10 +286,144 @@ public class GraphicsPolish : MonoBehaviour
         Shader.SetGlobalVector("_MurasWindDir", new Vector4(Mathf.Cos(a) * strength, Mathf.Sin(a) * strength, 0f, 0f));
     }
 
+    // ------------------------------------------------------------------ отражения неба (Reflection Probe)
+    void CreateSkyProbe()
+    {
+        var go = new GameObject("MURAS Sky Reflection");
+        go.transform.SetParent(transform, false);
+        skyProbe = go.AddComponent<ReflectionProbe>();
+        skyProbe.mode = ReflectionProbeMode.Realtime;
+        skyProbe.refreshMode = ReflectionProbeRefreshMode.ViaScripting;
+        skyProbe.timeSlicingMode = ReflectionProbeTimeSlicingMode.NoTimeSlicing;
+        skyProbe.clearFlags = ReflectionProbeClearFlags.Skybox;
+        skyProbe.cullingMask = 0;                     // рисует только небо — дёшево (6 граней неба)
+        skyProbe.size = new Vector3(6000f, 3000f, 6000f);
+        skyProbe.boxProjection = false;
+        skyProbe.importance = 0;                      // запечённые пробы в сцене (если есть) важнее
+        skyProbe.hdr = true;
+        skyProbe.resolution = 128;
+        skyProbe.intensity = 1f;
+    }
+
+    void UpdateSkyProbe()
+    {
+        if (skyProbe == null || !skyProbe.enabled) return;
+        Camera cam = Camera.main;
+        if (cam != null) skyProbe.transform.position = cam.transform.position;
+        if (Time.unscaledTime < nextProbe) return;
+        // небо меняется медленно: High — 2 раза в секунду, иначе раз в 1.5 с
+        nextProbe = Time.unscaledTime + (GameSettings.Quality == 2 ? 0.5f : 1.5f);
+        skyProbe.RenderProbe();
+    }
+
+    /// <summary>Стёкла окон становятся гладкими — в них отражается небо из пробы.</summary>
+    void ApplyGlass(Scene scene)
+    {
+        GlassMaterials = 0;
+        foreach (GameObject root in scene.GetRootGameObjects())
+            foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                Material[] mats = r.sharedMaterials;
+                bool changed = false;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    Material m = mats[i];
+                    if (m == null || !IsGlass(m)) continue;
+                    if (m.name.Contains("(Instance)") || m.name.Contains("(MURAS)"))   // уже копия (например, у HouseLights) — правим её
+                    { MakeGlossy(m); continue; }
+                    if (!glassMats.TryGetValue(m, out Material g))
+                    {
+                        g = new Material(m) { name = m.name + " (MURAS)" };
+                        MakeGlossy(g);
+                        glassMats[m] = g;
+                        GlassMaterials++;
+                    }
+                    mats[i] = g; changed = true;
+                }
+                if (changed) r.sharedMaterials = mats;
+            }
+    }
+
+    static bool IsGlass(Material m)
+    {
+        string n = m.name;
+        if (!(n.Contains("Window") || n.Contains("Glass"))) return false;
+        if (n.Contains("Frame") || n.Contains("Lamp") || n.Contains("Sill")) return false;
+        string sh = m.shader != null ? m.shader.name : "";
+        return sh.StartsWith("Universal Render Pipeline/");
+    }
+
+    static void MakeGlossy(Material m)
+    {
+        if (m.HasProperty("_Smoothness")) m.SetFloat("_Smoothness", 0.93f);
+        if (m.HasProperty("_Glossiness")) m.SetFloat("_Glossiness", 0.93f);
+        if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", 0.25f);
+        if (m.HasProperty("_EnvironmentReflections")) m.SetFloat("_EnvironmentReflections", 1f);
+        if (m.HasProperty("_SpecularHighlights")) m.SetFloat("_SpecularHighlights", 1f);
+        m.DisableKeyword("_ENVIRONMENTREFLECTIONS_OFF");
+        m.DisableKeyword("_SPECULARHIGHLIGHTS_OFF");
+    }
+
+    // ------------------------------------------------------------------ тени
+    void ApplyShadows(int q)
+    {
+        var urp = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+        if (urp == null) return;
+        if (!shadowSaved)
+        {
+            shadowSaved = true;
+            baseDepthBias = urp.shadowDepthBias; baseNormalBias = urp.shadowNormalBias;
+            ssao = FindSsao(urp);
+            baseSsao = ssao != null && ssao.isActive;
+            Application.quitting += RestoreShadows;    // в редакторе ассеты не должны остаться изменёнными
+        }
+        // меньший сдвиг — тень начинается прямо у основания предмета, без «зазора» (peter-panning)
+        urp.shadowDepthBias = 0.35f;
+        urp.shadowNormalBias = 0.2f;
+        if (ssao != null) ssao.SetActive(q >= 1);     // контактные тени под предметами и в траве
+        foreach (Renderer r in grassRenderers)
+            if (r != null) r.shadowCastingMode = q >= 1 ? ShadowCastingMode.On : ShadowCastingMode.Off;
+    }
+
+    /// <summary>Для сравнения «до/после» теней (инструмент захвата кадров).</summary>
+    public static void SetShadowTweaks(bool on)
+    {
+        if (Instance == null) return;
+        if (on) Instance.ApplyShadows(GameSettings.Quality);
+        else { RestoreShadows(); if (ssao != null) ssao.SetActive(false); }
+    }
+
+    /// <summary>Перерисовать пробу неба сейчас (после резкой смены времени суток).</summary>
+    public static void RefreshReflections()
+    {
+        if (Instance != null && Instance.skyProbe != null && Instance.skyProbe.enabled) Instance.skyProbe.RenderProbe();
+    }
+
+    static void RestoreShadows()
+    {
+        if (!shadowSaved) return;
+        var urp = GraphicsSettings.currentRenderPipeline as UniversalRenderPipelineAsset;
+        if (urp != null) { urp.shadowDepthBias = baseDepthBias; urp.shadowNormalBias = baseNormalBias; }
+        if (ssao != null) ssao.SetActive(baseSsao);
+        shadowSaved = false;
+    }
+
+    static ScriptableRendererFeature FindSsao(UniversalRenderPipelineAsset urp)
+    {
+        foreach (ScriptableRendererData data in urp.rendererDataList)
+        {
+            if (data == null) continue;
+            foreach (ScriptableRendererFeature f in data.rendererFeatures)
+                if (f != null && f.GetType().Name == "ScreenSpaceAmbientOcclusion") return f;
+        }
+        return null;
+    }
+
     // ------------------------------------------------------------------ материалы с ветром
     void ApplyWindMaterials(Scene scene)
     {
         WindRenderers = 0;
+        grassRenderers.Clear();
         if (windShader == null || !windShader.isSupported) { Debug.LogWarning("MURAS: шейдер MURAS/WindLit не найден — ветер выключен"); return; }
         foreach (GameObject root in scene.GetRootGameObjects())
             foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
@@ -289,6 +443,7 @@ public class GraphicsPolish : MonoBehaviour
                     changed = true;
                 }
                 if (changed) { r.sharedMaterials = mats; WindRenderers++; }
+                if (kind == 2) grassRenderers.Add(r);
             }
     }
 

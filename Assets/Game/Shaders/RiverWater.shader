@@ -44,6 +44,10 @@ Shader "MURAS/RiverWater"
             #pragma fragment frag
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
+            #pragma multi_compile_fragment _ _REFLECTION_PROBE_ATLAS
+            #pragma multi_compile _ _CLUSTER_LIGHT_LOOP
             #include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Fog.hlsl"
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
@@ -144,7 +148,10 @@ Shader "MURAS/RiverWater"
                 half3 skyTop = _MurasSkyZenith.a > 0.5 ? _MurasSkyZenith.rgb : _SkyColor.rgb;
                 half3 skyHor = _MurasSkyHorizon.a > 0.5 ? _MurasSkyHorizon.rgb : _HorizonColor.rgb;
                 float3 R = reflect(-V, Nr);
-                half3 sky = lerp(skyHor, skyTop, saturate(R.y * 1.5)) * 0.9;
+                half3 skyGrad = lerp(skyHor, skyTop, saturate(R.y * 1.5)) * 0.9;
+                // отражение из Reflection Probe (небо MURAS/Sky с солнцем, луной и звёздами); градиент — запасной вариант
+                half3 probe = GlossyEnvironmentReflection(R, i.positionWS, 0.08h, 1.0h, suv);
+                half3 sky = lerp(skyGrad, probe, 0.65h);
                 half fresnel = pow(1.0 - saturate(dot(Nr, V)), 5.0);
                 col = lerp(col, sky, saturate(fresnel * 0.6 + 0.06));
 
