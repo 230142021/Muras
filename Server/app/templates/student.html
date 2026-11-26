@@ -9,6 +9,22 @@
   <div class="stat"><b>{{ s.quests }}/{{ s.quests_total }}</b><span>заданий</span></div>
   <div class="stat"><b>{{ s.achievements }}</b><span>достижений</span></div>
 </div>
+<section class="card">
+  <h2>Тест знаний</h2>
+  {% if tests %}
+  {% set pre, post = tests.get('pre'), tests.get('post') %}
+  <p>До игры: <b>{{ pre.score if pre else '—' }}</b>{% if pre %}/{{ pre.total }}{% endif %} ·
+     после игры: <b>{{ post.score if post else '—' }}</b>{% if post %}/{{ post.total }}{% endif %}
+     {% if pre and post %}<span class="gain {{ 'up' if post.score > pre.score else ('down' if post.score < pre.score else '') }}">{{ '%+d' % (post.score - pre.score) }}</span>{% endif %}</p>
+  <table><thead><tr><th>Вопрос</th><th>До</th><th>После</th></tr></thead><tbody>
+  {% for q in questions %}<tr><td>{{ q.ru }}</td>
+    <td>{% if pre and q.id in pre.answers %}{{ '✓' if pre.answers[q.id] else '✗' }}{% else %}—{% endif %}</td>
+    <td>{% if post and q.id in post.answers %}{{ '✓' if post.answers[q.id] else '✗' }}{% else %}—{% endif %}</td></tr>{% endfor %}
+  </tbody></table>
+  {% else %}<p class="muted">Тест ещё не пройден.</p>{% endif %}
+  {% if activity %}<h2 class="mt">Время в игре</h2>
+  <p class="chips">{% for r in activity %}<span class="chip">{{ r.name }}: {{ r.minutes }} мин</span>{% endfor %}</p>{% endif %}
+</section>
 <div class="grid two">
   <section class="card">
     <h2>Выученные слова ({{ s.known_words | length }})</h2>

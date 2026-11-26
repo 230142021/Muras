@@ -126,6 +126,21 @@ public class JournalWindow : MonoBehaviour, IModal
             i++;
         }
 
+        // самопроверка и тест знаний (до / после игры)
+        var review = MurasUI.Button(t, Loc.T("Проверь себя", "Check yourself"), new Vector2(-500, -228), new Vector2(250, 54), () => { Close(); WordReview.Start(); }, 18);
+        review.GetComponent<Image>().color = new Color(0.36f, 0.50f, 0.27f);
+        review.interactable = WordReview.CanStart;
+        string testLabel = !KnowledgeTest.PreDone ? Loc.T("Тест знаний", "Knowledge test")
+                         : KnowledgeTest.PostDone ? Loc.T("Тест знаний ещё раз", "Retake the test") : Loc.T("Тест после игры", "Test after playing");
+        MurasUI.Button(t, testLabel, new Vector2(-500, -292), new Vector2(250, 54), () =>
+        {
+            Close();
+            if (!KnowledgeTest.PreDone) KnowledgeTest.StartPre(); else KnowledgeTest.StartPost();
+        }, 17).GetComponent<Image>().color = new Color(0.42f, 0.30f, 0.18f);
+        string scores = KnowledgeTest.PreTaken ? Loc.T("Тест: до ", "Test: before ") + KnowledgeTest.PreScore + (KnowledgeTest.PostDone ? Loc.T(" → после ", " → after ") + KnowledgeTest.PostScore : "") + " / " + KnowledgeTest.Total : "";
+        MurasUI.Text(t, scores + (scores != "" ? "\n" : "") + Loc.T("Озвучено слов: ", "Words with audio: ") + WordAudio.RecordedCount + "/" + Vocab.Total,
+                     15, MurasUI.Muted, new Vector2(-500, -350), new Vector2(250, 48), FontStyles.Italic);
+
         const int cols = 4; const float cw = 232f, ch = 104f, gap = 10f;
         float x0 = -630f + 280f + cw / 2f, y0 = 300f;
         int k = 0;
@@ -140,7 +155,15 @@ public class JournalWindow : MonoBehaviour, IModal
             strip.AddComponent<Image>().color = known ? MurasUI.Gold : new Color(0.3f, 0.25f, 0.2f);
             if (known)
             {
-                MurasUI.Text(ct, wd.ky, 24, MurasUI.Cream, new Vector2(8, 30), new Vector2(200, 32), FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+                bool audio = WordAudio.Has(wd.id);
+                var kyText = MurasUI.Text(ct, wd.ky, 24, MurasUI.Cream, audio ? new Vector2(-12, 30) : new Vector2(8, 30), audio ? new Vector2(160, 32) : new Vector2(200, 32), FontStyles.Bold, TextAlignmentOptions.MidlineLeft);
+                kyText.enableAutoSizing = true; kyText.fontSizeMin = 16; kyText.fontSizeMax = 24;
+                if (audio)
+                {
+                    string wid = wd.id;
+                    var play = MurasUI.Button(ct, "►", new Vector2(92, 30), new Vector2(34, 30), () => WordAudio.Play(wid), 16);
+                    play.GetComponent<Image>().color = new Color(0.42f, 0.30f, 0.16f);
+                }
                 MurasUI.Text(ct, "[" + wd.latin + "]", 14, MurasUI.Muted, new Vector2(8, 9), new Vector2(200, 20), FontStyles.Italic, TextAlignmentOptions.MidlineLeft);
                 var tr = MurasUI.Text(ct, Loc.T(wd.ru, wd.en), 15, MurasUI.Gold, new Vector2(8, -28), new Vector2(206, 46), FontStyles.Normal, TextAlignmentOptions.TopLeft);
                 tr.enableAutoSizing = true; tr.fontSizeMin = 11; tr.fontSizeMax = 15;

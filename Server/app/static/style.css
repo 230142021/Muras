@@ -45,4 +45,8 @@ th { color:var(--muted); font-weight:600; font-size:14px; } th a { color:var(--m
 .chip.ok { border-color:var(--green); color:#cdeac3; } .chip.gold { border-color:var(--gold); color:var(--gold); }
 .events { list-style:none; padding:0; margin:0; } .events li { padding:4px 0; border-bottom:1px solid #3a2f26; }
 .danger-zone { text-align:right; }
+.gain { margin-left:6px; font-weight:700; color:var(--muted); } .gain.up, b.up { color:var(--green); } .gain.down { color:var(--red); }
+.qrow2 { display:grid; grid-template-columns:minmax(200px, 1.3fr) 1fr 1fr; gap:10px; align-items:center; margin:6px 0; }
+.bar.wide { width:calc(100% - 60px); } .bar.pre i { background:#8a7a64; }
+.legend { color:var(--muted); margin:-4px 0 8px; } .sw { display:inline-block; width:12px; height:12px; border-radius:3px; background:var(--gold); vertical-align:-1px; margin:0 4px 0 10px; } .sw.pre { background:#8a7a64; margin-left:0; }
 @media (max-width: 640px) { main { padding:14px; } .grid.two { grid-template-columns:1fr; } table { font-size:14px; } .bar { width:60px; } }

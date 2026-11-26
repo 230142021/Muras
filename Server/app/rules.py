@@ -75,7 +75,18 @@ class SaveIn(BaseModel):
         return v
 
 
-EVENT_TYPES = {"session_start", "session_end", "quest_completed", "word_unlocked", "achievement", "minigame_result", "level_up"}
+EVENT_TYPES = {
+    "session_start", "session_end", "quest_completed", "word_unlocked", "achievement", "minigame_result", "level_up",
+    # learning research (pre/post knowledge test) and gameplay analytics
+    "test_result",      # {phase: pre|post, score, total, seconds, answers: [{q, word, ok}]}
+    "quest_started",    # {id}
+    "quest_step",       # {id, step}   — last step reached shows where players get stuck
+    "activity_time",    # {activity, seconds}
+    "word_review",      # {id, ok}     — self-check in the dictionary
+    "word_heard",       # {id}         — pronunciation played
+    "tutorial_step",    # {step, n}
+    "tutorial_done",    # {skipped, seconds}
+}
 
 
 class EventIn(BaseModel):

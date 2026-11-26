@@ -21,7 +21,7 @@
   <table>
     <thead><tr>
       <th><a href="?sort=name">Имя</a></th><th><a href="?sort=xp">XP</a></th><th><a href="?sort=words">Слова</a></th>
-      <th>Задания</th><th>Достижения</th><th><a href="?sort=seen">Был(а) в игре</a></th></tr></thead>
+      <th>Задания</th><th>Достижения</th><th title="Тест знаний: до игры → после игры">Тест до → после</th><th><a href="?sort=seen">Был(а) в игре</a></th></tr></thead>
     <tbody>
     {% for s in students %}
       <tr>
@@ -30,6 +30,8 @@
         <td><div class="bar" role="img" aria-label="{{ s.words }} из {{ s.words_total }}"><i style="width: {{ (100 * s.words / s.words_total) | round(1) if s.words_total else 0 }}%"></i></div> {{ s.words }}/{{ s.words_total }}</td>
         <td>{{ s.quests }}/{{ s.quests_total }}</td>
         <td>{{ s.achievements }}</td>
+        <td>{% if s.test.pre is not none %}{{ s.test.pre }}{% else %}—{% endif %} → {% if s.test.post is not none %}{{ s.test.post }}{% else %}—{% endif %}
+            {% if s.test.gain is not none %}<span class="gain {{ 'up' if s.test.gain > 0 else ('down' if s.test.gain < 0 else '') }}">{{ '%+d' % s.test.gain }}</span>{% endif %}</td>
         <td class="small">{{ (s.last_seen_at or '—') | replace('T', ' ') | replace('Z', '') }}</td>
       </tr>
     {% endfor %}
@@ -39,6 +41,56 @@
   <p class="muted">В классе пока нет учеников. Попросите их открыть в игре «Аккаунт» и ввести код <b>{{ cls.join_code }}</b>.</p>
   {% endif %}
 </section>
+
+
+{% set t = l.tests %}
+<section class="card">
+  <div class="head-row"><h2>Тест знаний: до и после игры</h2>
+    <a class="btn ghost" href="{{ url_for('dashboard.export_tests_csv', class_id=cls.id) }}">Результаты теста (CSV)</a></div>
+  <p class="muted small">Один и тот же тест из {{ t.total }} вопросов о кыргызских словах и обычаях: перед первой игрой и после основных заданий.
+     Прирост считается только по ученикам, прошедшим оба теста.</p>
+  <div class="stats">
+    <div class="stat"><b>{{ t.avg_pre_paired if t.pairs else t.avg_pre }}</b><span>средний балл до игры (из {{ t.total }})</span></div>
+    <div class="stat"><b>{{ t.avg_post_paired if t.pairs else t.avg_post }}</b><span>средний балл после игры</span></div>
+    <div class="stat"><b class="{{ 'up' if t.avg_gain > 0 else '' }}">{{ '%+.2f' % t.avg_gain }}</b><span>прирост в среднем ({{ t.pairs }} учен.)</span></div>
+    <div class="stat"><b>{{ t.improved_pct }}%</b><span>учеников улучшили результат</span></div>
+  </div>
+  {% if t.pre_count %}
+  <h2 class="mt">Правильные ответы по вопросам</h2>
+  <div class="legend small"><i class="sw pre"></i> до игры <i class="sw post"></i> после игры</div>
+  {% for q in t.questions %}
+    <div class="qrow2"><span>{{ q.text }}</span>
+      <div><div class="bar wide pre"><i style="width: {{ q.pre_pct }}%"></i></div><span class="pct">{{ q.pre_pct }}%</span></div>
+      <div><div class="bar wide"><i style="width: {{ q.post_pct }}%"></i></div><span class="pct">{{ q.post_pct }}%</span></div></div>
+  {% endfor %}
+  {% else %}<p class="muted">Пока никто не прошёл тест. Он появляется в игре автоматически при первом входе в село.</p>{% endif %}
+</section>
+
+<div class="grid two">
+  <section class="card">
+    <h2>Время в мини-играх и окнах</h2>
+    {% if l.activity %}
+    <table><thead><tr><th>Занятие</th><th>Всего, мин</th><th>Игроков</th><th>На игрока, мин</th></tr></thead><tbody>
+    {% for r in l.activity %}<tr><td>{{ r.name }}</td><td><div class="bar"><i style="width: {{ r.share }}%"></i></div> {{ r.minutes }}</td><td>{{ r.players }}</td><td>{{ r.avg_minutes }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% else %}<p class="muted">Данных пока нет.</p>{% endif %}
+    <h2 class="mt">Обучение в начале игры</h2>
+    <p>Начали: <b>{{ l.tutorial.started }}</b> · прошли до конца: <b>{{ l.tutorial.finished }}</b> · пропустили: <b>{{ l.tutorial.skipped }}</b></p>
+  </section>
+  <section class="card">
+    <h2>Где бросают задания</h2>
+    {% if l.quests %}
+    <table><thead><tr><th>Задание</th><th>Начали</th><th>Выполнили</th><th>Бросили</th></tr></thead><tbody>
+    {% for q in l.quests %}<tr><td>{{ q.name }}{% if q.stuck_at %}<div class="small muted">чаще всего застряли: «{{ q.stuck_at }}»</div>{% endif %}</td>
+      <td>{{ q.started }}</td><td>{{ q.completed }}</td><td>{{ q.abandoned }} <span class="pct">{{ q.abandon_pct }}%</span></td></tr>{% endfor %}
+    </tbody></table>
+    {% else %}<p class="muted">Данных пока нет.</p>{% endif %}
+    <h2 class="mt">Слова, которые забывают</h2>
+    <p class="muted small">Ошибки в самопроверке словаря («Проверь себя») и в тесте знаний.</p>
+    {% if l.forgotten %}<ol class="words">{% for w in l.forgotten %}<li><b>{{ w.ky }}</b> — {{ w.ru }} <span class="pct">ошибок {{ w.wrong }} из {{ w.tries }} ({{ w.wrong_pct }}%)</span></li>{% endfor %}</ol>
+    {% else %}<p class="muted">Ошибок пока нет.</p>{% endif %}
+  </section>
+</div>
 
 <div class="grid two">
   <section class="card">

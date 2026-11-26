@@ -48,6 +48,7 @@ public static class SideQuestHud
     {
         string text = string.IsNullOrEmpty(title) ? null : "<b>" + title + "</b>\n<size=80%><color=#C9BFA6>" + desc + "</color></size>";
         if (text == null) lines.Remove(id); else lines[id] = text;
+        if (text == null) GameAnalytics.QuestCleared(id); else GameAnalytics.QuestStep(id, title + ": " + desc);   // аналитика: шаги заданий
         Apply(id);
     }
 

@@ -8,6 +8,7 @@ from flask import Blueprint, Response, abort, current_app, g, redirect, render_t
 
 from ..analytics import catalog, class_analytics, class_students, new_join_code, owned_class, student_detail
 from ..db import get_db, now_iso
+from ..learning import activity_summary, class_learning, test_results, test_summary
 from ..rules import GAMES, USERNAME_RE
 from ..security import ApiError, audit, hash_password, limiter, verify_password
 
@@ -148,7 +149,11 @@ def class_page(class_id):
     sort = request.args.get("sort", "name")
     keys = {"xp": lambda s: -s["xp"], "words": lambda s: -s["words"], "seen": lambda s: s["last_seen_at"] or "", "name": lambda s: s["display_name"].lower()}
     students.sort(key=keys.get(sort, keys["name"]), reverse=(sort == "seen"))
-    return render_template("class.html", cls=cls, students=students, a=class_analytics(class_id), sort=sort)
+    ids = [s["user_id"] for s in students]
+    learning = class_learning(ids)
+    for s in students:                                   # test columns in the students table
+        s["test"] = learning["tests"]["students"].get(s["user_id"]) or {"pre": None, "post": None, "gain": None}
+    return render_template("class.html", cls=cls, students=students, a=class_analytics(class_id), l=learning, sort=sort)
 
 
 @bp.get("/class/<int:class_id>/student/<int:user_id>")
@@ -159,7 +164,10 @@ def student_page(class_id, user_id):
         st = student_detail(class_id, user_id)
     except ApiError:
         abort(404)
-    return render_template("student.html", cls=cls, s=st, games=GAMES, achievements=catalog()["achievements"])
+    tests = test_results([user_id]).get(user_id, {})
+    questions = catalog().get("knowledge_test", [])
+    return render_template("student.html", cls=cls, s=st, games=GAMES, achievements=catalog()["achievements"],
+                           tests=tests, questions=questions, activity=activity_summary([user_id]))
 
 
 @bp.post("/class/<int:class_id>/student/<int:user_id>/remove")
@@ -194,3 +202,32 @@ def export_csv(class_id):
         w.writerow([name, s["username"], s["xp"], s["words"], s["words_total"], s["quests"], s["achievements"], s["last_seen_at"] or ""])
     return Response("﻿" + buf.getvalue(), mimetype="text/csv",
                     headers={"Content-Disposition": "attachment; filename=class_%d.csv" % cls["id"]})
+
+
+@bp.get("/class/<int:class_id>/tests.csv")
+@teacher_required
+def export_tests_csv(class_id):
+    """Pre/post knowledge test results, one row per student, one column per question (for the thesis statistics)."""
+    try:
+        cls = owned_class(class_id, g.teacher["id"])
+    except ApiError:
+        abort(404)
+    _, students = class_students(class_id)
+    results = test_results([s["user_id"] for s in students])
+    questions = catalog().get("knowledge_test", [])
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["display_name", "username", "pre_score", "post_score", "gain", "pre_seconds", "post_seconds"]
+               + ["pre_" + q["id"] for q in questions] + ["post_" + q["id"] for q in questions])
+    for s in students:
+        r = results.get(s["user_id"], {})
+        pre, post = r.get("pre"), r.get("post")
+        name = s["display_name"]
+        if name[:1] in ("=", "+", "-", "@"):
+            name = "'" + name
+        cell = lambda t, q: "" if t is None or q["id"] not in t["answers"] else int(t["answers"][q["id"]])
+        w.writerow([name, s["username"], pre["score"] if pre else "", post["score"] if post else "",
+                    (post["score"] - pre["score"]) if pre and post else "", pre["seconds"] if pre else "", post["seconds"] if post else ""]
+                   + [cell(pre, q) for q in questions] + [cell(post, q) for q in questions])
+    return Response("\ufeff" + buf.getvalue(), mimetype="text/csv",
+                    headers={"Content-Disposition": "attachment; filename=class_%d_tests.csv" % cls["id"]})

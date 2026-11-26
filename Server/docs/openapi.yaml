@@ -300,7 +300,7 @@ components:
       required: [id, type]
       properties:
         id: { type: string, minLength: 8, maxLength: 64, description: client-generated UUID }
-        type: { type: string, enum: [session_start, session_end, quest_completed, word_unlocked, achievement, minigame_result, level_up] }
+        type: { type: string, enum: [session_start, session_end, quest_completed, word_unlocked, achievement, minigame_result, level_up, test_result, quest_started, quest_step, activity_time, word_review, word_heard, tutorial_step, tutorial_done] }
         payload: { type: object }
         time: { type: string, description: client time (ISO 8601) }
     LeaderRow:
