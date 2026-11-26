@@ -91,6 +91,7 @@ public static class GameSettings
         urp.renderScale = q == 0 ? 0.7f : q == 1 ? 0.85f : 1f;
         urp.shadowDistance = q == 0 ? 0f : q == 1 ? Mathf.Min(baseShadow, 45f) : Mathf.Max(baseShadow, 80f);
         urp.msaaSampleCount = q == 2 ? 4 : 1;
+        GraphicsPolish.ApplyQuality();      // туман, тонемаппинг, свечение, сглаживание, ветер
     }
 
     private static void RestoreAsset()

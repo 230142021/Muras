@@ -67,7 +67,7 @@ public class WeatherSystem : MonoBehaviour
         // плавно уходим от прошлой погоды
         DayNightCycle.WeatherLight = Mathf.MoveTowards(DayNightCycle.WeatherLight, 1f - gloom, Time.deltaTime * 0.15f);
         DayNightCycle.WeatherGrey = Mathf.MoveTowards(DayNightCycle.WeatherGrey, gloom, Time.deltaTime * 0.15f);
-        if (baseFog > 0f) RenderSettings.fogDensity = baseFog * (1f + DayNightCycle.WeatherGrey * 1.8f);
+        // плотность тумана (в том числе в непогоду) теперь задаёт GraphicsPolish
 
         Camera cam = Camera.main;
         if (cam != null)

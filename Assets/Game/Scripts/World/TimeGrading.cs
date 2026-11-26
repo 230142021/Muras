@@ -54,9 +54,10 @@ public class TimeGrading : MonoBehaviour
             break;
         }
         float grey = DayNightCycle.WeatherGrey;   // в непогоду цвета приглушённее
-        ca.saturation.value = l.sat - grey * 15f;
-        ca.contrast.value = l.contrast;
-        ca.postExposure.value = l.exposure;
+        bool fx = GraphicsPolish.Enhanced;        // поправки под тонемаппинг (см. GraphicsPolish)
+        ca.saturation.value = l.sat - grey * 15f + (fx ? GraphicsPolish.SaturationAdd : 0f);
+        ca.contrast.value = l.contrast + (fx ? GraphicsPolish.ContrastAdd : 0f);
+        ca.postExposure.value = l.exposure + (fx ? GraphicsPolish.ExposureAdd : 0f);
         wb.temperature.value = l.temp;
         wb.tint.value = l.tint;
     }
